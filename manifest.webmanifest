@@ -1,0 +1,20 @@
+{
+ "name": "Book's Record 1단계",
+ "short_name": "Book's Record",
+ "description": "리딩레이스 1단계 도서 1,434권 — 책이름·읽음·발행년도·인증수",
+ "lang": "ko",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#f7f4ee",
+ "theme_color": "#2d5f46",
+ "icons": [
+  {
+   "src": "icon.svg",
+   "sizes": "any",
+   "type": "image/svg+xml",
+   "purpose": "any"
+  }
+ ]
+}

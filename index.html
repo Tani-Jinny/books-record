@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2d5f46">
+<meta name="color-scheme" content="light">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Book's Record">
+<meta name="application-name" content="Book's Record">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="리딩레이스 1단계 1,434권 — 책이름 · 읽음 · 발행년도 · 인증수">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%232d5f46%22%2F%3E%3Crect%20x%3D%2212%22%20y%3D%2215%22%20width%3D%2218%22%20height%3D%2234%22%20rx%3D%223%22%20fill%3D%22%23ffffff%22%2F%3E%3Crect%20x%3D%2234%22%20y%3D%2215%22%20width%3D%2218%22%20height%3D%2234%22%20rx%3D%223%22%20fill%3D%22%23ffffff%22%20opacity%3D%22.72%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%2221%22%20width%3D%228%22%20height%3D%222.4%22%20rx%3D%221.2%22%20fill%3D%22%232d5f46%22%20opacity%3D%22.45%22%2F%3E%3Crect%20x%3D%2217%22%20y%3D%2226.5%22%20width%3D%228%22%20height%3D%222.4%22%20rx%3D%221.2%22%20fill%3D%22%232d5f46%22%20opacity%3D%22.45%22%2F%3E%3Crect%20x%3D%2239%22%20y%3D%2221%22%20width%3D%228%22%20height%3D%222.4%22%20rx%3D%221.2%22%20fill%3D%22%232d5f46%22%20opacity%3D%22.35%22%2F%3E%3Crect%20x%3D%2239%22%20y%3D%2226.5%22%20width%3D%228%22%20height%3D%222.4%22%20rx%3D%221.2%22%20fill%3D%22%232d5f46%22%20opacity%3D%22.35%22%2F%3E%3C%2Fsvg%3E">
+<title>Book's Record 1단계</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+ --bg:#f7f4ee;--card:#fff;--ink:#232019;--sub:#736c60;--line:#ded8ca;
+ --hdline:#d5cfc0;--zebra:#faf9f5;--head:#efece3;
+ --acc:#2f6b4f;--acc2:#e8f2ec;--acc3:#cfe4d6;
+ --red:#a8372a;--redbg:#fcece9;--blue:#23527c;--bluebg:#e7eff7;
+ --hdh:0px;
+}
+html,body{overflow-x:clip}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:16px/1.4 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+ padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+button,select,input{font-family:inherit}
+a{color:var(--acc)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- sticky header ---------- */
+.hd{position:sticky;top:0;z-index:30;background:rgba(247,244,238,.97);
+ -webkit-backdrop-filter:saturate(180%) blur(8px);backdrop-filter:saturate(180%) blur(8px);
+ border-bottom:1px solid var(--hdline);
+ padding:7px 10px 7px;padding-top:calc(7px + env(safe-area-inset-top))}
+.hd-top{display:flex;align-items:center;gap:6px;min-height:24px}
+.hd-top h1{flex:1;min-width:0;margin:0;font-size:14.5px;font-weight:800;letter-spacing:-.3px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hd-top h1 span{color:var(--acc)}
+.icon{flex:0 0 auto;width:40px;height:38px;margin:-4px -6px -4px 0;border:0;background:transparent;
+ border-radius:10px;font-size:17px;color:var(--sub);display:flex;align-items:center;justify-content:center}
+.icon:active{background:#eae4d8}
+
+.stat{margin-top:1px}
+.s1{display:flex;align-items:baseline;gap:5px}
+.s1 .sl{font-size:11.5px;font-weight:800;color:var(--sub);letter-spacing:-.2px}
+.s1 b{font-size:16.5px;font-weight:800;color:var(--acc);letter-spacing:-.4px;font-variant-numeric:tabular-nums}
+.s1 span{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+.s1 em{margin-left:auto;font-style:normal;font-size:12px;font-weight:800;color:var(--acc)}
+.pbar{height:5px;border-radius:99px;background:#e6e0d2;overflow:hidden;margin-top:3px}
+.pbar>i{display:block;height:100%;width:0;border-radius:99px;
+ background:linear-gradient(90deg,#5aa47f,#2f6b4f);transition:width .2s ease}
+.s2{display:flex;gap:10px;margin-top:3px;font-size:11px;color:var(--sub);white-space:nowrap}
+.s2 b{color:#4a463d;font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- toolbar (2줄) ---------- */
+.tools{margin-top:6px}
+.qrow{position:relative;display:flex;align-items:center}
+.qrow input{width:100%;height:36px;border:1px solid var(--line);border-radius:10px;background:#fff;
+ padding:0 36px 0 31px;font-size:15px;color:var(--ink);outline:none;appearance:none}
+.qrow input:focus{border-color:var(--acc3);box-shadow:0 0 0 3px rgba(47,107,79,.08)}
+.qrow .ic{position:absolute;left:9px;font-size:13px;color:var(--sub);pointer-events:none}
+.qrow .clr{position:absolute;right:0;width:36px;height:36px;border:0;background:transparent;
+ color:var(--sub);font-size:14px;border-radius:10px}
+.qrow .clr[hidden]{display:none}
+.selrow{display:flex;gap:4px;margin-top:5px}
+.sw{position:relative;display:flex;flex:1 1 0;min-width:0}
+.sw:after{content:"▾";position:absolute;right:6px;top:50%;transform:translateY(-50%);
+ font-size:9px;color:#8a8375;pointer-events:none}
+.sw select{width:100%;min-width:0;appearance:none;-webkit-appearance:none;height:32px;
+ padding:0 15px 0 7px;border:1px solid var(--line);border-radius:9px;background:#fff;
+ font-size:11.5px;font-weight:700;color:#3d3a33;letter-spacing:-.45px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.sw select:focus{outline:none;border-color:var(--acc3)}
+.sw.w1{flex:1.35}
+.sw.w1 select{font-size:11px}
+.sw select:disabled{color:#a8a294}
+
+/* ---------- excel table ---------- */
+.tbl{background:var(--card);border-bottom:1px solid var(--line)}
+.grid{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;background:#fff}
+.grid col.c1{width:48%}
+.grid col.c2{width:18%}
+.grid col.c3{width:17.5%}
+.grid col.c4{width:16.5%}
+.grid th,.grid td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);
+ padding:0;vertical-align:middle;overflow:hidden}
+.grid th:last-child,.grid td:last-child{border-right:0}
+.grid thead th{position:sticky;top:var(--hdh,0px);z-index:25;height:33px;background:var(--head);
+ border-bottom:1px solid #cdc6b6;padding:0;font-weight:800}
+.grid thead th.on{background:var(--acc2);box-shadow:inset 0 -2px 0 var(--acc)}
+.hbtn{display:flex;align-items:center;justify-content:center;gap:1px;width:100%;height:33px;
+ border:0;background:none;padding:0 2px;font-size:10.5px;font-weight:800;color:#5f5849;
+ letter-spacing:-.45px;white-space:nowrap}
+th.t-title .hbtn{justify-content:flex-start;padding-left:7px}
+.grid thead th.on .hbtn{color:var(--acc)}
+.hbtn .ar{font-size:8px;line-height:1;color:#b3ac98;width:8px;display:inline-block;text-align:center}
+.grid thead th.on .ar{color:var(--acc)}
+
+.grid tbody tr:nth-child(even) td{background:var(--zebra)}
+.grid tbody tr.rd td:first-child{box-shadow:inset 2px 0 0 var(--acc)}
+.grid tbody tr.rd .tt{color:#1d4633}
+td.c-title{padding:0}
+.rowbtn{display:block;width:100%;min-height:42px;border:0;background:none;padding:5px 7px 5px 8px;
+ text-align:left;color:inherit;font:inherit;cursor:pointer}
+.rowbtn:active{background:#f0ece2}
+.tt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+ font-size:12px;line-height:1.34;font-weight:700;letter-spacing:-.35px;
+ word-break:keep-all;overflow-wrap:anywhere;max-height:33px}
+td.c-read{padding:0}
+.rb{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:3px;
+ width:100%;min-height:42px;height:100%;border:0;background:none;padding:0 1px;color:#9a9488;cursor:pointer}
+.rb .bx{font-size:14px;line-height:1;letter-spacing:0}
+.rb .tg{font-size:9.5px;font-weight:800;letter-spacing:-.5px;color:#7d7668}
+.rb.on{color:var(--acc)}
+.rb.on .bx{color:var(--acc)}
+.rb.on .tg{color:#41705a}
+.rb .tg.cur{color:var(--red)}
+.rb .tg.off{color:#a39c8e}
+.rb .tg.mine{color:var(--blue)}
+.rb:active{background:#f0ece2}
+td.c-year{padding:5px 3px;text-align:right;font-size:11px;color:#6b6455;
+ font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.3px}
+td.c-cert{padding:5px 5px;text-align:right;font-size:11.5px;font-weight:700;color:#3d3a33;
+ font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.3px}
+td.emptyrow{padding:34px 12px;text-align:center;color:var(--sub);font-size:13px;line-height:1.6}
+td.emptyrow b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:5px}
+
+/* ---------- after table ---------- */
+.after{padding:10px 12px 0}
+.more,.allbtn{display:block;width:100%;min-height:44px;margin-bottom:8px;border:1px solid var(--acc3);
+ border-radius:11px;background:#fff;color:var(--acc);font-size:13.5px;font-weight:800}
+.more:active,.allbtn:active{background:var(--acc2)}
+.allbtn{border-style:dashed;color:#41705a;font-weight:700;font-size:12.5px;min-height:40px}
+.more[hidden],.allbtn[hidden]{display:none}
+.foot{padding:2px 4px 6px;font-size:11px;color:#8b8479;line-height:1.6;text-align:center}
+.foot button{margin-top:7px;min-height:38px;padding:0 14px;border:1px solid var(--line);border-radius:10px;
+ background:#fff;color:#4a463d;font-size:12px;font-weight:700}
+
+/* ---------- sheets ---------- */
+.ov{position:fixed;inset:0;background:rgba(28,24,18,.42);z-index:40;opacity:0;pointer-events:none;transition:opacity .18s}
+.ov.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:#fff;border-radius:18px 18px 0 0;
+ max-width:640px;margin:0 auto;max-height:86vh;overflow:auto;-webkit-overflow-scrolling:touch;
+ transform:translateY(102%);transition:transform .22s ease;
+ padding:8px 16px calc(18px + env(safe-area-inset-bottom))}
+.sheet.on{transform:translateY(0)}
+.sheet .grab{width:38px;height:4px;border-radius:9px;background:#e3ded2;margin:0 auto 8px}
+.sheet h2{margin:0;font-size:15.5px;font-weight:800;letter-spacing:-.3px;line-height:1.35;
+ word-break:keep-all;overflow-wrap:anywhere}
+.sheet .sh{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px}
+.sheet .sh h2{flex:1;min-width:0}
+.sheet .sh .icon{margin:-6px -8px 0 0}
+.dmeta{margin:0 0 8px;font-size:12px;color:var(--sub);line-height:1.5}
+.dchips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.dc{font-size:11px;font-weight:700;color:#5d584c;background:#f3f0e8;border-radius:6px;padding:2px 7px;letter-spacing:-.3px}
+.dread{display:flex;align-items:center;gap:7px;width:100%;min-height:46px;margin-bottom:12px;
+ border:1.5px solid #d5dcd4;border-radius:11px;background:#fff;padding:0 12px;
+ font-size:14px;font-weight:800;color:#5b6b5f}
+.dread .bx{font-size:17px;line-height:1}
+.dread .dtg{margin-left:auto;font-size:11px;font-weight:800;color:var(--sub)}
+.dread.on{background:var(--acc2);border-color:var(--acc3);color:var(--acc)}
+.dread.on .bx{color:var(--acc)}
+.dread.on .dtg{color:#41705a}
+.dinfo{margin:0 0 6px;font-size:11.5px;color:var(--sub);font-weight:800;letter-spacing:-.2px}
+.loans{list-style:none;margin:0 0 10px;padding:0}
+.loans li{display:flex;gap:7px;font-size:12px;color:#4a463d;padding:6px 0;border-bottom:1px solid #f1ede2}
+.loans li:last-child{border-bottom:0}
+.loans .who{flex:0 0 44px;font-weight:800;color:var(--ink)}
+.loans .body{flex:1;min-width:0;line-height:1.5;word-break:keep-all;overflow-wrap:break-word}
+.loans .body .st{font-weight:700}
+.loans .body .cc{color:var(--sub)}
+.none-loan{font-size:12px;color:var(--sub);margin:0 0 10px;line-height:1.5}
+.dlink{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.dlink a{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:0 12px;
+ border:1px solid var(--line);border-radius:10px;background:#fbfaf6;text-decoration:none;font-size:13px;
+ font-weight:700;color:#2b4a3a}
+.dlink a span.r{color:var(--sub);font-weight:600;font-size:11.5px}
+.sheet p.snote{font-size:12px;color:var(--sub);line-height:1.6;margin:8px 0}
+.pb{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 4px}
+.btn{min-height:44px;padding:0 13px;border-radius:10px;border:1px solid var(--line);background:#fff;
+ font-size:12.5px;font-weight:800;color:#3d3a33;white-space:nowrap}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.dgr{color:var(--red);border-color:#f0d6d2;background:#fff8f7}
+.sheet textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:10px;padding:9px;
+ font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:#4a463d;background:#fbfaf6;margin-top:6px}
+.sheet label.file{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 13px;
+ border:1px dashed var(--acc3);border-radius:10px;color:var(--acc);font-size:12.5px;font-weight:800;
+ background:var(--acc2);margin:0}
+.sheet label.file input{display:none}
+.note{background:#f8f6f1;border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin:10px 0 0}
+.note b{display:inline;font-size:inherit;color:#3d3a33;margin:0}
+.note>span{display:block;font-size:11.5px;color:var(--sub);line-height:1.55}
+.note>b{display:block;font-size:12px;color:#3d3a33;margin-bottom:3px}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,14px);
+ background:#23201b;color:#fff;font-size:12.5px;font-weight:700;padding:10px 15px;border-radius:11px;z-index:60;
+ opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:88vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" id="hd">
+  <div class="hd-top">
+    <h1>📚 Book's Record <span id="lvtitle">1단계</span></h1>
+    <button class="icon" id="btnSettings" aria-label="설정·백업">⚙️</button>
+  </div>
+  <div class="stat">
+    <div class="s1"><span class="sl">읽음</span><b id="statDone">0</b><span id="statTotal">/ 0권</span><em id="statPct">0%</em></div>
+    <div class="pbar"><i id="statBar"></i></div>
+    <div class="s2">
+      <span>표시 <b id="statShown">0</b>권</span>
+      <span>직접 체크 <b id="statMine">0</b>권</span>
+      <span>대출중 <b id="statCur">0</b>권</span>
+    </div>
+  </div>
+  <div class="tools">
+    <div class="qrow">
+      <span class="ic">🔍</span>
+      <input id="q" type="text" inputmode="search" enterkeyhint="search" autocomplete="off"
+             autocapitalize="off" spellcheck="false" placeholder="책이름 검색 (저자·출판사도)">
+      <button class="clr" id="qclear" aria-label="검색어 지우기" hidden>✕</button>
+    </div>
+    <div class="selrow">
+      <span class="sw w1"><select id="fLevel" aria-label="단계 필터"></select></span>
+      <span class="sw"><select id="fRead" aria-label="읽음 필터"></select></span>
+      <span class="sw"><select id="fYear" aria-label="발행년도 필터"></select></span>
+      <span class="sw"><select id="fCert" aria-label="인증수 필터"></select></span>
+    </div>
+  </div>
+</header>
+
+<div class="tbl">
+  <table class="grid" id="grid">
+    <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
+    <thead>
+      <tr>
+        <th class="t-title" data-k="title"><button class="hbtn" data-k="title">책이름<i class="ar"></i></button></th>
+        <th class="t-read" data-k="read"><button class="hbtn" data-k="read">읽음<i class="ar"></i></button></th>
+        <th class="t-year" data-k="year"><button class="hbtn" data-k="year">발행년도<i class="ar"></i></button></th>
+        <th class="t-cert" data-k="cert"><button class="hbtn" data-k="cert">인증수<i class="ar"></i></button></th>
+      </tr>
+    </thead>
+    <tbody id="tb"></tbody>
+  </table>
+</div>
+
+<div class="after">
+  <button class="more" id="more" hidden></button>
+  <button class="allbtn" id="allbtn" hidden>⤓ 전체 모두 보기</button>
+  <div class="foot">
+    목록 수집 <b id="footDate">-</b> 기준 · 읽음 표시는 이 기기 브라우저에만 저장됩니다.<br>
+    모든 데이터는 기기 안에서만 처리되고 외부로 전송되지 않습니다.
+    <br><button id="btnSettings2">⚙️ 백업 · 설정</button>
+  </div>
+</div>
+
+<div class="ov" id="ov"></div>
+
+<section class="sheet" id="detailSheet" role="dialog" aria-modal="true" aria-label="책 상세">
+  <div class="grab"></div>
+  <div class="sh"><h2 id="dTitle"></h2><button class="icon" id="dClose" aria-label="닫기">✕</button></div>
+  <div id="dBody"></div>
+</section>
+
+<section class="sheet" id="setSheet" role="dialog" aria-modal="true" aria-label="설정 및 백업">
+  <div class="grab"></div>
+  <div class="sh"><h2>설정 · 백업</h2><button class="icon" id="sClose" aria-label="닫기">✕</button></div>
+  <p class="snote">읽음 표시는 이 브라우저의 저장 공간(localStorage)에만 남습니다. 기기를 바꾸거나 브라우저 기록을 지우면
+    사라질 수 있으니 가끔 내보내기로 백업해 두세요. 도서관 대출·상호대차 기록이 있는 책은 기본 읽음으로 표시됩니다.</p>
+  <div class="pb">
+    <button class="btn pri" id="btnExport">📤 내보내기</button>
+    <label class="file" for="fileImport"><span>📥 파일에서 가져오기</span>
+      <input type="file" id="fileImport" accept=".json,application/json">
+    </label>
+  </div>
+  <p class="snote" id="ioHint">내보내기를 누르면 아래 칸에 기록이 나옵니다. 복사해 두거나 파일로 저장하세요.</p>
+  <textarea id="ioBox" readonly spellcheck="false" placeholder="내보낸 기록이 여기에 표시됩니다."></textarea>
+  <div class="pb">
+    <button class="btn" id="btnCopy">📋 복사</button>
+    <button class="btn" id="btnDownload">💾 파일 저장</button>
+    <button class="btn" id="btnImportText">붙여넣은 내용 가져오기</button>
+  </div>
+  <div class="note">
+    <b>📊 데이터 기준</b>
+    <span>도서 목록·발행년도: <span id="infoGen">-</span><br>
+    대출·상호대차 기록이 있는 책은 처음부터 <b>읽음</b>으로 표시되고, 직접 눌러 해제할 수 있습니다.<br>
+    가족은 이름 대신 <b>엄마 · 아빠 · 아이</b>로만 표시하고, 대출일·반납일·도서관 이름은 담지 않습니다.<br>
+    발행년도를 모르는 책은 정렬할 때 방향과 상관없이 목록 맨 아래에 놓입니다.</span>
+  </div>
+  <div class="note">
+    <b>➕ 다음 단계 확장</b>
+    <span>2단계 이후 데이터를 추가하면 이 화면의 단계 필터에 자동으로 나타납니다. 지금은 1단계 1,434권만 들어 있습니다.</span>
+  </div>
+  <div class="pb" style="margin-top:12px">
+    <button class="btn dgr" id="btnReset">🗑 직접 체크 초기화</button>
+  </div>
+  <p class="snote" style="font-size:11px;color:#9a9387">Book's Record · 리딩레이스 1단계 목록 · 오프라인 단일 파일 · v2.1 (엑셀표)</p>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var RAW = {"v":3,"public":1,"generated":"2026-11-18","levels":[{"level":1,"count":1434}],"years":[2026,2025,2024,2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997,1996,1995,1994,1993,1990],"fields":["미분류","문학","사회","역사","과학","인물","종교","기타","예술","철학","인문","언어","수학"],"subjects":["","미술","성경","국어","독서","문학","독서과","과학","사회","역사","권혜신","도덕","철학","국어, 도덕","국어, 과학","자연관찰","가족학","국어,도덕","국어,환경","유통","아동안전","언어,문학","자연/환경","위생","수개념","관계, 사회","환경","감정","국어,사회","사회,환경","사회,국어","수개","사회, 독서","국어, 독서","치위생","자연","역사, 한국전쟁","환경, 환경오염","과학, 문학"],"publishers":["","낮은산","보물창고","보림","비룡소","시공주니어","문공사","국민서관","세상모든책","두란노 키즈","밝은미래","논장","한림","두란노","예꿈","꽃삽","생명의 말씀사","재미마주","디모데","고슴도치","느림보","삼성출판사","홍성사","웅진주니어","자연과 나","마루벌","키득키득","꿈을 이루는 사람들","바다어린이","책꾸러기","길벗어린이","맑은가람","한솔수북","키즈 두란노","아리러브처치","주니어파랑새","두란노키즈","어린이 작가정신","사계절","생명의말씀사","보리","여름 숲","daeyeon","베틀 북","길벗 어린이","문학동네","예키즈","네버랜드","두란노 KIDZ","파랑새","파란자전거","책n꿈","아이세움","계수나무","샘터","열린어린이","한울림어린이","베틀북","머스트비","어린이 나무생각","봄봄","푸른숲주니어","한울림 어린이","키즈엠","소금창고","토토북","딤푸스","맹&앵","대교북스 주니어","여름숲","휴이넘","담푸스","중앙출판사","아름다운 사람들","현 북스","웅진 주니어","주니어김영사","보림출판사","예림당","봄나무","천개의 바람","어린이작가정신","기탄교육","책읽는곰","한국기독학생회출판부(IVP)","스콜라","나는별","상상스쿨","불광출판사","재능교육","박물관","푸른날개","책 읽는 곰","책과콩나무","창비","킨더랜드","고래 이야기","고래이야기","분홍고래","주니어랜덤","미래아이","풀빛","씨드북","아름다운사람들","북비","후즈갓마이테일","마루별","JEI재능교육","창조아이","여원미디어","이야기꽃","푸른숲","문학수첩 리틀북","사파리","해솔","책단배","현암사","작은곰자리","책속물고기","DRAGONFLY BOOKS","WALKER BOOKS","현북스","한국 퍼킨스","대교","HarperCollins Publishers","북극곰","빛글","Scholastic","엘리","Harper Collins","Picture Corgi","난다","미래아이(미래M&B,미래엠앤비)","대연출판","한국톨스토리","살림어린이","한국톨스토이","민트래빗","달리","빛종","북뱅크","만만한책방","트리앤북","걸음동무","한림출판사","포이에마","책내음","진선아이","몽당연필","두산동아","아가월드","프른숲 주니어","도서출판 달리","키다리","나는 별","와이즈아이","한국헤밍웨이","우리교육","문학과 지성사","찰리북","청림아이","봄볕","북스토리아이","청어람 아이","큰북작은북","청어람 미디어","미디어창비","주니어북스","미세기","노란 상상","대교출판","문학수첩리틀북","웅진다책","한국차일드아카데미","시공 주니어","한국 가우스","다산 기획","JCR KIDS","고래뱃속","별천지","우주나무","라임","맑은 가람","도미솔","정원교육","한국삐아제","베이비북스","한솔 수북","내인생의책","VS BOOKS","반올림","삐아제어린이","더큰(몬테소리CM)","위즈덤하우스","주니어RHK","톡","계림닷컴","시공사","김영사주니어","노란돼지","통큰세상","한우리북스","글뿌리","황금여우","리틀씨앤톡","와이즈북","스마일북스","한솔교육","바다출판사","키즈두란노","소담 주니어","웅진닷컴","OPB","IVP","샘터사","그림책공작소","함께자람(교학사)","같이보는책","노란상상","크레용하우스","봄봄출판사","천개의바람","동산사","바람의아이들","다림","이야기공간","단추","비비아이들","바다어린이(바다출판사)","문학동네어린이","효리원","행복한그림책","한솔수북(한솔교육)","우리학교","꿈터","자유로운상상","그린북","지평서원","동심","올리","오늘책","(주)한국슈타이너","팜파스","행복도서관","바둑이하우스","FIKAJUNIOR(피카주니어)","애플비","왕가의 아이들","상상의집","피카주니어(FIKA JUNIOR)","공존","키큰도토리","분도출판사","교실어린이","그린씨드","문학과지성사","어썸키즈","다봄","한국슈타이너","북멘토","산하","무지개","기탄교육연구소","두레아이들","도서출판무지개","을파소","봄개울","샘터(샘터사)","길벗스쿨","책먹는 아이","현암","세용출판","반달(킨더랜드)","소원나무","오올","하루놀","아이즐북스","개암나무","한빛에듀","모든요일그림책","마이어.날다","상상의힘","두마리토끼책","학교앞거북이","곰곰","오톨루","토끼섬","파란정원","물구나무","좋은책키즈","빨간콩","청어람미디어","웃는돌고래","머핀북","모래알(키다리)","미운오리새끼","달그림","상상박스","청어람아이","가문비어린이","국수","언약의책","책고래","더블북","한울림스페셜","달달북스","향출판사","미래엔아이세움","춘희네책방","이숲아이","작은코도마뱀","단비어린이","꿈꾸는섬","엔이키즈","다산기획","dodo","뜨인돌어린이","봄날의곰","고래가숨쉬는도서관","그레이트북스","북포레스트","시금치","봄의정원","썬더키즈","현암주니어","해와나무","스토리보울","나무말미","리잼","NC문화재단","함성B&S(비전코람데오)","책상자","스푼북","플라이쿠키(flycookie)","봄마중","아이N","산지니","미래엔","나무숲","파이디온키즈","그린애플","보고북스","키위북스","책빛","웅진출판","고래의숲","휴먼어린이","원더박스","바나나북","파스텔하우스","도토리숲","키즈바이브","창비교육","위즈덤하우스(스콜라)","다그림책(키다리)","제제의숲","노는날","나린글","책소유"],"authors":["","권정생","박기범","이금이","이종철,이춘길","백석","수지 모건스턴 / 이세진(역)","바버러 쿠니 / 우미정(역)","이혜용","메리디스 후퍼","다니엘 시마르 / 안지은(역)","크리스토프 스텔린 / 강미경(역)","앤디 앤드루스 / 김서정(역)","필리파 피어스 / 햇살과 나무꾼(역)","조대인","해리엇 지퍼트 / 엄혜숙(역)","한해숙","맥스 루케이도 / 최혜영(역)","마크 킴볼 몰튼 / 김경숙(역)","앨리스 맥레런 / 김동미(역)","도티 & 조시 맥도웰, 데이비드 웨이스 / 편집부(역)","김영주","댄디 데일리 맥컬 / 한지엘(역)","맥스 루카도 / 아기장수의 날개(역)","버지니아 플레밍 / 강연숙(역)","삼성출판사 편집부","맥스 루케이도 / 양혜원(역)","앤서니 브라운 / 허은미(역)","전영재","엘즈비에타 / 홍성혜(역)","리쯔룽 / 김은신(역)","앤젤라 엘웰 헌트 / 정연희(역)","아놀드 로벨 / 엄혜숙(역)","엘리너 코어 / 강무홍(역)","맥스 루케이도 / 권기대(역)","야나가와 시게루 / 전혜경(역)","엔젤라 엘웰 헌트 / 정연희(역)","로렌 차일드 / 조은수(역)","마가렛 베이트슨 힐 / 정연희(역)","백희나","맥스 루케이도","마르쿠스 피스터 / 공경희(역)","가진수","수잔 E 굿맨 / 박수현(역)","박경효","쉘 실버스타인 / 이재명(역)","유진 트리비자스 / 김경미(역)","강경수","맥스 루카도 / 아기장수(역)","기네스 스웨인 / 노지양(역)","질 티보 / 이정주(역)","미셸린느 먼디 / 노은정(역)","마이클 베다드 / 김명수(역)","이은홍","클로드 부종","맥스 루케이도 / 박혜령(역)","맥스 루케이도 / 김주성(역)","전광*박보영","김회경","보리","줄리아 도널드슨 / 김수희(역)","맥스 루케이도 / 이정훈(역)","고정욱","레오 리오니 / 김서정(역)","시빌 웨타신하 / 엄혜숙(역)","고대영","백금서","오스카 와일드 / 민유리(역)","존 셰스카 / 엄혜숙(역)","이시이 모모코 / 김난주(역)","이주홍","패트리샤 폴라코 / 임봉경(역)","신시아 라일런트 / 신형건(역)","패트리샤 폴라코 / 서남희(역)","윌리엄 밀러 / 박찬석(역)","레인 스미스 / 김경언(역)","맥스 루케이도 / 아기장수 날개(역)","안젤름 그륀 / 이은주(역)","박지훈","팀 마이어스 / 김서정(역)","제니 비숍 / 권혜신(역)","질 로만 로드 / 권혜신(역)","존 윈치 / 조은수(역)","제프리 스토더드","채인선","에일린 스피넬리 / 김홍숙(역)","배빗 콜 / 박찬순(역)","이인희","임정자","레미 쿠르종 / 나선희(역)","찰스 키핑 / 서애경(역)","안도현","윌리엄 스타이그 / 우미경(역)","한스 크리스티안 안데르센 / 김주열(역)","소르카 닉 리오하스 / 최순희(역)","윌리엄 스타이그 / 김서정(역)","사라 스튜어트 / 지혜연(역)","로리오트 / 정미숙(역)","브렌다 기버슨 / 이명희(역)","나카야 미와 / 김난주(역)","윤구병","바바라 레이드","백미숙","마르쿠스 피스터 / 우미경(역)","심스 태백 / 김정희(역)","베키 블룸 / 아기장수의 날개(역)","이영경","윌리엄 스타이그 / 박향주(역)","빌헬름 그림 / 모리스 센닥 / 랄프 만하임 / 김경미(역)","송언","신원미","야마무라 안지 / 김난주(역)","심상우","이보나 흐미엘레프스카 / 이지원(역)","후쿠다 이와오 / 김난주(역)","존 버닝햄 / 조세현(역)","나카가와 히로타카 / 고향옥(역)","앤서니 브라운 / 서애경(역)","글:메리 로그 그림: 파멜라 자가렌스키 / 강형복(역)","글: 히라타 겐야, 그림:가토 구니오 / 김인호(역)","장 프랑수아 뒤몽 / 김은숙(역)","마키타 신지 / 유문조(역)","마샤 브라운 / 고정아(역)","마리아 테를리코프스카 / 최성은(역)","이현정","홍승연","김미경","헬메 하이네 / 황윤선(역)","김용택 글, 염혜원 그림","유계영","조이 카울리 / 홍연미(역)","아만 기미코 / 고향옥(역)","이언 와이브라우 / 김양미(역)","타이-마르크 르탄 / 이주희(역)","앤서니 브라운 / 하빈영(역)","앤서니 브라운 / 홍연미(역)","올리버 제퍼스 / 유경희(역)","마르케타 진네로바 / 마리나 리히테로바 / 이지원(역)","김향금","오드레이 푸시에 / 이주희(역)","옐라 마리","레오 리오니","이승은,허헌선","카트린 섀러 / 이동준(역)","요시타케 신스케 / 김정화(역)","마르쿠스 피스터 / 송순섭(역)","앤터니 브라운 / 김경미(역)","고미 타로 / 김소연(역)","요시타케 신스케 / 고향옥(역)","요시타케 신스케 / 김소연(역)","장세현","홍윤희","권은경","베아트리체 솅크 드 레그니에스 / 장미란(역)","맥스 루케이도 / 장상혁(역)","유진 피터슨 / 지인이와 아빠(역)","마르쿠스 피스터 / 지혜연(역)","애넷 코르디나 / 최용은(역)","요시타케 신스케 / 유문조(역)","마르쿠스 피스터 / 김영진(역)","패트릭 맥도넬 / 신현림(역)","존 클라센 / 서남희(역)","마르쿠스 피스터 / 조경수(역)","마리 조제 베르주롱 / 김양미(역)","기타무라 사토시 / 배주영(역)","로렌 카스티요 / 이상희(역)","와이","이선일","맷 데 라 페냐 / 김경미(역)","저스틴 로버츠 / 김소연(역)","몰리 뱅 / 박수현(역)","기미 아키요 / 김지연(역)","안녕달","앤서니 브라운 / 최윤정(역)","토드 파 / 장미정(역)","레이프 크리스티안손 / 김상열(역)","노니 호그로지안 / 홍수아(역)","오실드 칸스터드 욘센 / 황덕령(역)","조선경","몽세프 두이브(글) / 메 앙젤리(그림) / 성미경(역)","앤지 스미스(글), 브리지 브루크셔(그림) / 김율희(역)","나카야 미와(글), 나카야 미와(그림) / 김난주(역)","강풀","김진완(글), 김효은(그림)","질 바클렘 / 이연향(역)","질 바클렘","이철환","안드레아 호이어 / 유혜자(역)","박은경","김주현","수지 모건스턴 / 김주열(역)","임광희","이름가르트 루흐트","케르스틴 쇠네","에밀리 젠킨스 / 길상효(역)","인그리드 샤베르 / 하연희(역)","구스노키 시게노리 / 유문조(역)","지경화, 윤희동","루드비히 베멀먼즈 그림/글 / 이선아(역)","미야니시 다쓰야 / 김수희(역)","화이 남 글, 응우옌 환 그림 / 김주영(역)","월터 딘 마이어스 글, 앤 그리팔코니 그림 / 이선오(역)","김지운","패트리샤 매클라클랜 글, 마이크 위머 그림 / 최지현(역)","리바 무어 그레이 글, 라울 콜론 그림 / 황윤영(역)","이철환 글, 김형근 그림","로버트 문치","차재혁","고여주, 위혜정","레오 니오니 / 이혜경(역)","요시타케 신스케 / 유문조 (역)","드류 데이월트","공병호","김지안","신광복","크리스티네 메르츠 / 엄기명(역)","존 버닝 햄","천즈위엔","앤서니 브라운","보리 편집부","유다정","이안 팔코너","로저 뒤바젱","차미정","박현주","알렉산드라 라이트","김세온","패트리샤 폴라코","샘 맥브래트니","빌 마틴 주니어, 존 아캠볼트","다이애나 애스턴","서창우 외 3인","현덕 글 / 최지은 그림","임경섭","권정민","릴리 스크라치 글 / 아네스 라코르 그림 / 이정주 (역)","앤서니 브라운 / 장미란(역)","비비안 슈바르츠 / 김수희(역)","마크 로버트슨 / 조은수(역)","트롤 / 전경아(역)","데브필키 / 임정재(역)","앤드루 조이너 / 이태영(역)","타다 토모코 / 박혜원(역)","미카엘 에스코피에 / 이주영(역)","가코 사토시 / 아기장수의 날개(역)","히아윈 오럼 / 햇살과 나무꾼(역)","하세가와 요시후미 / 장지현(역)","로버트 먼치 / 박무영(역)","에밀리 맥켄지 / 김소연(역)","니콜라이 포포프","구도 노리코 / 윤수정(역)","앤서니 브러운과 꼬마 작가들 / 서애경(역)","미야니시 다쓰야 / 김지연(역)","레오 톨스토이","Anthony Browne","이해인","에그랄 에레라","우리누리","윌리엄 스타이그","한정아","이루리","아네트 티종, 탈루스 테일러 / 글샘터(역)","샐리 휴즈","Tedd Arnold","미리엄 모스 / 정해왕(역)","조이 카울리 / 김연수(역)","닉 버터워스","전이수","Syd Hoff","제인 오코너","김동원","고희영, 에바알머슨 / 안현모(역)","로랑스 질로 / 한진아(역)","앤 본윌 / 최용은(역)","구드룬 헬가도티어 / 칼릴 지브란(역)","쥬디 바레트 / 정혜원(역)","김윤이","조이아 마르케자니 / 주효숙(역)","안네트 티종, 탈루스 테일러","김영숙","장소영","안네트 티종/ 탈루스 타일러","자크 드레이션 / 이상희(역)","로버트 프로스트 / 이상희(역)","데이비드 엘리엇 / 이경혜(역)","홍혜경","권윤덕","후쿠다 이와오","고정순","민트래빗 플래닝","보리 / 도토리(역)","안네트 티종","헨리 데이빗 소로우 / 김철호(역)","데이비드 소먼 / 김혜진(역)","안네트 티종／탈루스 테일러","이와이 도시오 / 김숙(역)","노인경","수잰 슬레이드 / 황유진(역)","나쓰메 소세키 / 정혜주(역)","알랭 알버그 / 손미나(역)","리사 데이크스트라 / 천미나(역)","허은미","몰리 뱅 / 최나야(역)","케이티 하네트 / 김경희(역)","샤를렌 추아 / 임은경(역)","이사미 이쿠요 / 허앵두(역)","엘레나 파스퀄리 / 고진하(역)","글,그림 안네트 티종/탈루스 테일러","글 기무라 우이치, 그림 미야니시 다쓰야 / 김지연 옮김(역)","로렌 차일드","구도 노리코 / 한라경(역)","가브리엘레 레바글리아티 / 박나리(역)","다비드 칼리 / 이주영(역)","이사벨 산체스 베가라","이사벨 산체스 베가라 / 공경희(역)","리사 타운 버글렌 / 김서정(역)","글:리즈베스 카이저,그림:아나 산펠립포","허은실 글/조원희 그림","알리키 브란덴베르크 / 윤미연(역)","권사우","주느비에브 위리에","카롤라 기제","도토리 기획","김예실","이춘희","윌리엄 스타이그 / 조세현(역)","마이클 캐치풀 / 글맛(역)","명승권","안드레아 라이트마이어","페이지 맥브라이어 / 김상일(역)","서정오","나카가와 히로타카 / 김숙(역)","서현","브라이언 와일드스미스","존 셰스카","김이하","이태수","루스 크라우스 / 홍연미(역)","나카에요시오 / 이재은(역)","데이비드 스튜어트 / 이응일(역)","타냐칸트 / 이지윤(역)","데이비드 스튜어트 / 안현경(역)","타냐칸트 / 안현경(역)","타냐 칸트 / 김양미(역)","캐롤린 프랭크린 / 김양미(역)","기무라 유이치 / 김숙(역)","차보금","트롤","아스트리드 데스보르드 / 최윤정(역)","이경주","데이빗 섀논 / 조세현(역)","이혜리","조시온 글, 이덕화 그림","김미소진","미야노 사토코 / 정주혜(역)","샤를로트 문드리크 글, 올리비에 탈레크 그림 / 이경혜(역)","엘레오노라 바르소티","나카야 미와","박나경","유지나 도일 / 신소희(역)","제니 수 코르테키-쇼 / 김희정(역)","젠 브라이언트 / 이상희(역)","H.조셉 홉킨스 / 김희정(역)","미셸 누드슨 / 홍연미(역)","GIMC, DPS","제니퍼 번","사라 스튜어트","마거릿 블레이 그레이엄 / 정화진(역)","외젠느 / 이선미(역)","권정생 글/ 윤미숙 그림","이사벨 산체스 베가라 / 박소연(역)","에이미 크루즈 로젠탈 / 김지선(역)","유은실","피터 브라운 / 서애경(역)","제임스 하우","버나드 와버 / 이수지(역)","자웨이 / 나진희(역)","이덕화","이숙재","김영진","쿠도 노리코 / 한라경(역)","하오광차이","안네트티종,탈루스테일러","로버트 머클로스키 / 이수연(역)","김해원","김향이","이보나 흐미엘레프스카","김장성","조이스 던바 / 윤여림(역)","찰스 디킨스/윤아해","윌리엄 스타이그 / 조은수(역)","사노 요코 / 김난주(역)","버지니아 리 버트 / 홍연미(역)","존 버닝햄 / 이주령(역)","토미 웅게러 / 이현정(역)","존 베멀먼즈 마르시아노 / 지혜연(역)","바바라 드루버티스 / 정성민(역)","양혜원","엔드류 휴즈 / 햇살과 나무꾼(역)","고규홍","마크 부타방 / 양진성(역)","시마다 유카 / 이귀림(역)","시마다 유카 / 햇살과나무꾼(역)","메리 퀴글리","안지혜","센우","크리스틴 루세","모리야마 미야코","야프 로번 / 최진영(역)","에드 비어 / 서소영(역)","정해영","이상교","마이클 로젠 / 공경희(역)","필립 C. 스테드","미겔 탕코","리샤르 마르니에 / 박선주(역)","린지 매틱 / 정회성(역)","안단테","안네트 티종 / 글샘터(역)","호세 캄파나리 / 김지애(역)","루드비히 베멀먼즈 / 햇살과 나무꾼(역)","캐런 린 윌리엄스 & 카드라 모하메드 / 이현정(역)","루스 반더 지 / 여우별(역)","구마다 이사무 / 양미화(역)","버지니아 리 버튼","제이슨 라파베","바바라 요한슨 뉴먼","애나 셔틀우드","안은영","엘리제 브로치","캐린 아일랜드","레오 리오니 / 최순희(역)","윤여림","에이미 크루즈 로젠탈 / 유경희(역)","클로드 부종 / 최윤정(역)","아키야마 타다시 / 박영미(역)","김세실","제인 구달","백명식","임미진","로리 켈러 / 김은재(역)","강미애","도린 크로닌 / 마술연필(역)","끌로드 스탕케 / 박창호(역)","크리스토퍼 인스 / 엄혜숙(역)","김진철","헬렌 쿠퍼 / 김규태(역)","이선주","조나단 앨런 / 이희재(역)","엠마 야렛 / 이순영(역)","재니스 메이 우드리","질 바클렘 / 강경혜(역)","도메니코 바릴라","클라스 베르플랑케","뤽 자케","정성훈","루드비히 베멀먼즈","제임스 애그레이","레오 리오니 / 엄혜숙(역)","초록개구리","한스 아우구스토 레이","손소영","크리스 리들|캐스린 케이브","안노 미쓰마사","꿈꾸는","로렌스 부기뇽 / 유혜자(역)","이욱재","손연자","테이지 세타","케티 벤트|한나 요한젠","아이작 스웨이걸 디미얼","가브리엘라 케셀만","이지은","기쿠치 치키 / 김난주(역)","동화사랑","가브리엘 벵상","클레어 터레이 뉴베리 / 최순희(역)","안트예 담","주디스 커 / 최정선(역)","이작은","케이트 뱅크스","에이미 헤스트","임수정","켄 브라운","스에자키 시게키","마리안 코발스키","해리엣 지퍼트 / 이예미(역)","에블린 르베르그","멜로디 칼슨","유진","미리암 코르데즈 / 윤상아(역)","토모스 로버츠 / 이현아(역)","유설화","알리 미트구치 / 김경연(역)","존 버닝햄 / 박상희(역)","마이클 본드","베히슈타인 / 김진락(역)","마이런 얼버그 / 이경혜(역)","김용택","아네트 티종","마이클 본드 / 김양미(역)","로버트 멍어 외","아네테 멜레세","미야니시 타츠야","수쉬","다비드 그로스만 / 황유진(역)","니시우치 미나미","엣바르트 판 더 펜덜","이시이 무쓰미","루이스 암스트롱 / 장미란(역)","요시타케 신스케 / 권남희(역)","구도 노리코","신민재","세바스티앙 무랭","안데르센 / 이상헌(역)","파트리샤 베르비","경자","클레이 라이스 / 이상희(역)","엘리센다 로카 / 김정하(역)","다카바타케 준","웬디 앤더슨 홀퍼린","신현경","김진섭","프란치스카 비어만 / 배수아(역)","미셸 레디에","구도 노리코 / 김소연(역)","니키 지오바니","이주희","앨리슨 미첼","캐서린 스콜스 / 송성희(역)","우시쿠보 료타","구도 노리코 / 엄혜숙(역)","구스티 / 최윤정(역)","다비드 칼리 / 김이슬(역)","박동화","전민걸","미야니시 타츠야 / 정주혜(역)","나카야 미와 / 강방화(역)","미야니시 타츠야 / 고향옥(역)","로사 티치아나 브루노 / 이정자(역)","마리아 라모스 / 윤경희(역)","존 버닝햄","배현주","허아성","마가릿 와이즈 브라운 / 이향순(역)","시모다 도모미","피터 H. 레이놀즈 / 엄혜숙(역)","코리나 루이켄 / 김세실(역)","윤진현","하세가와 슈헤이 / 김숙(역)","패트리샤 매클라클랜 / 김지은(역)","바바라 매클린톡 / 문주선(역)","이호백","크리스토프 니만 / 김서정(역)","다다 히로시","티에리 로비렉트","조은수","도키 나쓰키 / 김숙(역)","피터 H. 레이놀즈 / 류재향(역)","샘 어셔 / 이상희(역)","샘 어셔","구스노키 시게노리 / 김보나(역)","다린","마르쿠스 피스터","리처드 존스","에밀리 맥켄지 / 김선희(역)","멜리","김효은","진 자이언 글, 마거릿 블로이 그레이엄 그림, 임정재 옮김","가예 외쥬다마르 / 베튤 튼클르츠(역)","구닐라 잉베스 / 정하나(역)","바바라 매클린톡 / 김상미(역)","마리아 이사벨 산체스 베가라 / 박소연(역)","도날드 홀 / 주영아(역)","에즈라 잭 키츠","바바라 쿠니 / 박향주(역)","마이크 스미스 / 노은정(역)","안드레아 샤빅 / 이연수(역)","이혜란","R.C.스프롤","브리트 페루찌^안 크리스틴 옌베리 / 신필균(역)","스테프 웨이드 / 김아림(역)","정지용","옌수뉘 / 김선영(역)","롭 루이스 / 정해왕(역)","사토 메구미 / 황진희(역)","구돌","G. 자이언 / 임정재(역)","사노 요코 / 엄혜숙(역)","김유진","박준엽","정수은","김송이","다니엘 포세트","리타 시네이루 / 김현균(역)","진수경","미스타쿠","남근영","다카도노 호코","신성희","유타 바우어","위혜정","톰 골드","천미진","구닐라 잉베스","최지혜","조셉 코엘료","이브 코탕 / 이혜옥(역)","헤이스 판 데르 하먼 / 오현지(역)","마야 마이어스 / 염혜원(역)","마이클 본드 / 김영희(역)","송현지","노에 까를랑","오자와 다다시 / 전정옥(역)","시바타 케이코 / 황진희(역)","로라 랜킨 / 노래하는 나무(역)","조반나 조볼리 / 유지연(역)","가나자와 마코토","권은혜","이지유","나카가와 히로타카 / 황세정(역)","나카가와 히로타카 / 황진희(역)","하세가와 사토미","닉 블랜드 / 김여진(역)","전승배^강인숙","강인숙^전승배","올리비에 뒤팽^롤라 뒤팽 / 명혜권(역)","이수지","박승희","다카하마 마사노부 / 김보혜(역)","수사나 로페스 / 배상희(역)","에밀리 휴즈 / 엄혜숙(역)","올리비에 클레르 / 김하연(역)","정희경","이케가미 순이치 / 이케가미 슌이치(역)","마르타 알테스 / 엄혜숙(역)","수잔네 베티커 / 류일윤(역)","조경희","김경복","서보현","백정애","마거릿 와이즈 브라운 / 최재숙(역)","케빈 헹크스","정혜경","리처드 스미스 / 이지현(역)","더그 살라티 / 신형건(역)","엘리자베스 브라미 / 김헤니(역)","케이티 코튼","소중애","박종진","송정화","하워드 빈코우 (지은이),수잔 F. 코넬리슨 (그림) / 정연희(역)","마이클 로젠 / 김기택(역)","나카야마 치나츠 / 장지현(역)","레오 리오니 / 이미림(역)","가사이 마리 / 김숙(역)","이원수","에드 영 / 최순희(역)","야자키 세쓰오 / 박승환(역)","정순희","야노쉬","안영은","나탈리 러셀","캐드린 오토시 / 이향순(역)","제인 넬슨 / 김성환(역)","피터 H. 레이놀즈 / 김지효(역)","코넬리아 스펠만 / 마술연필(역)","정진호","최숙희","코리 도어펠드 / 신혜은(역)","하이어윈 오람 / 신형건(역)","수지 시니어 / 한미숙(역)","캐를 리드 존스 / 강계식(역)","이와이 도시오","이준엽","김유","매튜 코델 / 이상희(역)","이시이 무쓰미 / 고향옥(역)","에이미 허즈번드 / 최소영(역)","안네게르트 푹스후버","마리 홀 에츠","하야시 기린 / 김소연(역)","수아현","프란 핀타데라 / 김정하(역)","하나노우치 마사요시","난주","다비드 칼리","로시오 보니야 / 서애경(역)","로저 하그리브스 / 박인용(역)","로저 하그리브스 / 박(역)","로저 하그리브스","타카하시 카즈에 / 윤수정(역)","무지개 편집부 / 무지개 편집부(역)","백유연","이와무라 카즈오 / 박지석(역)","차예은^신애라","안재선","수사나 이세른 / 엄혜숙(역)","리즈베스 카이저 / 공경희(역)","마크 펫, 게리 루빈스타인","희봄","하이디 트르팍 / 이정모(역)","마리아호 일러스트라호","브래드 몬태규 / 서남희(역)","박초아","보람","낸시 윌콕스 리차즈 글","고든 윈치","심예빈","지경애","카트린 메스 메예르","잉그리드 비스마이어 벨링하젠","희원","티에리 로버레흐트 / 이지현(역)","전포롱","김규아","재키 아주아 크레이머 / 박소연(역)","미카엘 에스코피에 / 박선주(역)","박정섭","조히","윤정주","글 허윤 그림 이희랑","레베카 패터슨","브리타 테켄트럽","아녜스 드 레스트라드","얀 케비","헤더 헨슨","사이다","이상옥","다비드 칼리 / 윤경희(역)","이시이 무쓰미 / 김숙(역)","맥 바넷","샬로트 졸로토","리처드 T. 모리스","레모니 스니켓","조미자","박소연","김상근","수전 베르데","존 로코","오이 준코","안네트 티종, 탈루스 테일러 / 글샘터(역)","조던 스콧 / 김지은(역)","김유강","박세랑","모리스 샌닥","헤디 프리드 / 류재향(역)","장은영","조수경","우쓰기 미호","국지승","정하영","파울 마르 / 김서정(역)","탕무니우 / 남은숙(역)","아스트리드 린드그렌 / 김서정(역)","큐라이스","엠마 야렛","킴 힐야드","웬디 케셀만 / 강연숙(역)","에런 블레이비 / 조현권(역)","이한재","황인찬","김양미","와파 타르노스카 / 장미란(역)","안도 미키에 / 고향옥(역)","공문정","다니카와 순타로","권오준","잔니 로다리","코비 야마다","오시은","마시 캠벨 / 김지은(역)","빅터 D.O. 산토스 / 김세실(역)","로렌조 콜텔라치","박형철","이와무라 카즈오","릴리아","에이미 헤스트 / 홍연미(역)","아니 카스티요","안나 회그룬드","젠 브라이언트","ㅎㅂㅆ","마크 얀센","베아트리스 폰타넬","인순이","한라경","사무엘 랭글리-스웨인 / 허은실(역)","정수정","송미경","아나이스 보즐라드","에브 마리 로브리오","수산나 이세른 / 김정하(역)","타나카 타츠야 / 권남희(역)","허정윤","피터 H. 레이놀즈 / 김경연(역)","조아름","아나 예나스","빅토르 르 폴 / 김수영(역)","김단비","미켈 발베르데 / 윤승진(역)","한지음","제인 고드윈","허드슨 탤벗","박지혜","카타리나 소브럴","흥흥","제니 오필","에밀리 샤즈랑","천준형","바바라 조핸슨 뉴먼 / 최소영(역)","이소을","장선환","질 바움","아나 예나스 / 김유경(역)","양정숙","이형래","마크 콜라지오반니","김수경","김선일","피터 애커먼","김성은","괵닐 외즈쾨크 / 이난아(역)","리처드 잭슨","조명선","매튜 코델","사이먼 필립","크레센트 드래곤왜건 / 김경연(역)","유미무라 키키 / 황진희(역)","루 존","진우 비들","변희연","정연철","고상미","성영란","올리비에 탈레크","마달레나 모니스","시그네 비슈카","이연","조시온","서진선","케이트 밀너 / 정철우(역)","쿄 매클리어 / 김희정(역)","고영완","윤아해","최진우","로디 도일 / 서애경(역)","의자","베키 데이비스 / JD 공작소, bluesky 공동(역)","미란다 폴 / 엄혜숙(역)","엘비르 뮈라이 / 최윤정(역)","다비드 칼리 / 심지원(역)","유애로","패트리샤 폴라코 / 김서정(역)","사시다 가즈 / 김소연(역)","남미영","존 스텝토 / 최순희(역)","앙드레 부샤르 / 김자연(역)","요시 마아라비 / 공경희(역)","요코타 다이스케","윤정미","줄리 다우닝","리디아 브란코비치 / 장미란(역)","리베카 후이 / 손성화(역)","장덕현","코스타스 하랄라스 / 김호정(역)","조리 존 / 김경희(역)","지영우","티나 오지에비츠","부시카 에쓰코","토베 얀손","레미 쿠르종","프쉐맥 베흐테로비치","정하섭","이만경","로엘 세이델","필라르 세라노","벤 허버드 / 이승숙(역)","미리암 다만^오렐리 팔라슈 / 권지현(역)","달지","야스민 셰퍼 / 김서정(역)","가네코 아쓰시^가네코 야스코 / 이소담(역)","에밀리 앤 데이비슨","민준영","대만 산업재해피해자협회 / 김신우(역)","로시오 마르티네스 / 김정하(역)","사토우치 아이 / 고광미(역)","이자벨 카리에","홍민정","에일린 스피넬리 / 김영선(역)","클레어 손더스 / 이계순(역)","구닐라 베리스트룀 / 김경연(역)","쿄 매클리어 / 김선희(역)","라켈 디아스 레게라 / 정지완(역)","신복남","유리 슐레비츠","문영숙","존 매커천 / 이수영(역)","주디스 커 / 공경희(역)","홍영우","존 버닝햄 / 정회성(역)","타나카 타츠야","사토 메구미","트야샤 바리치","소피 드 뮐렌하임","정해왕","전자윤","김은숙","앙투안 기요페","이소영","김성미","알프 괴칼프","현이지","앙젤리크 빌뇌브 / 권지현(역)","카르멘 애그라 디디 / 이수영(역)","로린 브란츠 / 조은수(역)","유지우","로렌 챈들러","오정세","믹 잭슨","다비드 칼리 / 이보미(역)","댄 드위트","밥 하트먼","패티 로커스","슬라비아 미키^로이 미키 / 김선영(역)","레오 리오니 / 김난령(역)","에바 포들레시 / 김영화(역)","김선진","코비 야마다 / 이진경(역)","마리아호 일러스트라호 / 김지은(역)","사라 월든 / 이채이(역)","노에 카를랭 / 이정주(역)","이사벨라 파글리아 / 라미파(역)","정소현","카챠 슈피첸 / 정세연(역)","고마츠 노부히사 / 봉봉(역)","황선미","바르브루 린드그렌 / 이유진(역)","마거릿 와이즈 브라운 / 조현권(역)","헬레나 크랄리치 / 이소영(역)","데버라 마르세로 / 김세실(역)","사토신","다비드 칼리 / 루시드 폴(역)","줄리 폴리아노 / 이상희(역)","브뤼노 지베르 / 권지현(역)","이자벨 그를레 / 허은실(역)","팻 지틀로 밀러","이주미","로라 에동 / 이현아(역)","부시카 에츠코 / 김정화(역)","김형국","세자르 페르난도 가르시아 / 박선주(역)","옌스 외르그 리크 / 임정희(역)","이시원","매튜 코델 / 신수진(역)","이혜인","리사 타운 버그렌 / 김서정(역)","스벤 누르드크비스트 / 김서정(역)","파스칼 에들랭 / 김자연(역)","브뤼노 지베르 / 박정연(역)","김현화","김기정","톤 막 / 문태준(역)","쇼나 스티스^존 스티스","김경희","장 르로이","신은숙","질 바슐레 / 나선희(역)","크리스틴 에반스 / 박지예(역)","야규 마치코 / 고향(역)","김황","안노 쿠루미 / 양병헌(역)","오은","프랑크 파블로프 / 해바라기 프로젝트(역)","힐러리 호더 히플리","제스 프렌치 / 박정화(역)","이라일라","레오노라 라이틀","루시아나 데 루카","신혜은","정관영","샬롯 졸로토","오쿠야마 유카","나현정","한은경","리사 타운 버그렌^Hohn, David","리사 타운 버그렌","허은순","비비안 엘비 / 한성희(역)","알리스 브리에르아케 / 조정훈(역)","최재희","よしだあつこ","강경호","설찌","파울 마르 / 김경연(역)","별다름^달다름","모토야스 게이지","이정현","정네모","데버라 마르세로","맥스웰 이튼 3세","표지율","서영","조리 존","셀린 리","엄혜숙","루시 브라운리지 / 최혜정(역)","권자경","유해린","강영지","마틸드 트루비용","요시타케 신스케 / 양지연(역)","이소라","다리오 포모도로","야기 다미코","세연","지이수","무","그레구아르 라포르세","이유진","존리 존","김고은","안효림","스즈키 마모루 / 김소연(역)","오미","제시 올리베로스 / 나린글 편집부(역)","호아킨 캄 / 이현아(역)","유희진"],"libraries":[""],"people":["","엄마","아빠","아이"],"sources":[""],"statuses":[""],"loanLabels":["","대출 완료","상호대차 완료","상호대차 입수","현재 대출중"],"books":[[532,1,1,"비나리 달이네집",1,63,477,2001,1,1,0,0,[]],[558,2,1,"어미개",1,60,336,2003,1,2,0,0,[]],[668,3,1,"송아지 내기",1,40,654,2008,2,3,0,0,[]],[720,4,1,"한지돌이",8,36,500,2024,3,4,1,7,[[1,3]]],[721,5,1,"개구리네 한솥밥",1,51,1160,2001,3,5,0,1,[[3,1]]],[728,6,1,"엠마가 미용실에 갔어요",5,26,583,2011,4,6,0,0,[]],[736,7,1,"미스 럼피우스",1,36,711,1996,5,7,0,0,[]],[737,8,1,"동방 박사와 세 가지 선물",0,30,504,2016,6,8,2,0,[]],[740,9,1,"세상에서 가장 유명한 미술관",8,32,756,2000,7,9,0,0,[]],[743,10,1,"잃어버린 단어를 찾아주는 꼬마 마법사",1,29,722,2009,8,10,3,0,[]],[744,11,1,"어린 양과 선한 목자",0,32,135,2010,9,11,0,0,[]],[745,12,1,"세상을 바꾼 아이",5,44,577,2011,10,12,0,0,[]],[749,13,1,"다람쥐와 마법의 반지",1,71,293,2001,11,13,0,0,[]],[752,14,1,"팥죽 할머니와 호랑이",1,31,1775,1997,3,14,0,0,[]],[758,15,1,"안나의 빨간 외투",1,32,664,2002,4,15,0,0,[]],[767,16,1,"안녕 병아리",0,32,617,2011,12,16,0,0,[]],[832,17,1,"너는 참 대견하구나",0,25,565,2007,13,17,4,0,[]],[834,18,1,"책 읽는 허수아비",1,63,297,2008,14,18,5,0,[]],[837,19,1,"새를 사랑한 산",1,58,159,2008,15,19,6,0,[]],[839,20,1,"거꾸로 나라 이야기",0,47,249,2005,16,20,4,0,[]],[840,21,1,"짜장 짬뽕 탕수육",5,42,1306,1999,17,21,4,1,[[3,1]]],[842,22,1,"나를 향한 하나님의 꿈",0,30,273,2005,18,22,0,0,[]],[844,23,1,"가장 감동적인 선물",1,32,298,2006,19,23,4,0,[]],[845,24,1,"에디에게 잘 해주렴",5,32,248,2003,20,24,4,0,[]],[862,25,1,"공룡탐정",4,47,75,2001,21,25,7,0,[]],[866,26,1,"너를 사랑하기 때문에",0,31,420,2001,22,26,4,0,[]],[867,27,1,"너는 참 용감하구나",0,48,406,2005,13,17,4,0,[]],[870,28,1,"돼지책",1,50,3545,2001,23,27,0,0,[]],[872,29,1,"멀리서 온 귀한 손님",5,16,312,2003,24,28,4,0,[]],[893,30,1,"시냇물 저쪽",5,32,344,2001,25,29,4,0,[]],[902,31,1,"나는 바람이야",5,32,273,2011,26,30,4,0,[]],[905,32,1,"꽃 피지 않는 장미",5,30,267,2008,27,31,4,0,[]],[911,33,1,"개구리와 두꺼비는 친구",5,64,789,1996,4,32,0,1,[[1,1]]],[916,34,1,"종이학",1,45,197,2009,28,33,0,0,[]],[945,35,1,"괜찮아 그래도 넌 소중해",1,32,569,2009,29,34,3,0,[]],[946,36,1,"세상에 하나뿐인 선물",1,40,207,2007,14,35,3,0,[]],[948,37,1,"세 나무의 꿈",1,30,331,2007,27,36,3,0,[]],[949,38,1,"강아지똥",1,28,4525,1996,30,1,3,0,[]],[953,39,1,"난 토마토 절대 안 먹어",1,30,2147,2001,7,37,3,0,[]],[971,40,1,"레아의 크리스마스 이야기",0,20,181,2007,31,38,2,0,[]],[974,41,1,"구름빵",1,37,4630,2004,32,39,3,0,[]],[983,42,1,"초록색 코가 된다면",1,34,289,2004,19,23,0,0,[]],[984,43,1,"기도는 어떻게 하는 거예요?",0,20,726,2007,33,40,2,0,[]],[999,44,1,"무지개 물고기",2,40,3064,1994,5,41,4,0,[]],[1004,45,1,"오! 나는 정말 행복한 아이예요",0,40,219,2007,34,42,2,0,[]],[1005,46,1,"똥의 진실",4,39,194,2005,35,43,7,0,[]],[1013,47,1,"입이 똥꼬에게",1,36,1443,2008,4,44,3,0,[]],[1025,48,1,"아낌없이 주는 나무",1,52,4053,2017,5,45,3,0,[]],[1028,49,1,"네가 최고야",1,29,334,2006,19,23,0,0,[]],[1044,50,1,"아기 늑대 세 마리와 못된 돼지",1,32,951,2006,5,46,3,0,[]],[1049,51,1,"거짓말 같은 이야기",2,36,1346,2011,5,47,8,0,[]],[1057,52,1,"너는 특별하단다2",1,40,835,2004,19,48,3,0,[]],[1058,53,1,"엄마, 내 노랫소리 들려요?",1,58,90,2008,36,49,3,0,[]],[1064,54,1,"말썽쟁이 토마스에게 생긴일",1,48,267,2018,37,50,3,0,[]],[1085,55,1,"화가 나는 건 당연해!",5,36,689,2020,4,51,0,0,[]],[1103,56,1,"에밀리",1,60,438,1998,4,52,3,0,[]],[1108,57,1,"세상에서 가장 멋진 내 친구 똥퍼",1,44,746,2007,38,53,3,0,[]],[1109,58,1,"아름다운 책",1,30,1019,2002,4,54,3,0,[]],[1120,59,1,"너는 최고의 작품이란다",1,22,679,2003,13,55,0,0,[]],[1136,60,1,"하나님의 도움으로 이길 거야",0,24,268,2010,36,56,0,0,[]],[1139,61,1,"책벌레 링컨이 대통령이 되었어요!",0,31,936,2005,39,57,2,0,[]],[1168,62,1,"똥벼락",1,35,1166,2001,38,58,0,0,[]],[1169,63,1,"고구마는 맛있어",2,40,607,2021,40,59,0,0,[]],[1170,64,1,"지각쟁이 티들러",1,32,753,2009,37,60,0,0,[]],[1173,65,1,"너는 나의 소중한 친구야",1,42,381,2007,13,61,4,0,[]],[1175,66,1,"새 친구 세모돌이",1,43,287,2008,41,62,0,0,[]],[1176,67,1,"그리미의 꿈",1,26,364,2008,25,63,0,0,[]],[1177,68,1,"우산 도둑",1,28,889,2011,3,64,0,0,[]],[1178,69,1,"지하철을 타고서",1,32,1653,2006,30,65,0,0,[]],[1179,70,1,"언니는 너무 못됐어!",9,30,68,0,42,66,0,0,[]],[1180,71,1,"착한 사람과 나쁜 사람",9,30,175,2015,42,66,0,0,[]],[1184,72,1,"거인의 정원",1,28,965,2014,43,67,4,0,[]],[1185,73,1,"개구리 왕자 그 뒷이야기",1,30,1127,1996,3,68,0,0,[]],[1186,74,1,"혀 잘린 참새",1,40,600,2002,4,69,0,0,[]],[1188,75,1,"메아리",1,36,469,2001,44,70,0,0,[]],[1189,76,1,"천둥 케이크",8,30,702,2000,5,71,0,0,[]],[1205,77,1,"이름 짓기 좋아하는 할머니",1,30,698,2004,2,72,0,0,[]],[1207,78,1,"꿀벌나무",1,42,666,2003,7,73,4,0,[]],[1210,79,1,"사라, 버스를 타다",3,30,1011,2004,38,74,9,0,[]],[1213,80,1,"할아버지의 이야기 나무",1,42,686,2011,45,75,4,0,[]],[1214,81,1,"너의 특별한 선물",0,42,288,2011,19,76,4,0,[]],[1219,82,1,"부활절 이야기",0,42,441,2014,46,77,2,0,[]],[1226,83,1,"큰가시고기",4,38,452,2007,47,78,4,0,[]],[1229,84,1,"시인과 여우",1,32,390,2001,3,79,4,0,[]],[1236,85,1,"예수님이 우리집에 오신다면",0,32,261,2011,48,80,0,0,[]],[1239,86,1,"예수님이 나를 만나러 오신다면",0,28,300,2009,48,81,0,0,[]],[1241,87,1,"책 읽기 좋아하는 할머니",1,30,704,2000,49,82,0,0,[]],[1244,88,1,"네가 있어 좋아",1,36,193,2010,48,83,10,0,[]],[1245,89,1,"손 큰 할머니의 만두 만들기",1,50,1039,2001,17,84,0,0,[]],[1247,90,1,"비비와 버디가 달라졌어요",1,40,97,2010,33,56,4,0,[]],[1254,91,1,"소피의 달빛 담요",1,28,833,2024,50,85,8,0,[]],[1256,92,1,"멍멍 의사 선생님",1,51,1320,2000,3,86,3,0,[]],[1264,93,1,"책n꿈 오리엔테이션",7,40,56,0,51,87,4,0,[]],[1265,94,1,"내 동생 싸게 팔아요",1,32,1675,2006,52,88,0,0,[]],[1276,95,1,"커다란 나무",1,26,452,2006,5,89,0,0,[]],[1277,96,1,"길거리 가수 새미",1,32,375,2005,38,90,0,0,[]],[1284,97,1,"관계",1,60,516,2006,53,91,0,0,[]],[1290,98,1,"아모스와 보리스",1,32,859,1996,5,92,0,0,[]],[1291,99,1,"전나무",1,32,160,2009,54,93,0,0,[]],[1292,100,1,"세상에서 제일 넓은 집",1,20,430,2007,55,94,0,0,[]],[1293,101,1,"용감한 아이린",1,30,705,2000,23,95,0,0,[]],[1298,102,1,"도서관",1,30,989,1998,5,96,0,0,[]],[1324,103,1,"피터와 늑대",1,28,637,2007,4,97,0,0,[]],[1326,104,1,"선인장 호텔",1,29,1189,2024,25,98,0,0,[]],[1335,105,1,"까만 크레파스",1,40,1806,2002,23,99,0,0,[]],[1336,106,1,"우리 순이 어디 가니",1,50,558,1999,40,100,0,0,[]],[1337,107,1,"노아의 방주를 탄 동물들",1,30,480,2001,38,101,0,7,[[2,3]]],[1339,108,1,"오른쪽이와 동네한바퀴",1,34,600,2004,20,102,0,0,[]],[1372,109,1,"딸은 좋다",1,30,790,2017,56,84,0,0,[]],[1377,110,1,"날 좀 도와줘, 무지개 물고기!",1,20,1333,1996,5,103,0,0,[]],[1378,111,1,"요셉의 작고 낡은 오버코트가?",1,32,815,2000,57,104,0,0,[]],[1379,112,1,"난 무서운 늑대라구!",1,50,961,1999,19,105,0,0,[]],[1397,113,1,"아씨방 일곱 동무",1,32,1069,2026,4,106,0,0,[]],[1398,114,1,"녹슨 못이 된 솔로몬",1,30,602,2000,5,107,0,0,[]],[1399,115,1,"사랑하는 밀리",1,32,154,2006,4,108,0,0,[]],[1460,116,1,"아빠 꽃밭 만들러가요",1,30,409,1999,38,109,0,0,[]],[1461,117,1,"발레하는 할아버지",1,42,1063,2013,58,110,0,7,[[3,3]]],[1466,118,1,"못생긴 강아지의 고민",1,30,808,2005,59,111,0,0,[]],[1487,119,1,"슬픈 미루나무",1,78,124,2007,60,112,9,0,[]],[1556,120,1,"너는 특별하단다",1,32,2117,2002,19,23,3,0,[]],[1598,121,1,"은빛 까마귀",1,24,751,2011,61,41,0,7,[[3,3]]],[1599,122,1,"두 사람",1,32,407,2025,38,113,0,0,[]],[1615,123,1,"방귀 만세",1,31,1103,2001,52,114,0,0,[]],[1617,124,1,"에드와르도 세상에서 가장 못된 아이",1,30,813,2006,4,115,0,0,[]],[1685,125,1,"친구가 생긴 날",7,32,798,2009,62,116,0,0,[]],[1687,126,1,"앤서니 브라운의 행복한 미술관",1,24,1192,2004,23,117,0,0,[]],[1705,127,1,"깊은 밤 호랑이처럼",1,18,625,2013,63,118,0,0,[]],[1706,128,1,"할아버지의 바닷속 집",1,40,594,2010,28,119,0,7,[[1,3]]],[1726,129,1,"동물원은 공사 중",1,24,445,2012,64,120,0,0,[]],[1745,130,1,"틀려도 괜찮아",1,30,1619,2006,65,121,8,0,[]],[1746,131,1,"돌멩이 수프",1,52,791,2007,5,122,0,0,[]],[1747,132,1,"물방울의 모험",4,24,920,2010,66,123,7,0,[]],[1748,133,1,"세상에서 가장 힘이 센 말",2,32,943,2020,67,124,8,0,[]],[1775,134,1,"누에콩의 기분 좋은 날",1,30,1333,2004,23,99,0,0,[]],[1778,135,1,"나랑 놀아요",1,44,458,2014,68,125,0,0,[]],[1783,136,1,"아빠 가시고기의 아기 사랑",1,46,347,2012,69,126,0,0,[]],[1791,137,1,"세 친구",1,30,653,2023,5,127,0,0,[]],[1830,138,1,"의좋은 형제",1,30,691,2011,4,128,0,0,[]],[1831,139,1,"거짓말은 무거워",1,36,988,2009,70,129,0,0,[]],[1834,140,1,"대포 속에 들어간 오리",1,32,643,2010,57,130,8,0,[]],[1853,141,1,"따라쟁이 내 동생",1,51,473,2010,71,131,0,0,[]],[1870,142,1,"꼴찌라도 괜찮아!",1,36,951,2010,70,129,0,0,[]],[1934,143,1,"여보세요, 할머니?",1,28,496,2008,72,132,0,0,[]],[1935,144,1,"누나가 좋다",1,31,659,2012,30,65,0,0,[]],[1938,145,1,"초강력 아빠 팬티",1,42,929,2010,73,133,0,1,[[1,1]]],[1970,146,1,"우리 친구하자",1,32,765,2018,74,134,0,0,[]],[1972,147,1,"기분을 말해봐!",1,32,1497,2011,75,135,0,0,[]],[2003,148,1,"와작와작 꿀꺽 책 먹는 아이",1,32,983,2007,76,136,0,0,[]],[2058,149,1,"어느 날 씨앗이",1,28,177,2006,45,137,0,0,[]],[2381,150,1,"아무도 모를거야 내가 누군지",2,34,637,2006,3,138,8,0,[]],[2404,151,1,"우리 집에 놀러 와",1,22,248,2023,77,139,0,0,[]],[2407,152,1,"빨간 풍선의 모험",1,32,848,2025,5,140,0,0,[]],[2408,153,1,"매튜의 꿈",1,38,208,2019,5,141,0,0,[]],[2409,154,1,"색동저고리",1,35,385,2010,49,142,0,0,[]],[2412,155,1,"내 말이 맞아!",1,25,342,2008,78,143,0,0,[]],[2413,156,1,"이유가 있어요",1,31,1412,2015,79,144,0,5,[[1,1],[1,2]]],[2415,157,1,"용기를 내, 무지개 물고기!",1,26,1235,2001,5,145,0,0,[]],[2420,158,1,"겁쟁이 빌리",1,25,1119,2006,4,146,0,0,[]],[2421,159,1,"모두에게 배웠어",1,32,481,2015,80,147,0,0,[]],[2422,160,1,"불만이 있어요",1,31,1343,2016,79,144,0,0,[]],[2423,161,1,"이게 정말 사과일까?",1,31,1425,2014,76,148,0,0,[]],[2424,162,1,"이게 정말 나일까?",1,32,1298,2015,76,149,0,0,[]],[2430,163,1,"엉터리 집배원",1,48,379,2016,81,150,0,0,[]],[2432,164,1,"무엇을 탈까?",1,35,367,2012,82,151,0,0,[]],[2433,165,1,"달 샤베트",1,32,1954,2014,83,39,0,0,[]],[2434,166,1,"우리는 짝꿍 도구",1,29,141,2012,82,152,0,0,[]],[2435,167,1,"친구를 데려가도 될까요?",1,41,729,2005,5,153,0,0,[]],[2437,168,1,"하나님께 감사드릴 거야",1,24,434,2008,36,154,4,0,[]],[2439,169,1,"유진 피터슨의 아주 특별한 선물",1,37,133,2005,84,155,4,0,[]],[2447,170,1,"무지개 물고기와 흰수염고래",1,24,1262,1999,5,156,0,0,[]],[2448,171,1,"소시지 머리",1,34,1049,2012,63,157,0,7,[[1,3]]],[2454,172,1,"벗지 말걸 그랬어",1,28,1267,2016,85,158,0,0,[]],[2455,173,1,"무지개 물고기야, 엄마가 지켜 줄게",1,24,1049,2012,5,159,0,0,[]],[2456,174,1,"이보다 멋진 선물은 없어",1,64,608,2016,86,160,0,0,[]],[2457,175,1,"반이나 차 있을까 반밖에 없을까?",1,31,473,2008,11,113,0,0,[]],[2458,176,1,"내 모자 어디 갔을까?",1,34,734,2012,5,161,0,0,[]],[2459,177,1,"길 잃은 무지개 물고기",1,26,1158,2005,5,162,0,0,[]],[2460,178,1,"무지개 물고기와 신기한 친구들",1,24,1129,2009,5,162,0,0,[]],[2461,179,1,"무서운 꿈을 꿀 땐 어떻게 해요?",1,32,335,2016,87,163,0,0,[]],[2462,180,1,"밀리의 판타스틱 모자",1,33,482,2016,88,164,0,0,[]],[2463,181,1,"도시에 사는 우리 할머니",1,46,416,2015,89,165,0,0,[]],[2464,182,1,"엄마를 위하여",1,40,290,2010,90,166,0,0,[]],[2471,183,1,"학교에서 똥싼날",2,67,717,2015,91,167,0,0,[]],[2472,184,1,"행복을 나르는 버스",1,40,714,2016,4,168,0,0,[]],[2474,185,1,"저, 할 말 있어요!",1,40,502,2016,76,169,11,0,[]],[2475,186,1,"소피가 화나면, 정말 정말 화나면",1,36,884,2013,92,170,0,0,[]],[2476,187,1,"오늘은 엄마 차례",1,32,617,2012,93,171,0,7,[[2,3]]],[2480,188,1,"수박 수영장",0,60,2532,2015,94,172,0,0,[]],[2481,189,1,"우리 아빠가 최고야",1,32,1745,2007,95,173,0,0,[]],[2493,190,1,"내가 지구를 사랑하는 방법 [구판] 내 친구 지구를 지켜줘!",2,42,413,0,96,174,0,0,[]],[2499,191,1,"내 탓이 아니야",2,29,572,2023,96,175,0,0,[]],[2501,192,1,"우리 엄마",1,26,1819,2005,23,27,0,0,[]],[2505,193,1,"꼬리를 돌려 주세요",1,28,966,2017,5,176,0,0,[]],[2507,194,1,"쿠베가 박물관을 만들었어요!",1,32,465,2014,97,177,0,0,[]],[2508,195,1,"지하 정원",1,32,497,2005,3,178,3,0,[]],[2510,196,1,"사자와 세 마리 물소",1,32,399,2014,98,179,3,0,[]],[2514,197,1,"네 모습 그대로 사랑해-토끼인형 오드리의 비밀",1,32,405,0,46,180,3,0,[]],[2515,198,1,"도토리 마을의 모자 가게",1,40,1267,2011,23,181,3,0,[]],[2516,199,1,"얼음 땡!",1,46,1143,2014,23,182,3,0,[]],[2517,200,1,"기찬 딸",1,46,590,2011,5,183,3,0,[]],[2546,201,1,"봄이야기",1,32,275,2024,25,184,0,0,[]],[2547,202,1,"여름 이야기",1,32,275,1999,25,185,0,0,[]],[2548,203,1,"가을 이야기",1,30,253,2024,25,184,0,0,[]],[2563,204,1,"세상에서 가장 맛있는 자장면",1,32,498,2010,99,186,4,0,[]],[2565,205,1,"나와 악기 박물관",8,14,370,2004,100,187,0,0,[]],[2568,206,1,"엄마 몸에 딱 달라붙는 요술 테이프",1,32,641,2016,97,188,0,7,[[2,3]]],[2570,207,1,"여우비빔밥",1,42,661,2016,25,189,0,7,[[2,3]]],[2573,208,1,"나랑 화장실 갈 사람?",1,52,333,2012,38,190,4,0,[]],[2574,209,1,"가을 운동회",1,36,892,2010,38,191,0,1,[[1,1]]],[2575,210,1,"애벌레의 모험",1,30,345,2001,101,192,0,0,[]],[2576,211,1,"꼬마 펭귄과 진짜 친구들",1,32,450,2016,57,193,0,0,[]],[2578,212,1,"산딸기 크림봉봉",1,48,670,2016,102,194,0,7,[[1,3]]],[2580,213,1,"마지막 나무",1,36,369,2016,103,195,0,0,[]],[2639,214,1,"만점짜리 도시락",1,32,643,2016,85,196,0,0,[]],[2664,215,1,"칭찬받고 싶어",1,36,492,2009,70,197,0,0,[]],[2684,216,1,"마들린느와 쥬네비브",1,50,833,1994,5,198,0,0,[]],[2686,217,1,"신기한 씨앗가게",1,40,852,2016,100,199,0,0,[]],[2690,218,1,"쩌우 까우 이야기",1,36,159,2010,3,200,0,0,[]],[2691,219,1,"소년 정찰병",1,35,216,2011,104,201,9,0,[]],[2692,220,1,"닥터브라우니",1,40,839,2017,76,202,0,0,[]],[2695,221,1,"세상에서 가장 소중한 곳",0,32,207,2007,2,203,0,0,[]],[2696,222,1,"봄 여름 가을 겨울의 춤",1,32,203,2008,2,204,0,0,[]],[2697,223,1,"엄마가 미안해",1,36,459,2008,100,205,0,0,[]],[2707,224,1,"종이 봉지 공주",1,50,1874,1998,4,206,0,0,[]],[2715,225,1,"달은 수다쟁이",1,44,441,2016,105,207,0,0,[]],[2722,226,1,"절대 말하면 안 돼!",1,36,390,2009,70,208,0,0,[]],[2724,227,1,"파랑이와 노랑이",1,40,825,2003,49,209,0,0,[]],[2727,228,1,"뭐든 될 수 있어",1,52,1050,2017,85,210,0,0,[]],[2730,229,1,"크레용이 돌아왔어!",1,48,563,2016,76,211,0,0,[]],[2738,230,1,"나의 행복한 하루",1,28,374,2007,65,212,8,0,[]],[2743,231,1,"왜냐면...",1,52,1372,2017,83,172,0,0,[]],[2744,232,1,"겨울 이야기",1,32,276,2005,106,184,4,0,[]],[2757,233,1,"감귤 기차",1,56,589,2016,107,213,4,1,[[2,1]]],[2767,234,1,"모두 다르게 보여!",4,36,370,2014,32,214,0,0,[]],[2768,235,1,"공손한 태도! 어떻게 하는 거지??",2,36,151,2009,108,215,0,0,[]],[2769,236,1,"황소 아저씨",1,32,704,2001,30,1,0,0,[]],[2770,237,1,"땅속나라 도둑 괴물",1,40,266,2014,4,109,0,0,[]],[2771,238,1,"깃털 없는 기러기 보르카",1,50,657,1996,4,216,0,0,[]],[2772,239,1,"악어오리 구지구지",1,40,635,2024,78,217,0,0,[]],[2773,240,1,"윌리와 구름 한 조각",1,32,786,2016,23,218,0,0,[]],[2774,241,1,"똥똥 귀한 똥",1,34,355,2021,40,219,0,0,[]],[2775,242,1,"어른이 되는 날",1,48,325,2016,85,220,0,0,[]],[2776,243,1,"올리비아는 공주가 싫어",1,40,466,2012,76,221,0,0,[]],[2777,244,1,"피튜니아, 공부를 시작하다",1,32,565,1995,5,222,0,0,[]],[2778,245,1,"단 방귀장수",1,33,237,1990,109,223,0,0,[]],[2779,246,1,"비밀이야",1,36,449,2016,110,224,0,0,[]],[2781,247,1,"회색곰이 보고 싶을 거예요",4,40,72,2007,95,225,0,0,[]],[2788,248,1,"이사 가는 날",1,32,133,1999,4,226,0,0,[]],[2789,249,1,"고맙습니다, 선생님",1,36,458,2001,52,227,0,0,[]],[2790,250,1,"내가 아빠를 얼마나 사랑하는지 아세요?",1,32,452,1997,57,228,0,0,[]],[2849,251,1,"매듭을 묶으며",1,34,33,2003,38,229,0,0,[]],[2851,252,1,"생명이 숨쉬는 알",4,28,52,2006,75,230,0,0,[]],[2863,253,1,"무지개 물고기와 특별한 친구",1,32,671,2017,5,159,0,0,[]],[2869,254,1,"달팽이는 지가 집이다",1,84,211,2001,111,231,0,0,[]],[2888,255,1,"맨발 벗고 갑니다",1,40,296,2014,63,232,0,0,[]],[2889,256,1,"미어캣의 스카프",1,32,627,2024,97,233,0,0,[]],[2899,257,1,"지혜로운 멧돼지가 되기 위한 지침서",1,40,541,2016,3,234,0,0,[]],[2905,258,1,"생각연필",1,56,660,2011,11,113,0,0,[]],[2906,259,1,"강아지 똥 밟은 날",1,36,389,2010,76,235,0,0,[]],[2926,260,1,"터널",1,26,1437,2018,11,236,0,0,[]],[2933,261,1,"티모시의 슈퍼 잠옷",1,40,572,2011,81,237,0,0,[]],[2934,262,1,"커다란 알",1,50,313,2013,23,238,0,0,[]],[2937,263,1,"엉덩이 탐정 뿡뿡 무지개 다이아몬드를 찾아라!",1,40,1359,2016,112,239,4,0,[]],[2938,264,1,"고양이 엄마가 되었어요",1,52,165,2011,113,240,0,0,[]],[2939,265,1,"신나는 정글 탐험",1,80,498,2014,114,241,0,0,[]],[2944,266,1,"고양이 이발사",1,40,315,2009,95,242,0,0,[]],[2952,267,1,"갈치 사이소",1,32,461,2022,40,59,0,0,[]],[2957,268,1,"늑대 잡는 토끼",1,32,225,2010,115,243,0,0,[]],[2958,269,1,"네 개의 그릇",1,40,583,2013,11,113,0,0,[]],[2959,270,1,"까마귀네 빵집",1,34,616,2002,19,244,0,0,[]],[2960,271,1,"심심해심심해",1,32,849,2017,76,148,3,0,[]],[2962,272,1,"사자와 마녀와 옷장",1,42,1122,2018,5,245,0,0,[]],[2973,273,1,"내가 라면을 먹을 때",2,44,951,2023,97,246,0,7,[[1,3]]],[2978,274,1,"꽁지머리 소동",1,26,501,2021,101,247,0,7,[[2,3]]],[2979,275,1,"책 도둑 토끼",1,48,768,2015,76,248,0,0,[]],[2999,276,1,"메리",1,52,906,2017,38,172,0,0,[]],[3009,277,1,"손톱 깨물기",1,33,1400,2008,30,65,0,0,[]],[3011,278,1,"왜?",1,50,54,1997,116,249,0,0,[]],[3023,279,1,"빵 공장이 들썩들썩",1,40,1228,2015,117,250,0,0,[]],[3046,280,1,"앤서니 브라운의 마술 연필",1,26,1266,2010,23,251,0,0,[]],[3059,281,1,"비행기가 부웅부웅",1,40,1095,2017,117,250,0,0,[]],[3060,282,1,"말하면 힘이 세지는 말",1,40,913,2015,118,252,0,0,[]],[3068,283,1,"구두장이 마틴",1,32,541,1995,4,253,0,0,[]],[3080,284,1,"[English Book] Things I Like",1,24,136,0,119,254,0,0,[]],[3081,285,1,"[English Book] THROUGH THE MAGIC MIRROR",1,35,36,0,120,254,0,0,[]],[3082,286,1,"[English Book] GORILLA",1,32,66,0,120,254,0,0,[]],[3083,287,1,"[English Book] The Tunnel",1,32,69,0,120,254,0,0,[]],[3085,288,1,"누구라도 문구점",1,32,566,2014,121,255,0,0,[]],[3092,289,1,"종려나무 그늘",1,33,75,0,122,256,0,0,[]],[3093,290,1,"푸푸루에게 친구가 생겼어요",1,39,58,0,123,257,0,0,[]],[3095,291,1,"치과의사 드소토 선생님",0,32,1288,1995,4,258,0,0,[]],[3097,292,1,"[English Book] Bear's Magic Pencil",1,32,123,0,124,254,0,0,[]],[3100,293,1,"아리수의 오리",1,34,220,2001,25,259,0,0,[]],[3104,294,1,"북극곰 코다 첫 번째 이야기:까만 코",1,48,717,2010,125,260,0,0,[]],[3105,295,1,"바바마마를 찾아서",1,34,653,2012,126,261,0,0,[]],[3165,296,1,"바다로 떠난 소년",1,64,57,2002,43,262,0,0,[]],[3166,297,1,"[English Book] Super Fly Guy",1,32,188,0,127,263,0,0,[]],[3167,298,1,"[English Book] Fly Guy's Ninja Christmas",1,32,77,0,127,263,0,0,[]],[3170,299,1,"바오밥나무 이야기",4,32,140,2005,95,264,7,0,[]],[3172,300,1,"내 친구 브로디",1,32,100,2003,57,265,4,0,[]],[3175,301,1,"소풍 가던 날",1,32,54,1993,38,266,0,0,[]],[3204,302,1,"꼬마악어 타코",1,56,707,2017,128,267,0,0,[]],[3206,303,1,"걸어가는 늑대들",1,60,639,2017,128,267,0,0,[]],[3220,304,1,"[English Book] Who Will Be My Friends?",1,32,45,0,129,268,0,0,[]],[3222,305,1,"[English Book] Ride, Fly Guy, Ride!",1,32,130,0,127,263,0,0,[]],[3228,306,1,"[English Book] Fly Guy Meets Fly Girl",1,30,165,0,127,263,0,0,[]],[3229,307,1,"[English Book] Fly Guy and the Frankenfly",1,32,144,0,127,263,0,0,[]],[3230,308,1,"[English Book] There Was an Old Lady Who Swallowed Fly Guy",1,32,166,0,127,263,0,0,[]],[3231,309,1,"[English Book] There's a Fly Guy in my Soup",1,32,145,0,127,263,0,0,[]],[3232,310,1,"스노우볼 가족",1,32,216,2006,78,269,0,0,[]],[3234,311,1,"찾아라! 코모도왕도마뱀",1,80,388,2014,114,241,0,0,[]],[3236,312,1,"사물놀이 이야기",8,56,207,2001,38,270,0,0,[]],[3239,313,1,"Fly High, Fly Guy!",1,32,160,0,127,263,0,0,[]],[3240,314,1,"What if...?",1,32,62,0,130,254,0,0,[]],[3249,315,1,"두근두근 캠핑",1,80,458,2014,114,241,0,0,[]],[3251,316,1,"엄마는 해녀입니다.",1,48,814,2017,131,271,0,0,[]],[3252,317,1,"할아버지와 보물 찾기",1,32,183,2015,21,272,0,0,[]],[3259,318,1,"엉망진창 발레리나",1,32,404,2014,63,273,0,0,[]],[3260,319,1,"사랑에 빠진 거인",1,26,211,2005,4,274,0,0,[]],[3261,320,1,"맥도널드 아저씨의 아파트 농장",1,32,220,2002,132,275,0,0,[]],[3264,321,1,"감자 이웃",1,32,577,2023,96,276,0,0,[]],[3289,322,1,"낱말 먹는 고래",1,32,416,2014,76,277,0,0,[]],[3291,323,1,"왁자지껄 운동회",1,80,357,2014,114,241,0,0,[]],[3292,324,1,"바바 가족, 지구를 떠나다",1,34,490,0,126,278,0,0,[]],[3294,325,1,"화가는 왜 마른 빵만 사 갔을까?",9,30,57,0,133,279,12,0,[]],[3295,326,1,"바바파파의 탄생",1,34,890,2012,126,278,0,0,[]],[3296,327,1,"풍선 여행",1,20,362,2017,126,278,0,0,[]],[3297,328,1,"정성으로 만든 우리 떡",3,38,49,2014,134,280,9,0,[]],[3308,329,1,"지혜 놀이",1,27,397,0,126,281,0,0,[]],[3327,330,1,"우리 할머니는 나를 모릅니다",1,28,311,2006,23,282,4,0,[]],[3328,331,1,"눈 내리는 저녁 숲가에 멈춰 서서",1,40,41,2013,135,283,4,0,[]],[3329,332,1,"꼬마 펭귄 시드니와 고래새",1,32,150,0,95,284,4,0,[]],[3341,333,1,"할머니의 여름휴가",1,56,1598,2026,94,172,0,1,[[1,1]]],[3345,334,1,"도깨비가 원하는 맛",1,33,163,2014,136,285,0,0,[]],[3352,335,1,"아이스크림이 꽁꽁",1,40,1231,2018,83,250,0,0,[]],[3365,336,1,"만희네 집",0,80,715,1995,30,286,0,0,[]],[3370,337,1,"고로야, 힘내",0,32,498,2007,52,287,0,0,[]],[3405,338,1,"이상한 손님",1,48,1376,2024,83,39,0,0,[]],[3417,339,1,"엄마 왜 안 와",1,40,537,2018,23,288,0,0,[]],[3418,340,1,"점복이 깜정이",1,40,481,2017,23,288,0,0,[]],[3420,341,1,"기린 목이 쭈욱",1,48,425,2015,137,289,0,0,[]],[3436,342,1,"소금이 온다",2,31,331,2021,40,290,8,0,[]],[3470,343,1,"바바 가족의 섬 만들기",1,34,634,2012,126,291,0,0,[]],[3475,344,1,"소로우의 오두막",1,30,59,2003,138,292,0,0,[]],[3476,345,1,"보물섬을 찾아서",1,38,375,2014,80,293,0,0,[]],[3480,346,1,"바바파파；파란 점의 비밀",1,21,490,0,139,294,0,0,[]],[3490,347,1,"새집을 지었어요",1,34,564,2012,126,278,0,0,[]],[3494,348,1,"하늘 100층짜리 집",3,32,1321,2017,140,295,4,0,[]],[3498,349,1,"곰씨의 의자",1,72,528,2016,45,296,0,0,[]],[3499,350,1,"고슴도치 엑스",1,60,519,2020,45,296,0,0,[]],[3500,351,1,"내 머릿속에는 음악이 살아요!",1,48,223,2017,118,297,0,0,[]],[3504,352,1,"나는 고양이로소이다",1,40,52,2018,71,298,4,0,[]],[3505,353,1,"화산 위의 바바마마",1,21,494,0,126,278,0,0,[]],[3516,354,1,"연필하나",1,50,289,2020,76,299,0,0,[]],[3529,355,1,"용기 모자",1,32,621,2024,93,300,0,0,[]],[3530,356,1,"너무너무공주",1,36,651,2018,141,301,0,0,[]],[3533,357,1,"소피가 속상하면, 너무너무 속상하면",1,40,518,2015,92,170,0,0,[]],[3534,358,1,"소피는 할 수 있어, 진짜진짜 할 수 있어",1,40,431,2018,92,302,0,0,[]],[3535,359,1,"오줌이 찔끔",1,52,843,2018,85,158,0,0,[]],[3545,360,1,"비구름이 찾아온 날",1,32,462,2018,142,303,0,0,[]],[3547,361,1,"특별한 엘로이즈",1,40,291,2013,143,304,0,0,[]],[3548,362,1,"알을 품은 여우",1,20,675,1994,144,305,0,0,[]],[3550,363,1,"세 나무 이야기",6,32,502,2012,145,306,0,0,[]],[3551,364,1,"크리스마스 선물 (바바파파 시리즈)",1,34,502,2023,126,278,0,0,[]],[3553,365,1,"바바 가족의 여름휴가",1,34,669,2012,126,307,0,0,[]],[3555,366,1,"엄마~~아!",1,32,552,2018,93,308,0,0,[]],[3558,367,1,"쉿! 책 속 늑대를 조심해!",1,30,310,2005,7,309,0,0,[]],[3559,368,1,"아홉 개의 향수병 (바바파파 시리즈)",1,20,508,0,126,278,0,0,[]],[3561,369,1,"삐악삐악 첫 캠핑",1,28,635,2022,146,310,0,0,[]],[3562,370,1,"나는 [ ] 배웁니다",1,32,412,2018,118,311,0,0,[]],[3563,371,1,"완두",1,34,740,2018,147,312,0,0,[]],[3568,372,1,"아멜리아 에어하트",5,36,301,2018,138,313,0,0,[]],[3570,373,1,"프리다 칼로",5,36,338,2019,138,314,0,0,[]],[3571,374,1,"모양 찾기",1,30,402,0,126,278,0,0,[]],[3574,375,1,"하나님이 너를 주셨단다.",1,36,569,2002,148,315,0,0,[]],[3575,376,1,"에멀린 팽크허스트",5,36,225,2018,138,316,0,0,[]],[3576,377,1,"쿵쿵이는 몰랐던 이상한 편견 이야기",1,48,409,2018,101,317,0,0,[]],[3578,378,1,"가브리엘 코코 샤넬",5,36,407,2018,138,314,0,0,[]],[3583,379,1,"와글와글 동물원 여행",4,40,58,2005,95,318,7,0,[]],[3595,380,1,"신기한 붓",1,36,293,2012,38,319,0,0,[]],[3596,381,1,"통통이의 첫 무대",1,20,28,1993,149,320,0,0,[]],[3598,382,1,"너무 목이 말랐어요!",1,50,94,2003,150,321,0,0,[]],[3599,383,1,"벼가 자란다",4,37,343,2003,40,322,0,0,[]],[3601,384,1,"행복한 샘",2,32,130,0,109,323,8,0,[]],[3602,385,1,"바다 100층짜리 집",0,32,1591,2014,140,295,5,0,[]],[3606,386,1,"고무신 기차",1,28,455,2003,113,324,0,0,[]],[3607,387,1,"아프리카에 간 드소토 선생님",1,32,400,2005,4,325,0,0,[]],[3608,388,1,"비밀의 계단",1,40,164,2024,25,185,0,0,[]],[3613,389,1,"구름으로 만든 옷",0,42,419,2013,63,326,0,0,[]],[3617,390,1,"불량식품 안돼요, 안돼!",7,32,659,2012,23,327,0,0,[]],[3620,391,1,"누가 바다를 훔쳐 갔지?",4,52,428,2013,151,328,0,0,[]],[3622,392,1,"마리 퀴리",4,30,338,2018,152,313,0,0,[]],[3623,393,1,"염소의 선물",0,40,158,2014,153,329,0,0,[]],[3624,394,1,"오늘은 내가 스타",0,48,214,2015,154,227,0,0,[]],[3625,395,1,"주먹이",0,31,240,1998,21,330,0,0,[]],[3626,396,1,"1학년 책가방이 왔다",0,32,229,2011,155,331,0,0,[]],[3636,397,1,"눈물바다",0,48,986,2009,38,332,0,0,[]],[3640,398,1,"사냥꾼의 멋진 개",0,32,133,0,150,333,0,0,[]],[3643,399,1,"오소리네 집 꽃 밭",0,60,590,1997,30,1,0,0,[]],[3644,400,1,"늑대가 들려주는 아기 돼지 삼 형제 이야기",0,32,869,1996,3,334,0,0,[]],[3645,401,1,"옛날 옛적 군음식",3,38,76,2014,156,335,0,0,[]],[3646,402,1,"늦어도 괜찮아 막내 황조롱이야",4,35,262,2005,157,336,0,0,[]],[3648,403,1,"구멍은 파는 것",0,48,256,2013,5,337,0,0,[]],[3657,404,1,"누에콩과 콩알 친구들",0,30,610,2004,23,99,0,0,[]],[3664,405,1,"관찰력을 길러주는 또또와 사과나무",0,32,383,2019,8,338,0,0,[]],[3668,406,1,"올챙이는 어떻게 개구리가 될까?",4,31,228,2007,49,339,0,0,[]],[3669,407,1,"달걀은 어떻게 닭이 될까?",4,31,252,2010,49,340,0,0,[]],[3670,408,1,"씨앗은 어떻게 해바라기가 될까?",4,31,137,2010,49,341,0,0,[]],[3671,409,1,"애벌레는 어떻게 나비가 될까?",4,31,123,2010,49,342,0,0,[]],[3672,410,1,"나비는 왜 이동할까?",4,31,103,2013,49,343,0,0,[]],[3673,411,1,"곰은 어떻게 겨울을 날까?",4,31,158,2014,49,344,0,0,[]],[3674,412,1,"초밥이 빙글빙글",3,40,1113,2016,83,250,0,0,[]],[3678,413,1,"구덩이에서 어떻게 나가지?",2,32,416,2011,140,345,0,0,[]],[3687,414,1,"늑대와 딸기 아이스크림",3,28,163,0,109,346,0,0,[]],[3689,415,1,"엉덩이 탐정 뿡뿡 조그만 서장의 대위기!?",1,40,1175,0,112,347,0,0,[]],[3690,416,1,"엉덩이 탐정 뿡뿡 사라진 과자를 찾아라!",1,40,1201,2015,112,347,0,0,[]],[3695,417,1,"에드몽의 달밤파티",0,32,124,2015,21,348,0,0,[]],[3696,418,1,"폴카와 오르탕의 위대한 모험",0,32,130,2015,21,348,0,0,[]],[3697,419,1,"밤똥",3,36,554,2016,158,349,0,0,[]],[3699,420,1,"줄무늬가 생겼어요",3,40,888,2006,4,350,4,0,[]],[3701,421,1,"고래는 어디로 이동할까?",4,31,158,2010,49,340,7,0,[]],[3704,422,1,"비가 오는 날에…",0,38,422,2001,3,351,4,0,[]],[3706,423,1,"맨발로 축구를 한 날",10,52,364,2018,159,352,0,0,[]],[3713,424,1,"보이거나 안 보이거나",0,32,923,2019,65,148,0,0,[]],[3714,425,1,"펑 아저씨",3,40,646,2019,53,353,0,0,[]],[3715,426,1,"옆집 친구",3,40,564,2019,71,354,0,0,[]],[3726,427,1,"무릎 딱지",3,32,416,2010,56,355,0,0,[]],[3742,428,1,"알사탕",0,48,2591,2024,92,39,0,0,[]],[3769,429,1,"맨 처음 배우는 세상의 직업",2,72,115,2009,160,356,0,0,[]],[3775,430,1,"그것만 있을 리가 없잖아",0,32,926,2019,76,148,0,0,[]],[3779,431,1,"도토리 마을의 목공소",3,40,801,2018,23,357,0,0,[]],[3781,432,1,"무지개 롤리팝",0,40,372,2019,161,358,0,0,[]],[3783,433,1,"도토리 마을의 서점",0,40,871,2016,23,99,0,0,[]],[3784,434,1,"잘 자요, 농장",0,30,287,2017,162,359,0,0,[]],[3785,435,1,"루나와 나",3,40,187,2017,163,360,0,0,[]],[3786,436,1,"시가 흐르는 강",3,40,140,2009,164,361,0,0,[]],[3787,437,1,"세상의 모든 나무를 사막에 심는다면",5,32,268,2017,165,362,0,0,[]],[3788,438,1,"도서관에 간 사자",3,40,829,2007,75,363,0,0,[]],[3825,439,1,"구름빵 뒤죽박죽 방 치우기",0,26,759,2011,32,364,0,0,[]],[3826,440,1,"캡틴 쿠스토",5,42,192,2010,45,365,0,0,[]],[3835,441,1,"리디아의 정원",0,36,644,2017,5,366,0,0,[]],[3839,442,1,"거미에게 잘해 줄 것",0,40,358,2018,166,367,0,0,[]],[3840,443,1,"곤충들의 올림픽",4,30,400,2012,167,368,0,0,[]],[3841,444,1,"장군님과 농부",0,68,290,2018,94,1,0,0,[]],[3843,445,1,"제인 구달",5,36,425,2005,138,313,0,0,[]],[3844,446,1,"사과나무밭 달님",0,44,217,1990,94,369,0,0,[]],[3845,447,1,"오드리 헵번",5,36,357,2019,138,314,0,0,[]],[3847,448,1,"마리아 몬테소리",5,36,305,2019,152,370,0,0,[]],[3849,449,1,"친구란 어떤 사람일까?",0,48,443,2015,168,84,0,0,[]],[3853,450,1,"쿠키 한 입의 인생 수업",0,33,714,2008,83,371,4,0,[]],[3854,451,1,"나도 편식할거야",3,55,435,2011,38,372,13,0,[]],[3855,452,1,"선생님은 몬스터",3,36,794,2015,38,373,0,0,[]],[3856,453,1,"옆집 할머니는 마귀할멈",0,54,373,1998,5,374,0,0,[]],[3857,454,1,"아빠, 나한테 물어봐",0,40,560,2015,4,375,0,0,[]],[3862,455,1,"낡은 타이어의 두 번째 여행",3,44,486,2018,169,376,14,0,[]],[3866,456,1,"궁디팡팡",3,40,621,2019,30,377,0,0,[]],[3877,457,1,"가을 나뭇잎",3,30,52,2011,170,378,4,0,[]],[3879,458,1,"엉덩이 탐정 뿡뿡 괴도가 나타나다!",1,40,928,2019,171,347,0,0,[]],[3881,459,1,"이상한 분실물 보관소",0,48,487,2015,92,379,0,0,[]],[3882,460,1,"삐악삐악 생일파티",3,28,618,2015,146,380,0,0,[]],[3886,461,1,"지구를 죽이는 1초 지구를 살리는 1초",4,40,408,2010,168,381,0,0,[]],[3889,462,1,"바바파파 학교",0,34,708,2012,126,382,0,0,[]],[3900,463,1,"생각한다는 건 뭘까?",9,40,489,2014,168,84,4,0,[]],[3901,464,1,"아기 오리들한테 길을 비켜 주세요",0,67,356,2017,5,383,0,0,[]],[3903,465,1,"사막에서 살아요",7,25,93,0,172,384,0,0,[]],[3904,466,1,"열대 우림에서 살아요",7,24,155,0,172,385,0,0,[]],[3912,467,1,"우리 딸은 어디 있을까?",3,56,410,2011,11,386,0,0,[]],[3914,468,1,"수박이 먹고 싶으면",0,48,312,2017,110,387,0,0,[]],[3917,469,1,"사랑해주세요",0,29,165,2005,32,388,0,0,[]],[3918,470,1,"크리스마스 캐럴",7,32,263,2023,173,389,0,0,[]],[3920,471,1,"멋진 뼈다귀",0,28,548,1995,4,390,4,0,[]],[3922,472,1,"아저씨 우산",0,32,440,1996,4,391,4,0,[]],[3923,473,1,"말괄량이 기관차 치치",0,43,464,2017,5,392,4,0,[]],[3924,474,1,"검피 아저씨의 뱃놀이",0,32,816,1996,174,393,0,0,[]],[3925,475,1,"곰인형 오토",3,30,426,2001,4,394,4,0,[]],[3926,476,1,"아기양 딜라일라",0,30,358,2003,174,395,4,0,[]],[3927,477,1,"루루의 레모네이드",0,37,143,2021,175,396,4,0,[]],[3936,478,1,"초원에서 살아요",2,30,110,0,172,397,0,0,[]],[3937,479,1,"반 고흐",8,31,22,2014,75,398,1,0,[]],[3950,480,1,"도시의 나무 친구들",4,32,70,2017,176,399,15,0,[]],[3966,481,1,"엉덩이 탐정 뿡뿡 사라진 도시락 수수께끼!",1,40,876,2018,112,239,4,0,[]],[3976,482,1,"세계 여행을 떠난 아기곰 무크",2,32,16,2008,170,400,8,0,[]],[3988,483,1,"바무와 게로의 일요일",0,33,365,2009,72,401,0,0,[]],[3990,484,1,"바무와 게로의 하늘 여행",0,40,461,2007,72,402,0,0,[]],[3993,485,1,"바무와 게로 오늘은 시장 보러 가는 날",0,80,329,2002,72,402,0,0,[]],[3995,486,1,"할아버지의 낚시 친구",3,30,131,2008,177,403,0,0,[]],[3998,487,1,"숲으로 간 사람들",0,44,153,2018,94,404,8,0,[]],[3999,488,1,"사라진 피라미드를 찾아서",0,21,381,0,126,291,0,0,[]],[4000,489,1,"미로 여행",3,27,255,0,126,291,0,0,[]],[4001,490,1,"안녕, 폴",3,48,446,2014,4,405,8,0,[]],[4002,491,1,"바바파파의 물방앗간",0,20,573,0,126,291,0,0,[]],[4003,492,1,"내 친구 호떡이",0,32,253,2017,63,406,0,0,[]],[4004,493,1,"노란 양동이",3,77,464,2000,116,407,0,0,[]],[4005,494,1,"바다에서 생긴 일",3,20,361,0,126,291,0,0,[]],[4006,495,1,"할머니가 태어날 때부터 할머니였던 건 아니에요",0,26,293,2015,178,408,0,0,[]],[4007,496,1,"양치기 바바주",0,20,439,0,126,291,0,0,[]],[4009,497,1,"맥스와 틸라",0,40,275,2016,63,409,0,0,[]],[4010,498,1,"미미의 스웨터",0,48,419,2018,11,410,0,0,[]],[4011,499,1,"까치랑 호랑이랑 토끼랑",3,33,103,0,109,411,0,0,[]],[4013,500,1,"곰 사냥을 떠나자",0,40,813,1994,5,412,4,0,[]],[4014,501,1,"아모스 할아버지가 아픈 날",3,32,432,2011,179,413,0,0,[]],[4017,502,1,"악기를 만들었어요",0,20,445,0,126,291,0,0,[]],[4018,503,1,"온실을 만든 바바주",0,20,442,0,126,291,0,0,[]],[4019,504,1,"책을 만들었어요",0,20,371,0,126,291,0,0,[]],[4021,505,1,"바바보의 머리 모양",0,20,516,0,126,291,0,0,[]],[4022,506,1,"수학에 빠진 아이",12,48,540,2020,86,414,0,0,[]],[4023,507,1,"완두의 여행 이야기",0,34,560,2019,147,312,0,0,[]],[4025,508,1,"목수가 된 바바마마",0,20,420,0,126,291,0,0,[]],[4027,509,1,"생각이 켜진 집",0,36,412,2017,93,415,0,0,[]],[4028,510,1,"삐악삐악 숲 속 놀이동산",0,28,573,2022,146,310,0,0,[]],[4029,511,1,"위니를 찾아서",0,68,350,2016,166,416,0,0,[]],[4032,512,1,"벼룩과 털북숭이 바바보",0,20,492,0,126,291,0,0,[]],[4033,513,1,"새콤달콤 주스 만들기",0,20,464,0,126,291,0,0,[]],[4035,514,1,"송이의 노란 우산",0,32,287,2007,170,186,0,0,[]],[4042,515,1,"화성에 간 바바 가족",0,34,588,0,126,291,0,0,[]],[4046,516,1,"눈초롱의 아기들",0,40,110,2024,25,185,0,0,[]],[4049,517,1,"바다 이야기",0,80,114,2014,25,185,0,0,[]],[4052,518,1,"그 녀석, 걱정",3,40,515,2018,180,417,0,0,[]],[4062,519,1,"신나는 서커스",3,34,636,2012,126,418,0,0,[]],[4071,520,1,"난민이 뭐예요?",0,36,251,2018,181,419,0,0,[]],[4074,521,1,"마들린느와 개구쟁이",0,64,401,2004,5,420,0,0,[]],[4079,522,1,"노란 샌들 한 짝",3,32,322,2007,182,421,0,0,[]],[4080,523,1,"언제나 네 옆에 있을게",0,32,245,2009,31,422,8,0,[]],[4099,524,1,"내 배가 하얀 이유",0,86,171,2003,45,423,4,0,[]],[4109,525,1,"마이크 멀리건과 증기 삽차",0,44,194,1996,5,424,0,0,[]],[4138,526,1,"뒤죽박죽 달구지 여행",0,32,152,2009,55,258,0,0,[]],[4140,527,1,"끈적끈적 접착제 대소동",3,31,168,0,183,425,0,0,[]],[4154,528,1,"멋진 잡동사니",0,32,74,0,183,426,0,0,[]],[4155,529,1,"출발! 바다 수영 대회",0,40,584,2016,63,427,0,0,[]],[4222,530,1,"노래하는 병",0,40,598,2013,38,428,4,0,[]],[4241,531,1,"젖은 개",0,33,20,0,184,429,0,0,[]],[4242,532,1,"뱀을 데리고 산책하지 마세요",0,38,107,0,185,430,0,0,[]],[4260,533,1,"북풍을 찾아간 소년",0,40,286,2007,5,39,4,0,[]],[4261,534,1,"물고기는 물고기야!",0,40,513,2000,5,431,0,0,[]],[4265,535,1,"부루퉁한 스핑키",0,32,369,1995,4,390,4,0,[]],[4285,536,1,"우리는 언제나 다시 만나",0,40,673,2017,85,432,0,0,[]],[4286,537,1,"왕 짜증 나는 날",0,32,393,2007,76,433,0,0,[]],[4287,538,1,"파란 의자",0,32,508,2004,4,434,4,0,[]],[4290,539,1,"바다 기린",0,30,108,2001,186,435,0,0,[]],[4291,540,1,"내가 만약 시장님이 된다면",2,32,66,0,109,436,0,0,[]],[4293,541,1,"당근 유치원",10,48,1312,2020,94,172,0,0,[]],[4299,542,1,"아기 침팬지 리키와 복슬 개 헨리",0,28,82,2004,187,437,0,0,[]],[4302,543,1,"귀는 듣기만 할까?",4,40,351,2013,188,438,0,0,[]],[4307,544,1,"중독괴물",2,40,401,2013,189,439,0,0,[]],[4310,545,1,"감자의 완벽한 바지",0,48,441,2019,63,440,0,0,[]],[4311,546,1,"녹두영감과 토끼",0,44,267,2019,110,441,0,0,[]],[4312,547,1,"지렁이의 일기",0,40,350,2018,2,442,7,0,[]],[4313,548,1,"그만해!",0,40,269,2020,190,443,0,0,[]],[4314,549,1,"다음 분!",0,26,217,2002,7,444,4,0,[]],[4317,550,1,"진짜 나무가 된다면",3,42,191,2010,4,445,4,0,[]],[4318,551,1,"계단 밑에 곰이 있어요",0,32,104,0,191,446,4,0,[]],[4319,552,1,"뭐! 쓰레기국을 먹었다고?",0,36,303,2017,102,447,0,0,[]],[4321,553,1,"늑대 학교",3,32,137,2000,192,448,0,0,[]],[4322,554,1,"우리집에 용이 나타났어요",3,32,369,2018,125,449,0,0,[]],[4330,555,1,"바바파파의 실종",0,21,529,0,126,291,0,0,[]],[4336,556,1,"판다 교수님",0,21,296,0,126,291,0,0,[]],[4341,557,1,"엠마는 할머니가 좋아요!",0,28,444,2008,4,6,0,0,[]],[4377,558,1,"투발루에게 수영을 가르칠 걸 그랬어! (미래 환경 그림책 1)",1,32,550,2008,100,220,8,0,[]],[4378,559,1,"바바 가족의 아기 돌보기",1,20,517,0,126,291,0,0,[]],[4389,560,1,"카레가 보글보글",1,40,953,2020,83,250,0,0,[]],[4390,561,1,"고무줄은 내 거야",1,48,677,2020,193,158,0,0,[]],[4391,562,1,"나무는 좋다",1,32,584,2017,5,450,0,0,[]],[4393,563,1,"높은 산의 모험 (찔레꽃 울타리)",1,40,97,2024,25,451,4,0,[]],[4402,564,1,"용감할 수 있는 용기 (실패를 두려워하지 않고 도전할 수 있는 어린이가 되는 법)",1,48,244,2012,97,452,0,0,[]],[4414,565,1,"프레드릭",1,34,789,2013,5,141,0,0,[]],[4416,566,1,"꿈의 화가, 르네 마그리트",8,40,227,2016,194,453,0,0,[]],[4426,567,1,"여우와 아이",1,28,114,2010,195,454,0,0,[]],[4437,568,1,"사자가 작아졌어!",1,44,528,2015,4,455,0,0,[]],[4438,569,1,"씩씩한 마들린느",1,56,641,1994,5,456,0,0,[]],[4439,570,1,"날고 싶지 않은 독수리",1,32,419,2000,101,457,4,0,[]],[4440,571,1,"서서 걷는 악어 우뚝이 (마루벌의 좋은그림책 52)",1,40,195,2004,25,458,0,0,[]],[4442,572,1,"아름다운 꼴찌 (마음을 나누는 연탄길 그림책)",1,28,435,2014,194,186,4,0,[]],[4443,573,1,"선녀와 나무꾼 (별하나 책하나, 전래 6)",1,27,277,2010,196,459,0,0,[]],[4446,574,1,"세계 여행을 떠난 펭귄, 화이트블랙",1,26,237,2002,197,460,0,0,[]],[4447,575,1,"입 다문 수도꼭지 (지구를 살리는 물 절약)",2,48,156,2011,70,461,0,0,[]],[4448,576,1,"나랑 좀 달라도 괜찮아",1,32,101,2006,198,462,0,0,[]],[4449,577,1,"커다란 것을 좋아하는 임금님",1,30,473,2017,5,463,0,0,[]],[4453,578,1,"책n꿈 종합적 평가문제 1",7,100,85,0,51,464,4,0,[]],[4454,579,1,"책n꿈 종합적 평가문제 2",7,100,92,0,51,464,4,0,[]],[4463,580,1,"거북이 리타가 최고야",1,30,69,0,109,465,0,0,[]],[4464,581,1,"맑은 하늘, 이제 그만 (환경이야기(물))",2,44,366,2012,199,466,0,0,[]],[4465,582,1,"겁쟁이 부리부리새 (한국대표 순수창작동화 5)",1,37,124,2014,200,467,0,0,[]],[4472,583,1,"오늘은 무슨 날?",1,30,333,1994,144,468,0,0,[]],[4473,584,1,"난 황금알을 낳을거야",1,65,243,1999,45,469,0,0,[]],[4474,585,1,"한나의 하얀 드레스",1,32,218,2004,20,470,0,0,[]],[4475,586,1,"스티커 토끼",1,64,269,2011,118,471,0,0,[]],[4479,587,1,"팥빙수의 전설",1,56,966,2025,23,472,0,1,[[1,1]]],[4480,588,1,"흰 고양이 검은 고양이",1,52,363,2017,5,473,0,0,[]],[4482,589,1,"사막의 꼬마 농부",1,36,129,2008,201,397,0,0,[]],[4485,590,1,"부끄러운 승리 (Plus 칸트키즈 철학동화 33)",1,24,219,0,202,474,0,0,[]],[4486,591,1,"비 오는 날의 소풍 (에르네스트와 셀레스틴 2)",1,32,261,2015,203,475,0,0,[]],[4490,592,1,"작은 토끼 마시멜로",1,32,341,2010,5,476,0,0,[]],[4493,593,1,"삐약이 엄마",1,44,839,2014,83,39,0,0,[]],[4494,594,1,"펭귄 남매랑 기차를 타요",1,40,759,2018,83,250,0,0,[]],[4495,595,1,"펭귄 남매랑 배를 타요",1,30,752,2018,83,250,0,0,[]],[4496,596,1,"펭귄 남매랑 비행기를 타요",1,40,722,2018,83,250,0,0,[]],[4497,597,1,"펭귄 남매랑 버스를 타요",1,30,599,2018,83,250,0,0,[]],[4504,598,1,"색깔 손님",1,40,502,2015,56,477,0,0,[]],[4505,599,1,"간식을 먹으러 온 호랑이",1,32,396,2025,3,478,0,0,[]],[4509,600,1,"아빠의 이상한 퇴근길",1,40,784,2018,83,379,0,0,[]],[4510,601,1,"용기 로봇의 비밀",1,48,340,2018,199,466,0,0,[]],[4514,602,1,"오늘도 마트에 갑니다",1,35,330,2012,204,479,0,0,[]],[4527,603,1,"낱말 수집가 맥스",1,30,266,2008,2,480,0,0,[]],[4529,604,1,"엄마는 언제나 너를 사랑한단다 (베틀북.가족 사랑 이야기)",1,32,303,2001,57,481,4,0,[]],[4532,605,1,"아빠, 우리 고래 잡을까?",1,40,430,2016,199,482,0,0,[]],[4534,606,1,"생각 (생각이 깊어지는 철학 그림책)",1,48,82,2004,11,113,0,0,[]],[4551,607,1,"암탉은 모자를 어떻게 구했지 ?",1,24,17,2001,205,483,4,0,[]],[4552,608,1,"바쁘다, 바빠",1,36,93,2015,206,484,4,0,[]],[4553,609,1,"용감한 오마르",1,38,89,0,207,485,4,0,[]],[4594,610,1,"슈렉!",3,40,551,2001,4,390,0,0,[]],[4614,611,1,"나, 학교 안 갈래! (아이들의 학교생활이 즐거워지는 법)",2,36,238,2020,4,51,8,0,[]],[4615,612,1,"동전으로 무엇을 살까? (돈을 저축하고 잘 쓰는 올바른 방법)",2,32,203,2007,208,486,8,0,[]],[4616,613,1,"일년 내내 벌 받는 1학년",1,33,159,2008,76,487,4,0,[]],[4617,614,1,"피튜니아, 여행을 떠나다",1,30,347,1995,5,222,4,0,[]],[4619,615,1,"꼬마 거미의 특별한 초대",6,40,111,2010,209,488,4,0,[]],[4634,616,1,"수영장에 간 아빠",1,32,756,2019,144,489,0,1,[[1,1],[3,1]]],[4657,617,1,"너, 그거 알아?(책가방 속 그림책)",1,32,258,2020,53,490,0,0,[]],[4671,618,1,"위대한 깨달음(키다리그림책 55)(양장본 HardCover) (변화의 시대에 전하는 희망의 이야기)",1,36,269,2020,153,491,0,0,[]],[4694,619,1,"슈퍼 거북",1,40,1159,2014,83,492,0,0,[]],[4695,620,1,"웬 떡이야",1,59,172,2012,210,438,0,0,[]],[4704,621,1,"재활용 아저씨 고마워요",1,32,276,2021,101,493,4,0,[]],[4706,622,1,"지각대장 존",1,32,1195,1999,4,494,4,0,[]],[4710,623,1,"내가 만난 나뭇잎 하나",4,38,185,2008,23,432,0,0,[]],[4717,624,1,"꼬마 여행자 패딩턴",1,40,174,2015,49,495,0,0,[]],[4718,625,1,"북극곰 코다 호 2",1,40,309,0,125,260,0,0,[]],[4728,626,1,"백만 년 동안 절대 말 안 해 (우리그림책 웅진 12)",1,48,407,2011,211,301,0,1,[[1,1]]],[4734,627,1,"소리봄 명화명작(40) (밀레가 들려주는 게으름뱅이의 천국 이야기)",1,34,17,0,212,496,4,0,[]],[4735,628,1,"못된 개가 쫓아와요!",1,26,395,2001,5,497,4,0,[]],[4739,629,1,"나비가 날아간다",1,33,211,2001,168,498,0,0,[]],[4743,630,1,"바바파파 정글의 미스터리",1,21,376,0,126,499,0,0,[]],[4764,631,1,"패딩턴의 금메달 작전",1,40,166,2015,49,500,0,0,[]],[4766,632,1,"노래기야, 춤춰라!",1,79,101,2010,11,84,0,0,[]],[4767,633,1,"내 마음 그리스도의 집 (어린이를위한)",6,36,480,2004,213,501,0,0,[]],[4815,634,1,"엄마, 난 이 옷이 좋아요 (열두 달 옷 이야기)",1,56,113,2010,30,286,0,0,[]],[4835,635,1,"패딩턴의 정원 꾸미기",1,40,119,2015,49,495,0,0,[]],[4893,636,1,"키오스크 (2021년 피터 팬 상 수상작)",1,32,467,2021,132,502,0,0,[]],[4894,637,1,"친구의 전설 (이지은 그림책)",1,72,974,2023,23,472,0,0,[]],[4898,638,1,"쓰레기통 요정",1,56,909,2019,83,172,0,0,[]],[4899,639,1,"또 또 찬성! (またまた さんせ-い!)",1,36,470,2021,5,503,0,0,[]],[4900,640,1,"내 옆의 아빠",1,40,460,2018,76,504,0,0,[]],[4925,641,1,"모든 주름에는 스토리가 있다 (Every Wrinkle Has a Story)",1,40,79,2021,214,505,0,0,[]],[4929,642,1,"구룬파 유치원 (걸작동화선집 1)",1,27,375,1997,144,506,0,0,[]],[4940,643,1,"하요 왕자의 행복한 숫자 왕국",1,80,196,2019,215,507,0,0,[]],[4941,644,1,"봄의 원피스",1,40,289,2019,76,508,0,0,[]],[4942,645,1,"도토리 마을의 경찰관 (웅진 세계 그림책 143)",1,40,735,2013,23,357,0,1,[[3,1]]],[4971,646,1,"레몬으로 돈 버는 법 1 (어린이를 위한 경제학,지식 다다익선 7)",2,44,440,2002,4,509,0,0,[]],[4972,647,1,"레몬으로 돈 버는 법 2 (어린이를 위한 경제학)",2,44,280,2003,4,509,0,0,[]],[4983,648,1,"엠마의 비밀 일기",1,40,478,2008,4,6,0,0,[]],[5017,649,1,"도망치고 찾고(양장본 HardCover) (にげてさがして)",1,56,493,2021,76,510,0,0,[]],[5018,650,1,"케이크가 커졌어요! (ノラネコぐんだんケ-キをたべる)",1,40,861,2021,83,511,0,0,[]],[5023,651,1,"어서 와요, 달평 씨(그림책이참좋아 82)(양장본 HardCover) (신민재 그림책)",1,44,464,2021,83,512,0,0,[]],[5024,652,1,"루이의 특별한 하루",1,26,312,2021,147,513,0,0,[]],[5026,653,1,"작은 전나무 (안데르센 명작 동화)",1,40,78,2007,164,514,0,0,[]],[5027,654,1,"가을의 스웨터",1,40,261,2020,76,508,0,0,[]],[5028,655,1,"크록텔레 가족",1,32,365,2017,216,515,0,0,[]],[5033,656,1,"누군가 뱉은",1,44,322,2020,178,516,0,0,[]],[5043,657,1,"외로운 그림자",1,64,254,2015,217,517,0,0,[]],[5081,658,1,"입에 딱 달라붙은 거짓말 (솔직해지는 방법에 대한 이야기,인성동화 5)",3,56,303,2016,218,518,0,0,[]],[5114,659,1,"누구 자전거일까?",1,48,351,2007,219,519,0,0,[]],[5115,660,1,"엄마의 이상한 출근길",1,40,854,2021,83,379,0,0,[]],[5144,661,1,"달걀을 품은 할아버지 (모파상이 쓴 이야기)",1,30,195,2006,220,520,0,0,[]],[5159,662,1,"박제가는 똥도 궁리해",10,38,202,2014,58,521,0,0,[]],[5160,663,1,"수원 화성 (정조의 꿈을 품은 성곽)",10,32,194,2012,23,522,0,0,[]],[5174,664,1,"숲속 100층짜리 집",1,32,854,2021,140,295,0,1,[[2,1]]],[5175,665,1,"지하 100층짜리 집",1,32,1217,2010,140,295,0,0,[]],[5180,666,1,"새로운 가족",1,56,489,2024,128,267,0,0,[]],[5182,667,1,"실수쟁이 꼬마 돼지의 하루",1,22,272,2009,76,523,0,0,[]],[5183,668,1,"나의 큰나무",1,28,113,2006,23,524,0,0,[]],[5186,669,1,"수상한 해적선의 등장 (마르가리타의 모험 1)",1,88,330,2024,221,525,0,0,[]],[5189,670,1,"일어나요, 로자 (웅진 세계그림책 99)",1,32,182,2006,23,526,0,0,[]],[5191,671,1,"싸움을 멈춰라! (나로와 펄럭이의 모험 2)",1,40,385,2025,83,379,0,0,[]],[5196,672,1,"어떡하지?! 고양이",1,48,399,2021,45,527,0,0,[]],[5197,673,1,"오후 한 시의 기적",6,34,265,2016,39,528,0,0,[]],[5202,674,1,"평화는...",2,43,50,2013,222,529,0,0,[]],[5207,675,1,"펭귄 호텔",1,32,502,2018,194,530,0,1,[[3,1]]],[5208,676,1,"도토리 마을의 빵집",1,40,834,2012,23,357,0,1,[[3,1]]],[5209,677,1,"까만 크레파스와 괴물소동",1,32,734,2010,23,357,0,0,[]],[5210,678,1,"겨울은 어떤 곳이야?",1,40,578,2022,221,531,0,0,[]],[5211,679,1,"나는 개다",1,48,916,2024,83,39,0,0,[]],[5212,680,1,"파리의 휴가",1,40,472,2007,223,532,0,0,[]],[5213,681,1,"늑대의 선거",2,40,543,2021,224,533,0,0,[]],[5214,682,1,"삐악삐악 할머니 집",1,28,606,2022,146,380,0,0,[]],[5215,683,1,"눈아이 (안녕달 그림책)",1,96,810,2021,94,172,0,0,[]],[5220,684,1,"한글 우리말을 담는 그릇",11,33,250,2008,83,534,0,0,[]],[5257,685,1,"바삭바삭 갈매기",1,40,924,2014,144,535,0,1,[[3,1]]],[5258,686,1,"삐악삐악 슈퍼마켓",1,28,601,2014,146,380,0,0,[]],[5259,687,1,"누가 잃어버린 걸까?",1,32,490,2019,71,536,0,0,[]],[5260,688,1,"까만 크레파스와 하얀 꼬마 크레파스",1,40,672,2018,23,537,0,0,[]],[5263,689,1,"히히히 맛있겠다 (고 녀석 맛있겠다 시리즈 14)",1,40,410,2020,138,538,0,0,[]],[5264,690,1,"반짝반짝 별이 빛났어요 (고 녀석 맛있겠다 시리즈 15)",1,40,348,2020,138,538,0,0,[]],[5274,691,1,"조용한 빵 가게",1,32,409,2022,225,539,0,0,[]],[5333,692,1,"왕 없는 왕국",1,40,370,2022,226,540,0,0,[]],[5334,693,1,"우리 할아버지 (비룡소의 그림동화 4)",1,32,428,1995,4,541,0,0,[]],[5335,694,1,"팡이의 눈물 사용법 (배현주 그림책)",1,40,427,2022,83,542,0,0,[]],[5338,695,1,"꿈의 집",1,40,459,2021,83,543,0,0,[]],[5339,696,1,"종이 아빠",1,48,708,2014,23,472,0,0,[]],[5340,697,1,"슈퍼 토끼",1,48,1041,2020,83,492,0,1,[[3,1]]],[5342,698,1,"할머니 엄마",1,40,522,2016,23,472,0,1,[[3,1]]],[5343,699,1,"커다란 물고기 잡으러 가자!",1,40,432,2017,71,503,0,0,[]],[5346,700,1,"할머니 집 가는 길",1,40,247,2005,227,544,0,0,[]],[5361,701,1,"나무 열매 친구들",1,35,49,2002,228,545,0,0,[]],[5407,702,1,"느끼는 대로",1,32,320,2004,229,546,0,0,[]],[5408,703,1,"아름다운 실수",1,56,410,2018,86,547,0,0,[]],[5411,704,1,"다다다 다른 별 학교",1,40,505,2018,221,548,0,0,[]],[5412,705,1,"가슴이 콕콕",1,32,305,2017,140,549,0,0,[]],[5413,706,1,"내 친구 지구",1,44,232,2020,166,550,0,0,[]],[5418,707,1,"아델과 사이먼",1,40,200,2007,57,551,0,0,[]],[5419,708,1,"도대체 그 동안 무슨 일이 일어났을까? (이호백 아저씨의 이야기 그림책,2003년 뉴욕타임즈 선정작)",1,32,299,2000,17,552,0,0,[]],[5420,709,1,"꼬마 경찰 구름이",1,40,221,2007,38,553,0,0,[]],[5422,710,1,"어디 가세요 생쥐엄마",1,27,49,2003,230,554,0,0,[]],[5423,711,1,"코끼리가 된 거짓말",1,32,358,2020,231,555,0,0,[]],[5424,712,1,"손가락 아저씨",1,32,381,2005,232,556,0,0,[]],[5472,713,1,"기분 가게",1,28,668,2022,76,557,0,0,[]],[5474,714,1,"우리 집 식탁이 사라졌어요!",1,48,370,2022,233,558,0,0,[]],[5475,715,1,"RAIN (비 내리는 날의 기적)",1,40,301,2018,194,559,0,0,[]],[5476,716,1,"STORM (폭풍우 치는 날의 기적)",1,40,256,2019,194,559,0,0,[]],[5477,717,1,"SNOW (베스트 세계 걸작 그림책,눈 오는 날의 기적)",1,40,260,2021,194,560,0,0,[]],[5478,718,1,"내가 잘하는 건 뭘까",1,32,325,2020,140,561,0,0,[]],[5479,719,1,"훨훨 간다",1,36,389,2003,7,1,0,0,[]],[5481,720,1,"SUN (햇볕 쨍쨍한 날의 기적)",1,40,259,0,194,560,0,0,[]],[5484,721,1,"안녕 친구야",1,56,403,2013,23,182,0,0,[]],[5504,722,1,"커다란 수박의 비밀",1,44,355,2022,234,562,0,0,[]],[5505,723,1,"무지개 물고기와 이야기꾼",1,32,341,2022,5,563,0,0,[]],[5521,724,1,"정말 갈 곳이 없을까요?",1,40,252,2020,23,564,0,0,[]],[5536,725,1,"탐정이 된 책 도둑 토끼",1,32,388,2020,76,565,0,0,[]],[5537,726,1,"기니피그 차모와 뭉치들",1,40,390,2022,23,99,0,0,[]],[5538,727,1,"으쌰으쌰 당근",1,44,725,2021,83,566,0,0,[]],[5539,728,1,"우리가 케이크를 먹는 방법 (김효은 그림책)",1,72,525,2022,45,567,0,1,[[1,1],[3,1]]],[5540,729,1,"개구쟁이 해리 : 꽃무늬 옷은 싫어요 (개정판)",1,40,177,2022,113,568,0,0,[]],[5541,730,1,"지루할 때 보는 책 (2021 화이트레이븐스 선정 도서)",1,36,234,2022,7,569,0,0,[]],[5542,731,1,"단풍나무 씨앗은 콧등에 올려요 (가을)",1,32,188,2016,235,570,0,0,[]],[5543,732,1,"채소 학교와 책벌레 양배추",1,40,515,2020,23,537,0,0,[]],[5545,733,1,"아델과 사이먼의 두근두근 중국여행",2,44,193,2017,57,571,0,0,[]],[5548,734,1,"에이다 러브레이스",5,36,148,2021,138,572,0,0,[]],[5549,735,1,"루시 모드 몽고메리",5,36,177,2021,138,572,0,0,[]],[5550,736,1,"조세핀 베이커",5,36,152,2019,138,314,0,0,[]],[5551,737,1,"아스트리드 린드그렌",5,36,108,2012,138,572,0,0,[]],[5564,738,1,"달구지를 끌고",1,40,230,1997,4,573,0,0,[]],[5565,739,1,"피터의 안경",1,36,279,2005,4,574,0,0,[]],[5566,740,1,"챈티클리어와 여우",1,32,174,1997,5,575,0,0,[]],[5568,741,1,"세상에서 가장 행복한 100층 버스 (자꾸자꾸 길어지는 그림이 들어 있어요)",1,32,599,2025,113,576,0,0,[]],[5569,742,1,"난 크고 싶어",1,32,381,2002,236,577,0,0,[]],[5570,743,1,"용돈 주세요",1,38,764,2007,30,65,0,0,[]],[5571,744,1,"뒷집 준범이",1,38,323,2011,3,578,0,0,[]],[5572,745,1,"더러운 옷",1,44,51,2014,237,579,0,0,[]],[5574,746,1,"뺀드비치 할머니와 슈퍼 뽀뽀",1,44,138,2009,38,580,0,0,[]],[5575,747,1,"명왕성의 자리는 어디일까?",4,29,87,0,238,581,0,0,[]],[5577,748,1,"여러나라 이야기",2,31,130,1999,25,582,0,0,[]],[5578,749,1,"우리 숲을 내버려 둬",2,40,109,2009,168,583,0,0,[]],[5579,750,1,"트레버가 벽장을 치웠어요",1,28,264,1996,4,584,0,0,[]],[5585,751,1,"오늘 밤에는 어떤 꿈을 꿀까?",1,40,533,2021,221,531,0,0,[]],[5586,752,1,"머리는 이렇게 부스스해도",1,64,508,2022,76,510,0,0,[]],[5587,753,1,"포도와 모래 괴물",1,40,448,2022,239,585,0,0,[]],[5588,754,1,"일곱 할머니와 놀이터 (제27회 황금도깨비상 수상작)",1,48,313,2022,4,586,0,1,[[1,1]]],[5589,755,1,"개구쟁이 해리: 목욕은 정말 싫어요",1,40,351,2022,113,587,0,0,[]],[5590,756,1,"하지만 하지만 할머니",1,32,373,2017,87,588,0,1,[[3,1]]],[5591,757,1,"도망쳐요, 달평 씨 (신민재 그림책)",1,52,575,2022,83,512,0,3,[[1,4]]],[5592,758,1,"거북이자리",1,48,539,2022,83,589,0,0,[]],[5602,759,1,"이안의 멋진 집 (제29회 눈높이아동문학상 그림책 우수상 수상작)",1,28,257,2022,240,590,0,0,[]],[5605,760,1,"용기를 키우기 위해 떠나는 여행",5,45,36,0,241,591,0,0,[]],[5619,761,1,"책 청소부 소소",1,48,429,2010,45,296,0,0,[]],[5620,762,1,"모자 장수 고양이 씨씨",1,44,324,2022,4,592,0,0,[]],[5623,763,1,"햇살 가득 새싹이 피어요, 봄 (봄)",1,32,169,2016,235,570,0,0,[]],[5625,764,1,"으라차차 라면 가게",1,40,1055,2022,83,250,0,0,[]],[5631,765,1,"칠판 앞에 나가기 싫어 (난 책읽기가 좋아 2단계 17)",1,40,537,2022,4,593,0,0,[]],[5632,766,1,"엠마의 아주 특별한 저녁 (난 책읽기가 좋아 1단계 29)",1,28,425,2008,4,6,0,0,[]],[5649,767,1,"엉뚱한 치약",1,36,749,2017,138,503,0,0,[]],[5651,768,1,"푸른 숲에는 메뚜기 악단이 노래해요, 여름 (여름)",1,32,164,2016,235,570,0,0,[]],[5657,769,1,"집으로 돌아가는 길",2,40,134,2022,4,594,0,0,[]],[5660,770,1,"나태평과 진지해",1,40,592,2022,221,595,0,0,[]],[5661,771,1,"안녕, 내 친구 루디 (언제나 너를 기억할게)",1,48,358,2021,242,596,0,0,[]],[5664,772,1,"튤립 호텔",1,56,565,2022,94,213,0,0,[]],[5665,773,1,"백 년 묵은 고양이 요무",1,48,283,2019,5,597,0,0,[]],[5671,774,1,"완두콩 너 멜론 맛 알아 (난 책읽기가 좋아 1단계 3)",1,97,430,2013,4,598,0,0,[]],[5672,775,1,"딩동거미",1,36,561,2017,144,599,0,1,[[3,1]]],[5674,776,1,"고함쟁이 엄마",1,34,582,2005,4,600,0,1,[[1,1]]],[5677,777,1,"으악! 늦었다!",1,36,227,2008,70,601,0,0,[]],[5678,778,1,"나무 로봇과 통나무 공주",1,40,389,2022,83,602,0,0,[]],[5679,779,1,"겨울 이불 (안녕달 그림책)",1,68,736,2023,94,172,0,1,[[2,1]]],[5681,780,1,"무궁화꽃이 피었습니다",1,40,651,2019,63,603,0,0,[]],[5682,781,1,"꽃송이처럼 내리는 하얀 눈을 먹어요, 겨울 (겨울)",1,32,131,2016,235,604,0,0,[]],[5683,782,1,"욕심은 그만, 레이스 장갑!",1,40,701,2022,83,492,0,1,[[3,1]]],[5684,783,1,"도서관 고양이",1,40,586,2020,56,605,0,5,[[3,1],[3,2]]],[5685,784,1,"오늘은 도서관 가는 날",1,36,294,2020,199,606,0,0,[]],[5691,785,1,"엠마가 학교에 갔어요 (난 책읽기가 좋아 1단계 28)",1,28,384,2008,4,6,0,0,[]],[5695,786,1,"구름이 되고 싶어요",1,25,40,0,243,607,0,0,[]],[5701,787,1,"작고 똑똑한 늑대의 좀 어리석은 여행기",1,40,179,2019,244,608,0,0,[]],[5702,788,1,"작으면 뭐가 어때서!",1,48,316,2023,4,609,0,3,[[3,4]]],[5703,789,1,"열다섯 생쥐 가족과 아주 특별한 인형의 집",1,48,203,2018,244,610,0,0,[]],[5705,790,1,"누에콩과 친구들의 하늘하늘 풀놀이",1,40,240,2020,23,357,0,0,[]],[5706,791,1,"나는 그루터기야 (웅진 세계 그림책 81)",1,23,318,2005,23,357,0,0,[]],[5707,792,1,"엉뚱한 샴푸",1,36,597,2017,138,503,0,0,[]],[5708,793,1,"좋아, 싫어 대신 뭐라고 말하지? (어린이 감정 공부 그림책)",1,64,283,2026,225,611,0,0,[]],[5710,794,1,"완벽한 우리아빠의 절대! 안 완벽한 비밀 11",1,22,260,2020,244,612,0,0,[]],[5719,795,1,"여우 빵과 고양이 빵",1,20,365,2022,244,613,0,0,[]],[5720,796,1,"열다섯 생쥐 가족과 대저택의 위기",1,32,196,2021,244,610,0,0,[]],[5768,797,1,"까만 크레파스와 요술 기차 (웅진 세계 그림책 3)",1,32,532,2005,23,99,0,0,[]],[5777,798,1,"오늘도 어질러진 채로 (피카 그림책 4)",1,40,275,2022,245,614,0,0,[]],[5778,799,1,"루시의 작지 않은 거짓말",1,32,134,2007,246,615,0,0,[]],[5779,800,1,"고양이 펠리체의 사뿐사뿐 세계 여행",1,30,165,2019,159,616,0,0,[]],[5780,801,1,"수염 퐁이 퐁!",1,40,346,2023,23,617,0,0,[]],[5781,802,1,"실패축하파티 (아이의 실패를 응원하는 엄마의 그림책)",1,32,216,2018,247,618,0,0,[]],[5785,803,1,"누가 초콜릿을 만들까",2,50,163,2014,94,619,0,0,[]],[5813,804,1,"누에콩의 어느 봄 날",1,40,358,2018,23,99,0,0,[]],[5814,805,1,"망",4,32,355,2020,248,620,0,0,[]],[5815,806,1,"내 똥을 따라가면?",4,40,286,2023,239,621,0,0,[]],[5817,807,1,"새로운 친구들을 만나요 (한국어린이교육문화연구원 ‘으뜸책’ 선정)",1,64,130,2021,137,622,0,0,[]],[5830,808,1,"호텔맨 울프레드",1,40,292,2023,30,623,0,1,[[3,1]]],[5847,809,1,"건전지 아빠",1,40,907,2021,94,624,0,0,[]],[5848,810,1,"건전지 엄마",1,48,933,2023,94,625,0,0,[]],[5859,811,1,"우리 학교에 여우가 있어 (학교 폭력 예방 그림책)",1,32,174,2023,32,626,3,0,[]],[5864,812,1,"여름이 온다",8,148,247,2021,4,627,0,0,[]],[5865,813,1,"왕과 마구간지기 소녀 (맥스 루케이도의 마음이 따뜻해지는 이야기)",1,32,83,2017,19,40,0,0,[]],[5868,814,1,"그리움은 슬픈 거예요?",1,38,106,2023,32,482,13,0,[]],[5870,815,1,"수상한 우리반",1,30,355,2018,65,628,0,0,[]],[5872,816,1,"나는 약속을 지켜요 (처음 만나는 세상의 규칙)",2,64,276,2021,249,629,0,0,[]],[5876,817,1,"세상에서 제일 좋은 가족",1,32,121,0,183,630,16,0,[]],[5877,818,1,"꼬마 정원사",1,32,53,0,183,631,0,0,[]],[5880,819,1,"어떻게 못 됐으면서 착해요?",1,46,117,2022,250,632,17,0,[]],[5881,820,1,"바바네 채소밭",1,21,282,0,126,418,18,0,[]],[5882,821,1,"사고, 선물하고, 내다 버리고, 괴롭힐 수 있는 생명 이야기",1,40,54,0,183,633,17,0,[]],[5888,822,1,"책이 내 손에 오기까지",2,32,48,0,172,152,19,0,[]],[5891,823,1,"한 장 두 장 책의 비밀",3,40,96,2016,32,634,9,0,[]],[5895,824,1,"채소 학교와 쌍둥이 딸기",1,36,434,2023,23,357,0,0,[]],[5897,825,1,"아주 작은 원숭이의 아주 큰 모험",1,40,153,0,113,635,0,0,[]],[5898,826,1,"그래, 넌 할 수 있어!",9,30,143,2012,202,636,0,0,[]],[5904,827,1,"엄마 자판기",1,56,825,2019,199,637,0,0,[]],[5905,828,1,"아빠 자판기",1,56,696,2021,199,637,0,0,[]],[5907,829,1,"똑똑한 젓가락 (우리 뇌를 깨우는 젓가락 이야기)",3,40,155,2014,32,638,0,0,[]],[5912,830,1,"나를 지키는 안전수첩 (유괴 성폭력 예방 그림책)",2,33,155,2014,32,639,20,0,[]],[5916,831,1,"난 겁나지 않아!: 벼는 익을수록 고개를 숙인다 (벼는 익을수록 고개를 숙인다)",3,40,125,2022,251,640,0,0,[]],[5931,832,1,"중요한 사실",11,22,279,2005,3,641,21,0,[]],[5936,833,1,"세상에서 가장 큰 아이",1,30,179,1999,4,642,0,0,[]],[5938,834,1,"고추 (고추의 한살이로 들여다본 고추밭 생태계)",4,60,84,2016,32,643,22,0,[]],[5945,835,1,"두꺼비도 재주가 있어요",1,24,36,0,183,644,3,0,[]],[5946,836,1,"핫 도그 (2023 칼데콧 대상 수상작)",1,48,195,2023,2,645,0,1,[[3,1]]],[5952,837,1,"노인들은 늙은 아이들이란다",1,33,151,2022,2,646,0,0,[]],[5953,838,1,"나는 나를 지켜요 (처음 만나는 세상의 규칙)",2,64,188,2022,249,629,0,0,[]],[5954,839,1,"별을 선물할게",1,32,242,2021,23,647,0,0,[]],[5957,840,1,"야구왕 돼지 삼 형제 (난 책읽기가 좋아 1단계 1)",1,46,293,2013,4,648,0,0,[]],[5962,841,1,"히어로를 부탁해!: 아빠 편",7,40,221,2018,238,649,0,0,[]],[5966,842,1,"붉은 여우 아저씨",1,48,302,2015,5,650,0,0,[]],[5967,843,1,"사고뭉치 하워드는 귀만 크대요",1,32,35,2007,31,651,0,0,[]],[5968,844,1,"내가 가장 슬플때",1,40,114,2004,4,652,0,0,[]],[5969,845,1,"어떤 느낌일까?",1,32,148,2006,3,653,0,0,[]],[5970,846,1,"까마귀 여섯 마리",1,32,108,2007,252,654,0,0,[]],[5971,847,1,"너랑 절대 말 안해",1,40,108,2013,140,655,0,0,[]],[5976,848,1,"하늘만큼 좋은 이원수 동화나라",1,73,39,0,23,656,0,0,[]],[5977,849,1,"일곱 마리 눈먼 생쥐 (1993년 칼데콧 아너상 수상작)",1,40,494,1999,5,657,0,0,[]],[5982,850,1,"넌 나의 소중한 친구야",9,32,127,2012,202,658,3,0,[]],[5983,851,1,"바람 부는 날 (1995년 제4회 황금도깨비상 수상작)",7,20,176,1996,4,659,0,0,[]],[5984,852,1,"난 커다란 털북숭이 곰이다",7,30,169,2003,5,660,0,0,[]],[5985,853,1,"슈퍼 히어로의 똥 닦는 법 (튼튼곰 7)",1,40,577,2018,83,661,23,5,[[1,1],[1,2]]],[5995,854,1,"시골 토끼 도시 토끼",3,32,94,2011,63,662,0,0,[]],[5996,855,1,"길 아저씨 손 아저씨(우리그림책 하나)",3,34,219,2006,7,1,0,0,[]],[5997,856,1,"일(One)",3,26,184,0,140,663,0,0,[]],[5998,857,1,"제라드의 우주쉼터 (어린이를 위한 긍정의 훈육 그림책)",3,34,150,2018,253,664,0,0,[]],[6006,858,1,"점",3,32,438,2003,45,665,0,0,[]],[6007,859,1,"화가 날 땐 어떡하지? (분노를 조절하고 다스리는 법 연습하기)",3,24,161,2015,2,666,0,0,[]],[6008,860,1,"위대한 가족 (2018 북스타트 선정, 2017 전국학교도서관사서협회 추천, 2017 오픈키드 좋은 그림책 추천)",3,40,383,2016,221,548,0,0,[]],[6009,861,1,"여우 씨의 새 집 만들기",3,44,187,2016,193,667,0,0,[]],[6010,862,1,"먹어도 먹어도 줄지 않는 죽 (최숙희 그림책)",3,40,421,2019,83,668,0,0,[]],[6011,863,1,"가만히 들어주었어",3,36,431,2019,140,669,0,0,[]],[6012,864,1,"오소리가 우울하대요",1,32,70,2008,2,670,0,0,[]],[6017,865,1,"문어 팬티 (2021 서울특별시교육청 어린이도서관 여름방학 권장도서)",1,32,454,2021,221,671,0,1,[[2,1]]],[6021,866,1,"연어야, 어디 가니? (미국 교사들이 선정한 자연 생태 우수 도서!)",4,34,97,2014,230,672,0,0,[]],[6024,867,1,"100층짜리 집",1,34,714,2009,140,673,24,0,[]],[6026,868,1,"동물원에 간 바바 가족",1,21,217,0,126,499,0,0,[]],[6027,869,1,"제주섬, 바다 지킴이 감귤이",1,32,165,2021,254,674,0,0,[]],[6028,870,1,"마음버스 (2022 서울 강남구·종로구·서대문구 올해의 한 책 선정, 2022 한국학교사서협회 추천)",1,40,691,2022,221,675,0,0,[]],[6029,871,1,"겁쟁이 에버그린 : 두근두근 첫 심부름 (두근두근 첫 심부름)",1,56,113,2023,168,676,0,0,[]],[6030,872,1,"왕의 과자",1,40,169,2023,255,677,0,0,[]],[6031,873,1,"엄청나게 시끌벅적한 여우들",1,29,77,0,256,678,0,0,[]],[6043,874,1,"둘이 많다고?",7,26,112,2006,101,679,0,0,[]],[6044,875,1,"나랑 같이 놀자",7,36,267,1994,5,680,0,0,[]],[6050,876,1,"그 소문 들었어? (2018 아침독서신문 선정, 2018 오픈키드좋은어린이책목록 추천, 전국학교도서관사서협회 추천)",1,64,346,2017,221,681,0,0,[]],[6078,877,1,"범인을 찾아라",1,60,357,2022,89,682,0,0,[]],[6079,878,1,"마다니만 한 축구 선수는 없어",1,48,113,2023,257,683,0,0,[]],[6089,879,1,"세탁기 안에서 무슨 일이",1,32,141,0,258,684,0,0,[]],[6090,880,1,"잔소리의 최후",1,40,246,2023,259,685,0,1,[[1,1]]],[6091,881,1,"완두의 그림 학교",1,34,308,2021,147,686,0,0,[]],[6097,882,1,"악당 11호",1,40,168,2023,260,687,0,0,[]],[6139,883,1,"참견씨 (톡톡 EQ의 천재들 4, 스티커포함/세이펜적용)",1,42,502,2020,261,688,0,0,[]],[6140,884,1,"너절씨 (톡톡 EQ의 천재들 8, 스티커포함/세이펜적용)",1,42,389,2020,261,688,0,0,[]],[6141,885,1,"엉뚱씨 (톡톡 EQ의 천재들 10, 스티커포함/세이펜적용)",1,42,386,2020,261,688,0,0,[]],[6142,886,1,"행복씨 (톡톡 EQ의 천재들 3, 스티커포함/세이펜적용)",1,42,517,0,261,689,0,0,[]],[6143,887,1,"눈사람씨 (톡톡 EQ의 천재들 7, 스티커포함/세이펜적용)",1,42,518,2020,261,688,0,0,[]],[6144,888,1,"거만씨 (톡톡 EQ의 천재들 11, 스티커포함/세이펜적용)",1,42,401,2020,261,690,0,0,[]],[6145,889,1,"작아씨 (톡톡 EQ의 천재들 12, 스티커포함/세이펜적용)",1,42,427,2020,261,688,0,0,[]],[6146,890,1,"간지럼씨 (스티커 포함/세이펜적용)",1,42,539,2020,261,688,0,0,[]],[6147,891,1,"거꿀씨 (톡톡 EQ의 천재들 9, 스티커포함/세이펜적용)",1,42,488,2020,261,688,0,0,[]],[6148,892,1,"재채기씨 (톡톡 EQ의 천재들 5, 스티커포함/세이펜적용)",1,42,482,2020,261,688,0,0,[]],[6149,893,1,"시끄럼씨 (톡톡 EQ의 천재들 16, 스티커포함/세이펜적용)",1,42,407,2020,261,688,0,0,[]],[6150,894,1,"먹보씨 (톡톡 EQ의 천재들 2, 스티커포함/세이펜적용)",1,42,543,2020,261,688,0,0,[]],[6151,895,1,"터무니없어 씨 (톡톡 EQ의 천재들 31, 스티커포함/세이펜적용)",1,42,414,2020,261,688,0,0,[]],[6152,896,1,"공상씨 (톡톡 EQ의 천재들 13, 스티커포함/세이펜적용)",1,42,428,2020,261,688,0,0,[]],[6153,897,1,"꽈당씨 (톡톡 EQ의 천재들 6, 스티커포함/세이펜적용)",1,42,449,2020,261,688,0,0,[]],[6154,898,1,"잊어씨 (톡톡 EQ의 천재들 14, 스티커포함/세이펜적용)",1,42,412,2020,261,688,0,0,[]],[6155,899,1,"겁쟁이씨 (톡톡 EQ의 천재들 15, 스티커포함/세이펜적용)",1,42,431,2020,261,688,0,0,[]],[6156,900,1,"통통 씨 (톡톡 EQ의 천재들Ⅱ 1, 스티커포함/세이펜적용)",2,38,354,0,261,688,0,0,[]],[6157,901,1,"심술 씨 (톡톡 EQ의 천재들Ⅱ 2, 스티커포함/세이펜적용)",2,38,297,2020,261,688,0,0,[]],[6158,902,1,"투덜 씨 (톡톡 EQ의 천재들Ⅱ 3, 스티커포함/세이펜적용)",2,34,308,2020,261,688,0,0,[]],[6159,903,1,"완벽 씨 (톡톡 EQ의 천재들Ⅱ 4, 스티커포함/세이펜적용)",2,34,296,0,261,688,0,0,[]],[6160,904,1,"명랑 씨 (톡톡 EQ의 천재들Ⅱ 5, 스티커포함/세이펜적용)",2,34,296,0,261,688,0,0,[]],[6161,905,1,"멋져 씨 (톡톡 EQ의 천재들Ⅱ 6, 스티커포함/세이펜적용)",2,38,313,2020,261,688,0,0,[]],[6162,906,1,"무례 씨 (톡톡 EQ의 천재들Ⅱ 7, 스티커포함/세이펜적용)",2,38,312,2020,261,688,0,0,[]],[6163,907,1,"착해 씨 (톡톡 EQ의 천재들Ⅱ 8, 스티커포함/세이펜적용)",2,38,334,2020,261,688,0,0,[]],[6164,908,1,"투명 씨 (톡톡 EQ의 천재들Ⅱ 9, 스티커포함/세이펜적용)",2,38,405,0,261,688,0,0,[]],[6165,909,1,"정돈 양 (톡톡 EQ의 천재들Ⅱ 14, 스티커포함/세이펜적용)",1,38,285,2020,261,688,0,0,[]],[6166,910,1,"우쭐 양 (톡톡 EQ의 천재들 39, 스티커포함/세이펜적용)",1,38,400,2020,261,688,0,0,[]],[6172,911,1,"공주 양 (톡톡 EQ의 천재들Ⅱ 21, 스티커포함/세이펜적용)",1,40,384,0,261,688,0,0,[]],[6173,912,1,"포옹 양 (톡톡 EQ의 천재들Ⅱ 22, 스티커포함/세이펜적용)",1,40,224,2020,261,688,0,0,[]],[6174,913,1,"어머나 양 (톡톡 EQ의 천재들Ⅱ 20, 스티커포함/세이펜적용)",1,40,328,2020,261,688,0,0,[]],[6175,914,1,"깔끔 양 (톡톡 EQ의 천재들 41, 스티커포함/세이펜적용)",1,40,383,2020,261,688,0,0,[]],[6176,915,1,"장난 양 (톡톡 EQ의 천재들 40, 스티커포함/세이펜적용)",1,40,405,0,261,688,0,0,[]],[6177,916,1,"엉뚱 양 (톡톡 EQ의 천재들Ⅱ 10, 스티커포함/세이펜적용)",1,40,289,2020,261,688,0,0,[]],[6178,917,1,"머리산만 양 (톡톡 EQ의 천재들Ⅱ 11, 스티커포함/세이펜적용)",1,40,294,2020,261,688,0,0,[]],[6179,918,1,"괜찮아, 까짓것!",1,40,129,2023,262,691,0,0,[]],[6180,919,1,"모두 모두 공원에 가요",1,40,36,0,261,692,0,0,[]],[6181,920,1,"모두 모두 발레 공연을 해요",1,40,37,0,261,692,0,0,[]],[6182,921,1,"풀잎국수(웅진 우리 그림책 63)",1,40,359,2020,23,693,0,0,[]],[6183,922,1,"14마리의 가을 축제",1,32,273,2023,147,694,0,0,[]],[6186,923,1,"모두 모두 농장에 가요",1,38,40,0,261,692,0,0,[]],[6187,924,1,"모두 모두 수영장에 가요",1,38,42,0,261,692,0,0,[]],[6188,925,1,"모두 모두 동물원에 가요",1,38,34,0,261,692,0,0,[]],[6189,926,1,"모두 모두 악기 연주를 해요",1,38,37,0,261,692,0,0,[]],[6190,927,1,"모두 모두 잠자리에 들어요",1,38,37,0,261,692,0,0,[]],[6191,928,1,"모두 모두 휴가를 떠나요",1,38,33,0,261,692,0,0,[]],[6192,929,1,"모두 모두 비 오는 날 놀아요",1,38,31,0,261,692,0,0,[]],[6193,930,1,"모두 모두 병원에 가요",1,38,33,0,261,692,0,0,[]],[6194,931,1,"모두 모두 애완동물을 키워요",1,38,38,0,261,692,0,0,[]],[6195,932,1,"모두 모두 캠핑을 가요",1,38,28,0,261,692,0,0,[]],[6196,933,1,"바빠 양 (톡톡 EQ의 천재들Ⅱ 12, 스티커포함/세이펜적용)",2,34,310,2020,261,688,0,0,[]],[6197,934,1,"빨라 양 (톡톡 EQ의 천재들Ⅱ 13, 스티커포함/세이펜적용)",2,34,319,2020,261,688,0,0,[]],[6198,935,1,"먹보 양 (톡톡 EQ의 천재들Ⅱ 15, 스티커포함/세이펜적용)",2,34,344,2020,261,688,0,0,[]],[6199,936,1,"재미 양 (톡톡 EQ의 천재들Ⅱ 16, 스티커포함/세이펜적용)",2,34,282,0,261,688,0,0,[]],[6200,937,1,"반대 양 (톡톡 EQ의 천재들Ⅱ 17, 스티커포함/세이펜적용)",2,34,329,2020,261,688,0,0,[]],[6201,938,1,"무서워 양 (톡톡 EQ의 천재들Ⅱ 18, 스티커포함/세이펜적용)",2,34,381,2020,261,688,0,0,[]],[6202,939,1,"나빠 양 (톡톡 EQ의 천재들Ⅱ 19, 스티커포함/세이펜적용)",2,34,368,2020,261,688,0,0,[]],[6205,940,1,"내가 우리 집에 온 날 (운명과 기적으로 만난 엄마와 딸)",10,40,144,2019,193,695,0,0,[]],[6206,941,1,"난 겁쟁이가 아냐 (두려움을 떨쳐버리고 싶은 이땅의 모든 아이들을 위해)",6,34,112,2018,39,40,0,0,[]],[6207,942,1,"삼거리 양복점",1,48,308,2019,23,696,0,0,[]],[6210,943,1,"여우의 거짓말",1,48,175,2022,259,697,0,1,[[3,1]]],[6211,944,1,"로자 파크스",3,36,101,2019,138,698,0,0,[]],[6213,945,1,"절대로 실수하지 않는 아이",1,36,265,2014,263,699,0,0,[]],[6214,946,1,"바다를 후루룩",1,44,105,2023,259,700,0,0,[]],[6215,947,1,"오싹오싹 편의점 (김영진 그림책)",1,44,777,2023,83,379,0,0,[]],[6223,948,1,"바이러스 빌리 (코감기 바이러스에 관한 거의 모든 것)",4,36,190,2016,193,701,0,0,[]],[6234,949,1,"도시에 물이 차올라요",1,40,239,2022,193,702,0,0,[]],[6235,950,1,"뭔가 특별한 아저씨",1,36,414,2018,221,595,0,1,[[2,1]]],[6237,951,1,"키다리씨 (톡톡 EQ의 천재들 29, 스티커포함/세이펜적용)",1,40,470,2020,261,688,0,0,[]],[6238,952,1,"서둘러씨 (톡톡 EQ의 천재들 28, 스티커포함/세이펜적용)",1,40,403,2020,261,688,0,0,[]],[6239,953,1,"조용씨 (톡톡 EQ의 천재들 27, 스티커포함/세이펜적용)",1,40,436,2020,261,689,0,0,[]],[6240,954,1,"서툴러씨 (톡톡 EQ의 천재들 26, 스티커포함/세이펜적용)",1,40,347,2020,261,688,0,0,[]],[6241,955,1,"힘세씨 (톡톡 EQ의 천재들 25, 스티커포함/세이펜적용)",1,40,478,2020,261,688,0,0,[]],[6242,956,1,"불가능없어씨 (톡톡 EQ의 천재들 24, 스티커포함/세이펜적용)",1,40,502,2020,261,688,0,0,[]],[6243,957,1,"우둔씨 (톡톡 EQ의 천재들 23, 스티커포함/세이펜적용)",1,41,389,2020,261,688,0,0,[]],[6244,958,1,"엉망씨 (톡톡 EQ의 천재들 22, 스티커포함/세이펜적용)",1,41,390,2020,261,688,0,0,[]],[6245,959,1,"꼼꼼씨 (톡톡 EQ의 천재들 21, 스티커포함/세이펜적용)",1,41,418,2020,261,688,0,0,[]],[6246,960,1,"톡톡 EQ의 천재들 20 수다 씨 (스티커포함) (톡톡 EQ의 천재들 20, 스티커포함/세이펜적용)",1,41,391,2020,264,688,0,0,[]],[6247,961,1,"구두쇠씨 (톡톡 EQ의 천재들 19, 스티커포함/세이펜적용)",1,41,436,2020,261,688,0,0,[]],[6248,962,1,"웃겨씨 (톡톡 EQ의 천재들 18, 스티커포함/세이펜적용)",1,41,404,2020,261,688,0,0,[]],[6249,963,1,"게을러씨 (톡톡 EQ의 천재들 17, 스티커포함/세이펜적용)",1,41,419,2020,261,688,0,0,[]],[6261,964,1,"호기심 양 (톡톡 EQ의 천재들 59, 스티커포함/세이펜적용)",1,38,427,0,261,688,0,0,[]],[6262,965,1,"똑똑 양 (톡톡 EQ의 천재들 57, 스티커포함/세이펜적용)",1,38,449,0,261,688,0,0,[]],[6263,966,1,"고집 양 (톡톡 EQ의 천재들 58, 스티커포함/세이펜적용)",1,38,416,2020,261,688,0,0,[]],[6264,967,1,"변덕 양 (톡톡 EQ의 천재들 56, 스티커포함/세이펜적용)",1,38,415,2020,261,688,0,0,[]],[6265,968,1,"슬기 양 (스티커포함/세이펜적용)",3,38,413,0,261,688,0,0,[]],[6266,969,1,"스타 양 (톡톡 EQ의 천재들 54, 스티커포함/세이펜적용)",1,38,459,0,261,688,0,0,[]],[6267,970,1,"행운 양 (톡톡 EQ의 천재들 53, 스티커포함/세이펜적용)",1,38,482,2020,261,688,0,0,[]],[6268,971,1,"늦어 양 (톡톡 EQ의 천재들 52, 스티커포함/세이펜적용)",1,38,430,2020,261,688,0,0,[]],[6269,972,1,"수다 양 (톡톡 EQ의 천재들 51, 스티커포함/세이펜적용)",1,38,394,2020,261,688,0,0,[]],[6270,973,1,"쌍둥이 양 (톡톡 EQ의 천재들 50, 스티커포함/세이펜적용)",1,38,504,2020,261,688,0,0,[]],[6271,974,1,"멋져 양 (톡톡 EQ의 천재들 49, 스티커포함/세이펜적용)",1,38,415,2020,261,688,0,0,[]],[6272,975,1,"부끄럼 양 (톡톡 EQ의 천재들 48, 스티커포함/세이펜적용)",1,38,417,2020,261,688,0,0,[]],[6273,976,1,"마술 양 (톡톡 EQ의 천재들 47, 스티커포함/세이펜적용)",1,38,503,2020,261,688,0,0,[]],[6274,977,1,"도움 양 (톡톡 EQ의 천재들 46, 스티커포함/세이펜적용)",1,38,428,2020,261,688,0,0,[]],[6275,978,1,"웃음 양 (톡톡 EQ의 천재들 45, 스티커포함/세이펜적용)",1,38,390,2020,261,688,0,0,[]],[6276,979,1,"골치 양 (톡톡 EQ의 천재들 44, 스티커포함/세이펜적용)",1,38,439,2020,261,688,0,0,[]],[6277,980,1,"밤톨 양 (톡톡 EQ의 천재들 43, 스티커포함/세이펜적용)",1,38,482,2020,264,688,0,0,[]],[6278,981,1,"밝아 양 (톡톡 EQ의 천재들 42, 스티커포함/세이펜적용)",1,38,422,2020,261,688,0,0,[]],[6279,982,1,"용감 씨 (톡톡 EQ의 천재들 38, 스티커포함/세이펜적용)",1,38,514,0,261,688,0,0,[]],[6280,983,1,"느려 씨 (스티커포함) (톡톡 EQ의 천재들 37, 스티커포함/세이펜적용)",1,38,484,2020,264,688,0,0,[]],[6281,984,1,"바빠 씨 (톡톡 EQ의 천재들 36, 스티커포함/세이펜적용)",1,38,374,2020,264,688,0,0,[]],[6282,985,1,"영리 씨 (톡톡 EQ의 천재들 35, 스티커포함/세이펜적용)",1,38,410,2020,261,688,0,0,[]],[6283,986,1,"장난 씨 (톡톡 EQ의 천재들 34, 스티커포함/세이펜적용)",1,38,460,0,261,688,0,0,[]],[6284,987,1,"빼빼 씨 (톡톡 EQ의 천재들 33, 스티커포함/세이펜적용)",1,41,578,2020,261,688,0,0,[]],[6285,988,1,"틀려 씨 (톡톡 EQ의 천재들 32, 스티커포함/세이펜적용)",1,41,473,2020,261,688,0,0,[]],[6286,989,1,"걱정씨 (톡톡 EQ의 천재들 30, 스티커포함/세이펜적용)",1,41,484,2020,261,688,0,0,[]],[6287,990,1,"재주넘기 양 (톡톡 EQ의 천재들 60, 스티커포함/세이펜적용)",1,38,547,2020,261,688,0,0,[]],[6288,991,1,"사랑의 동그라미를 그려요 (가치·유대감)",1,40,235,2023,265,703,25,0,[]],[6289,992,1,"세상에서 가장 작은 집",1,44,212,2023,251,704,0,0,[]],[6296,993,1,"완벽한 계란 후라이 주세요",1,44,480,2023,30,705,0,1,[[2,1]]],[6312,994,1,"들꽃 식혜 (백유연 그림책)",1,44,325,2023,23,693,0,0,[]],[6314,995,1,"그 아이를 만났어",1,78,86,2001,116,407,0,0,[]],[6316,996,1,"소니와 아서 이야기",1,28,79,0,183,706,0,0,[]],[6317,997,1,"큰솔부엉이 아폴로의 고민",4,36,49,0,183,707,0,0,[]],[6318,998,1,"기린의 날개",1,44,208,2021,266,708,3,0,[]],[6319,999,1,"30번 곰",4,44,278,2020,224,709,26,0,[]],[6320,1000,1,"꿈꾼다는 건 뭘까?",7,52,191,2022,168,411,3,0,[]],[6322,1001,1,"우리는 길고양이 가족",1,32,95,0,183,710,11,0,[]],[6323,1002,1,"아마존 숲의 편지 (아파하는 지구의 허파)",2,32,128,2009,143,711,18,0,[]],[6326,1003,1,"물고기 씨앗",1,40,121,2023,32,411,3,0,[]],[6327,1004,1,"타임 슬립 박물관",1,38,80,0,183,712,3,0,[]],[6328,1005,1,"난 아무것도 할 수 없어!",1,32,82,0,183,713,4,0,[]],[6335,1006,1,"우리 엄마 ㄱㄴㄷ",11,40,264,2016,50,714,3,0,[]],[6337,1007,1,"연필의 고향",1,48,145,2018,267,715,4,0,[]],[6338,1008,1,"함께한 시간을 기억해",10,46,105,2020,138,716,3,0,[]],[6339,1009,1,"완벽한 아이 팔아요",1,30,358,2017,268,717,4,0,[]],[6341,1010,1,"감기 걸린 물고기",1,56,557,2016,38,718,0,1,[[2,1]]],[6342,1011,1,"먹구름 청소부",1,44,224,2017,218,719,27,1,[[2,1]]],[6343,1012,1,"꽁꽁꽁 아이스크림",1,44,655,2022,83,720,0,1,[[1,1],[2,1]]],[6348,1013,1,"마음아 안녕 (최숙희 그림책)",1,44,296,2018,83,668,4,0,[]],[6353,1014,1,"나는 언니니까!",1,40,118,2013,269,721,0,0,[]],[6357,1015,1,"화가 나서 그랬어!",1,32,273,2016,270,722,0,0,[]],[6359,1016,1,"작은 틈 이야기",1,32,153,2020,220,723,17,0,[]],[6360,1017,1,"친구 사귀기",1,44,392,2018,30,379,17,0,[]],[6361,1018,1,"낱말 공장 나라",1,32,214,2009,271,724,17,0,[]],[6362,1019,1,"초코곰과 젤리곰",1,32,354,2020,32,725,28,0,[]],[6363,1020,1,"꿈을 나르는 책 아주머니",1,40,174,2012,4,726,28,0,[]],[6364,1021,1,"고구마구마(반달 그림책)",11,40,574,2017,272,727,3,0,[]],[6365,1022,1,"밀어내라",1,52,236,2019,32,728,29,1,[[3,1]]],[6366,1023,1,"3초 다이빙",1,36,420,2018,193,667,8,1,[[1,1]]],[6367,1024,1,"이파라파냐무냐무 (2021 볼로냐 라가치상 코믹스-유아 그림책 대상 | 이지은 그림책)",1,64,772,2020,38,472,28,0,[]],[6368,1025,1,"나의 작은 아빠",1,36,227,2023,161,729,0,0,[]],[6369,1026,1,"겨울의 코트를 만들러 가요",1,40,93,2023,76,730,0,0,[]],[6380,1027,1,"사자마트",1,40,479,2023,221,675,0,1,[[2,1]]],[6389,1028,1,"왜냐면 말이지...",1,40,237,2019,5,731,0,0,[]],[6390,1029,1,"바람이 멈출 때",1,32,152,2020,101,732,0,0,[]],[6391,1030,1,"곰이 강을 따라갔을 때 (2020 칼데콧 아너상 수상작)",1,40,261,2020,273,733,0,0,[]],[6392,1031,1,"그날 어둠이 찾아왔어",1,40,182,2013,45,734,0,0,[]],[6393,1032,1,"내가 가장 듣고 싶은 말",1,48,213,2021,86,301,0,0,[]],[6394,1033,1,"걱정 상자",1,44,338,2019,266,735,0,0,[]],[6397,1034,1,"친애하는 친구에게",1,40,135,2024,138,736,0,0,[]],[6398,1035,1,"별 낚시 (2020 화이트 레이븐즈 선정도서)",1,56,275,2019,38,737,0,1,[[3,1]]],[6399,1036,1,"나에게 해 주는 멋진 말",1,40,132,2024,193,738,0,0,[]],[6402,1037,1,"앗, 깜깜해 (2012 칼데콧 아너상 수상작)",1,42,243,2012,224,739,0,0,[]],[6405,1038,1,"덜컹덜컹 개미 기차",1,30,171,2024,95,740,0,0,[]],[6406,1039,1,"다섯 번째 근위 기병",1,21,192,0,126,741,0,0,[]],[6407,1040,1,"나는 강물처럼 말해요",1,52,327,2021,83,742,30,0,[]],[6408,1041,1,"마음여행 (김유강 그림책 | 잃어버린 나의 마음을 찾아서)",1,56,318,2020,274,743,3,0,[]],[6410,1042,1,"디스코 팡팡 소시지 (박세랑 그림책)",1,44,256,2022,245,744,28,0,[]],[6414,1043,1,"벚꽃 팝콘",1,40,456,2020,23,693,0,0,[]],[6416,1044,1,"깊은 밤 부엌에서 (1971년 칼데콧 아너상 수상작)",1,48,491,1994,5,745,0,0,[]],[6417,1045,1,"나의 개 보드리 (전쟁도 우리를 갈라놓을 수 없었습니다)",1,32,105,2022,233,746,0,0,[]],[6418,1046,1,"바느질은 내가 최고야",1,40,115,2020,275,747,0,0,[]],[6424,1047,1,"바바파파의 생일",1,20,298,0,126,291,0,0,[]],[6425,1048,1,"엉뚱한 크레파스",1,36,385,2016,138,503,0,0,[]],[6426,1049,1,"내꼬리",1,44,184,2008,32,748,0,0,[]],[6427,1050,1,"치킨 마스크 그래도 난 내가 좋아 (그래도 난 내가 좋아!)",1,32,456,2008,83,749,0,0,[]],[6431,1051,1,"꽁꽁꽁 캠핑 (윤정주 그림책)",1,44,711,2023,83,720,0,1,[[1,1]]],[6432,1052,1,"아빠와 호랑이 버스",1,50,255,2023,94,750,0,1,[[2,1]]],[6433,1053,1,"왜 내가 치워야 돼",1,44,183,2014,118,751,0,0,[]],[6435,1054,1,"이상한 나라에 간 파울라",1,52,158,2009,5,752,0,0,[]],[6436,1055,1,"우리 동네는 미술관",8,48,124,2019,118,753,0,0,[]],[6437,1056,1,"삐삐가 공원에 갔어요",1,21,27,2006,276,754,0,0,[]],[6438,1057,1,"대장 토끼는 포기하지 않아",1,44,415,2020,65,755,0,0,[]],[6440,1058,1,"내 친구 어둠",1,40,163,2017,63,756,0,0,[]],[6450,1059,1,"그래도 꼭 해 볼 거야!",1,44,238,2022,83,757,0,0,[]],[6454,1060,1,"엠마",5,32,84,2004,20,758,4,0,[]],[6455,1061,1,"급하다 급해!",1,22,40,2005,238,759,3,0,[]],[6456,1062,1,"인사를 나눠드립니다 (이한재 그림책)",1,32,170,2021,95,760,3,0,[]],[6461,1063,1,"늪 100층짜리 집",1,32,462,2024,140,673,31,1,[[1,1]]],[6463,1064,1,"또 만나요, 달평 씨",1,48,327,2023,83,512,0,0,[]],[6464,1065,1,"내가 예쁘다고? (2023 대한민국 그림책상 수상작)",1,48,261,2022,161,761,0,1,[[2,1]]],[6465,1066,1,"괜찮아, 우리 모두 처음이야!",1,52,229,2020,277,527,0,0,[]],[6466,1067,1,"함께 줄넘기",1,48,221,2023,266,595,0,0,[]],[6471,1068,1,"맛있는 건 맛있어",1,56,259,2019,5,762,0,0,[]],[6477,1069,1,"누르의 비밀 도서관",1,40,64,2023,278,763,32,0,[]],[6478,1070,1,"거짓말이 뿡뿡, 고무장갑!",1,44,421,2023,83,492,3,1,[[1,1]]],[6480,1071,1,"암탉과 빨간 장갑",1,36,156,2023,76,764,4,0,[]],[6482,1072,1,"접시의 비밀",1,40,139,2015,223,765,33,0,[]],[6483,1073,1,"우산을 쓰지 않는 시란 씨",2,32,156,2017,221,766,0,0,[]],[6484,1074,1,"대장 토끼는 꿀잠이 좋아",1,40,383,2022,65,755,0,0,[]],[6485,1075,1,"사서가 된 고양이",1,40,220,2022,279,767,0,1,[[2,1]]],[6487,1076,1,"키이우의 달",1,32,54,2024,280,768,0,0,[]],[6488,1077,1,"아마도 너라면 (우리 모두가 가진 무한한 가능성을 위하여)",1,46,95,2020,281,769,0,0,[]],[6489,1078,1,"곤을동이 있어요",3,44,71,2024,223,770,0,0,[]],[6494,1079,1,"사랑을 주면 줄수록",1,48,115,2023,166,771,3,0,[]],[6495,1080,1,"나의 세상 우리 아빠",1,40,105,2023,278,772,3,0,[]],[6499,1081,1,"전쟁이 터졌대요!",9,36,93,2024,282,773,0,1,[[2,1]]],[6505,1082,1,"당근 할머니",1,40,408,2024,94,172,0,0,[]],[6514,1083,1,"한 방",1,48,28,2023,283,774,0,0,[]],[6515,1084,1,"14마리의 호박",1,32,277,2023,147,775,0,1,[[1,1]]],[6522,1085,1,"지우헤어",1,40,154,2023,180,417,0,0,[]],[6530,1086,1,"물의 공주",1,40,175,2017,219,738,0,0,[]],[6540,1087,1,"파랑 오리",1,48,306,2018,95,776,0,0,[]],[6551,1088,1,"찰리가 온 첫날 밤",7,40,184,2012,5,777,3,0,[]],[6552,1089,1,"핑! (자유롭게 용감하게 현명하게)",1,44,253,2020,138,778,28,0,[]],[6557,1090,1,"거울을 든 아이",1,52,77,2022,284,779,0,0,[]],[6559,1091,1,"이까짓 거!",1,32,258,2019,110,224,0,1,[[2,1]]],[6561,1092,1,"여섯 개의 점 (점자를 만든 눈먼 소년 루이 브라유 이야기)",5,40,82,2017,216,780,0,0,[]],[6562,1093,1,"두 도시 아이 이야기 (서울, 다낭 다르고도 또 같은 두 아이)",2,36,147,2020,244,781,0,0,[]],[6563,1094,1,"꿈꾸는 너에게 (2022 볼로냐 THE BRAW AMAZING BOOKSHELF 선정)",1,32,110,2022,76,782,0,0,[]],[6564,1095,1,"사랑스러운 까마귀",1,26,148,2010,7,783,0,0,[]],[6565,1096,1,"안녕, 해나!",1,40,114,2024,285,784,0,0,[]],[6566,1097,1,"나는 빵점! (2021 아르코 문학나눔 선정)",1,40,290,2021,286,785,0,0,[]],[6568,1098,1,"바바파파의 아프리카 여행",1,20,288,0,126,291,0,0,[]],[6579,1099,1,"내가 더더더 사랑해",1,52,169,2016,287,543,0,0,[]],[6585,1100,1,"웨슬리의 유별난 옷차림",1,40,24,0,238,786,0,0,[]],[6586,1101,1,"배려토끼이야기",2,40,122,0,183,787,0,0,[]],[6587,1102,1,"토끼가 되었어 (송미경 그림책)",1,44,104,2023,144,788,0,0,[]],[6588,1103,1,"청개구리 왕자되다",1,34,58,0,183,633,0,0,[]],[6598,1104,1,"과학에 빠진 아이",4,56,232,2024,86,414,0,0,[]],[6599,1105,1,"나는 기다립니다",1,56,183,2007,45,686,0,0,[]],[6600,1106,1,"돌멩이 수프",1,32,89,2003,288,789,0,0,[]],[6601,1107,1,"콧수염 공주 (귀쫑긋 그림책)",1,32,168,2022,286,790,0,0,[]],[6621,1108,1,"왜 나만 울어?",1,44,49,2022,289,411,0,0,[]],[6622,1109,1,"나에게 초능력이 있다면",1,48,144,2021,233,791,0,0,[]],[6626,1110,1,"전설의 초콜릿",1,32,226,2024,138,538,0,0,[]],[6627,1111,1,"초밥이 옷을 사러 갔어요",1,40,503,2024,65,792,0,1,[[1,1]]],[6629,1112,1,"김설탕과 도나스",1,52,176,2024,32,793,0,0,[]],[6631,1113,1,"이상한 바르비카르보나트 박사",1,21,153,0,126,278,0,0,[]],[6633,1114,1,"단어수집가",1,40,251,2018,45,794,0,1,[[1,1]]],[6638,1115,1,"아기 거북이 클로버",1,40,258,2020,290,795,26,0,[]],[6639,1116,1,"컬러 몬스터: 감정의 구급상자",1,56,167,2020,291,796,0,0,[]],[6642,1117,1,"엄마가 자꾸 바뀌어요",1,40,136,2023,71,797,0,0,[]],[6644,1118,1,"나무 심으러 몽골에 간다고요",2,52,90,2012,292,798,0,0,[]],[6647,1119,1,"마트에 사자라니!",1,56,122,2023,293,799,0,0,[]],[6659,1120,1,"공원에서 일어난 이야기 (커트 마쉴러 수상작)",1,40,149,2016,21,218,0,0,[]],[6660,1121,1,"꽁꽁꽁",1,44,821,2016,83,720,0,0,[]],[6662,1122,1,"엄마가 화났다",1,40,368,2011,83,668,0,0,[]],[6665,1123,1,"엄마 소방관, 아빠 간호사 (2022 읽어주기 좋은 책 선정도서)",1,40,179,2021,102,800,0,0,[]],[6668,1124,1,"작은 당부 (소중한 너에게 하고 싶은 말)",1,40,123,2021,294,801,0,0,[]],[6670,1125,1,"느리게 읽어도 괜찮아",1,40,113,2023,295,802,0,0,[]],[6676,1126,1,"파마를 했는데",1,44,194,2021,102,803,0,0,[]],[6677,1127,1,"뭐야, 지구가 떠났다고?",1,40,68,2019,57,804,0,0,[]],[6678,1128,1,"댐",1,21,187,2017,126,291,0,0,[]],[6679,1129,1,"초조함 공장",1,36,187,2020,102,805,0,0,[]],[6680,1130,1,"이 상한 도서관장의 이상한 도서관 (떼었다, 붙였다! 재미있는 띄어쓰기 그림책!)",1,56,200,2019,221,432,0,0,[]],[6685,1131,1,"나부댕이! (2015 샬롯 졸로토 상 수상작)",1,32,159,2015,79,806,0,0,[]],[6686,1132,1,"욕쟁이 세실과 목구멍 속 고양이",1,48,94,2023,30,807,0,1,[[1,1]]],[6687,1133,1,"뭐라고 불러야 해?",1,48,163,2021,296,808,0,0,[]],[6696,1134,1,"반짝반짝 예쁜 안경",1,40,72,0,256,809,0,0,[]],[6711,1135,1,"치카치카 군단과 충치 왕국",1,42,384,2011,297,810,34,0,[]],[6712,1136,1,"갯벌 전쟁 양장",1,56,127,0,294,811,35,0,[]],[6713,1137,1,"책으로 전쟁을 멈춘 남작",1,33,129,2017,140,812,0,0,[]],[6715,1138,1,"두발자전거 배우기",1,38,543,2009,30,65,0,1,[[1,1]]],[6724,1139,1,"컬러 몬스터: 학교에 가다",1,34,203,2020,298,813,0,0,[]],[6725,1140,1,"컬러 몬스터: 감정의 색깔 (감정의 색깔)",1,42,262,2020,298,813,0,0,[]],[6730,1141,1,"둘기네 집",1,36,85,2023,299,814,0,0,[]],[6731,1142,1,"누구를 보낼까요",1,56,95,2023,300,815,0,0,[]],[6733,1143,1,"꽁꽁꽁 피자",1,40,574,2020,83,720,0,1,[[3,1]]],[6736,1144,1,"착한 엄마가 되어라, 얍!",1,48,314,2014,23,301,0,0,[]],[6737,1145,1,"집 안 치우기",1,38,432,2010,30,65,0,0,[]],[6738,1146,1,"다른 길로 가",1,40,161,2023,233,816,0,1,[[3,1]]],[6746,1147,1,"예수님은 몇 단지에 살아요?",6,48,124,2017,301,817,0,0,[]],[6750,1148,1,"어떡하지",1,32,330,2013,23,218,0,0,[]],[6751,1149,1,"먹여 주고 재워 주고 (책고래 클래식 15)",1,40,76,2022,302,818,0,0,[]],[6752,1150,1,"꿈꾸는 다락방 타자기",1,40,79,2023,303,819,0,0,[]],[6756,1151,1,"나의 첫 반려동물 비밀 물고기 (2019 읽어주기 좋은 책 선정, 2018 전국학교도서관사서협회 선정, 2018 소년한국 우수어린이도서)",1,40,167,2018,221,820,0,0,[]],[6757,1152,1,"창밖으로 나갈 용기",1,40,70,2022,304,821,0,0,[]],[6760,1153,1,"으뜸 헤엄이",1,32,174,2000,25,141,0,1,[[3,1]]],[6761,1154,1,"공주를 깨우지 마세요 (백설공주와 일흔일곱 난쟁이)",1,40,143,2024,305,686,0,0,[]],[6762,1155,1,"이렇게 멋진 날",1,40,234,2017,4,822,0,1,[[3,1]]],[6763,1156,1,"수영장 너머",1,40,165,2021,306,823,0,0,[]],[6764,1157,1,"세상에서 가장 용감한 소녀 (2018 칼데콧 대상 수상작)",1,56,214,2018,4,824,0,1,[[3,1]]],[6765,1158,1,"정말 정말 소리 지르고 싶어!",1,44,162,2021,7,825,0,0,[]],[6773,1159,1,"괜찮을까?",1,40,107,2023,102,826,0,0,[]],[6774,1160,1,"버스가 왔어요",1,48,148,2023,199,827,0,0,[]],[6777,1161,1,"걱정 유리병",1,40,178,2023,307,828,0,0,[]],[6779,1162,1,"별난 아빠의 이상한 집짓기",1,48,154,2024,93,829,0,0,[]],[6780,1163,1,"둘이서",1,40,114,2023,308,830,0,0,[]],[6782,1164,1,"두근두근 집 보기 대작전",1,44,237,2018,61,831,0,0,[]],[6783,1165,1,"신발 신은 강아지 (2015 미국 어린이도서관협회 선정도서)",1,40,262,2016,193,832,0,1,[[3,1]]],[6784,1166,1,"싫은 날",1,44,191,2017,272,833,0,0,[]],[6785,1167,1,"최고의 단짝 친구",1,36,55,2023,309,834,0,0,[]],[6786,1168,1,"오늘 내 마음은… (가나다 감정 그림책)",1,32,170,2023,55,835,0,0,[]],[6789,1169,1,"난 할아버지가 될 거야! (2022 볼로냐 라가치 The BRAW Amazing Bookshelf 선정 도서)",1,40,127,2022,310,836,0,0,[]],[6792,1170,1,"마음정원 (마음여행 두 번째 이야기)",1,72,175,2022,274,743,0,0,[]],[6793,1171,1,"할아버지 염탐 일지 (제41회 샘터 동화상 당선작)",1,44,115,2020,214,837,0,0,[]],[6794,1172,1,"부글부글 말 요리점",11,44,263,2023,102,838,0,0,[]],[6796,1173,1,"모두를 위한 케이크",1,48,186,2018,166,686,0,1,[[3,1]]],[6797,1174,1,"엄마에게",1,42,180,2014,3,839,36,0,[]],[6799,1175,1,"우리가 사랑한 의사 선생님",1,40,86,2023,311,648,0,0,[]],[6800,1176,1,"세상의 모든 돈이 사라진 날",1,32,143,2020,312,840,0,0,[]],[6804,1177,1,"그렇게 그림 한 장으로 시작되었어 (인종 차별과 편견에 맞선 여성 동화 작가 이야기)",1,48,46,2021,298,841,0,0,[]],[6807,1178,1,"마음아 살아나라!",1,44,132,2021,199,842,0,0,[]],[6813,1179,1,"14마리의 잠자리 연못",1,32,253,2023,147,775,0,1,[[1,1]]],[6814,1180,1,"꽃신 (갖바치)",1,42,131,2018,113,843,0,1,[[3,1]]],[6818,1181,1,"사월이",1,40,93,2021,102,844,0,0,[]],[6819,1182,1,"엄마의 얼굴",1,32,51,2009,65,845,0,0,[]],[6823,1183,1,"수영 좀 하는 고양이 루이",1,46,171,2024,32,846,0,0,[]],[6824,1184,1,"작은 거북이와 바다",1,32,64,2023,313,847,0,0,[]],[6844,1185,1,"비닐봉지 하나가 (지구를 살린 감비아 여인들)",1,40,154,2016,30,848,0,0,[]],[6850,1186,1,"너 누구 닮았니 (난 책읽기가 좋아 2단계 19)",1,32,132,2022,4,849,0,0,[]],[6851,1187,1,"피아노 치기는 지겨워",1,24,233,2006,4,850,0,0,[]],[6852,1188,1,"낙타할아버지는 어디로 갔을까",1,40,81,2007,170,186,0,0,[]],[6853,1189,1,"아빠의 우산",1,40,99,2010,170,186,0,0,[]],[6854,1190,1,"갯벌이 좋아요 (개정판)",1,46,192,2006,3,851,0,0,[]],[6855,1191,1,"할머니의 조각보(25주년 기념) (25주년 기념 개정증보판)",1,64,85,2018,100,852,0,0,[]],[6856,1192,1,"높은 곳으로 달려! (쓰나미에서 살아남은 아이들, 2014 SK 사랑의책나눔, 아침독서신문 선정, KBS 책과함께, 우수환경도서 선정, 2013 고래가숨쉬는도서관 겨울방학 추천도서)",1,50,131,2013,221,853,0,0,[]],[6857,1193,1,"난 형이니까",1,50,248,2002,307,114,0,0,[]],[6858,1194,1,"오늘은 5월 18일",1,32,223,2013,3,839,0,0,[]],[6859,1195,1,"할머니 품은 벙어리 장갑보다 따뜻해 (너무나 소중한 가족 영이네집 겨울이야기)",1,47,36,2022,8,854,0,0,[]],[6860,1196,1,"할아버지의 등대",1,32,29,2008,99,186,0,0,[]],[6862,1197,1,"아버지의 자전거",1,32,139,2009,307,186,0,0,[]],[6863,1198,1,"높이 뛰어라 생쥐 (미국 인디언 옛이야기)",1,40,54,2013,314,855,0,0,[]],[6864,1199,1,"오늘은 이게 유행이라고?",1,40,121,2023,315,856,0,0,[]],[6869,1200,1,"행복한 주스나무",1,36,211,2011,159,857,0,0,[]],[6880,1201,1,"꼬르륵 꼬르륵 캠핑",1,40,375,2024,83,511,0,1,[[3,1]]],[6881,1202,1,"나는 고양이가 싫다",1,40,185,2023,30,858,0,0,[]],[6882,1203,1,"꼬마늑대가 처음 안경을 맞춘 날 (윤정미 그림책)",1,68,119,2024,38,859,0,1,[[1,1]]],[6883,1204,1,"나의 독산동",1,48,190,2019,255,372,0,0,[]],[6892,1205,1,"한밤중 도시에서는",1,40,141,2023,102,860,0,1,[[3,1]]],[6896,1206,1,"감정 호텔 (내 마음이 머무는 곳)",1,40,375,2024,83,861,0,1,[[2,1]]],[6901,1207,1,"문 밖에 사자가 있다",1,52,274,2023,316,843,0,0,[]],[6905,1208,1,"오늘보다 더 멋진 내일을 만들어요 (멋진 미래를 위해 오늘의 지구를 살리는 어린이 기업가 12명의 실제 이야기)",5,40,56,2023,249,862,0,0,[]],[6906,1209,1,"만약에 내가",1,36,141,2023,101,863,8,0,[]],[6907,1210,1,"대신 사과하는 로봇 처음 사과하는 아이",1,48,165,2016,118,864,0,0,[]],[6908,1211,1,"나쁜 씨앗",1,40,514,2018,30,865,0,0,[]],[6912,1212,1,"63일",2,44,181,2020,272,793,0,0,[]],[6914,1213,1,"츠츠츠츠",1,76,377,2024,38,472,0,1,[[2,1]]],[6915,1214,1,"달꽃 밥상 (지영우 그림책)",1,52,173,2024,38,866,0,0,[]],[6916,1215,1,"사탕 트리",1,40,311,2020,23,693,0,5,[[2,1],[2,2]]],[6917,1216,1,"감정은 무얼 할까?",1,70,167,2021,4,867,0,0,[]],[6924,1217,1,"10층 큰 나무 아파트로 이사 가요 (동물 아파트의 사계절 이야기 2)",1,35,221,2019,307,868,0,0,[]],[6927,1218,1,"나는 아빠가",1,40,212,2017,180,417,0,7,[[1,3],[1,4]]],[6928,1219,1,"무민 가족과 크리스마스 대소동",1,36,124,2020,81,869,0,0,[]],[6929,1220,1,"레오틴의 긴 머리",1,32,124,2015,102,870,0,0,[]],[6930,1221,1,"안아 드립니다",1,42,113,2014,102,871,0,0,[]],[6932,1222,1,"하루살이입니다",1,40,128,2020,180,872,0,5,[[2,1],[2,2]]],[6934,1223,1,"아빠랑 나랑 달라도 너무 달라",1,32,124,2023,223,873,0,1,[[3,1]]],[6936,1224,1,"아주 특별한 마법의 막대기",1,32,198,2023,317,874,0,5,[[2,1],[2,2]]],[6937,1225,1,"암탉은 파업 중",1,36,144,2017,181,875,0,5,[[2,1],[2,2]]],[6940,1226,1,"머니 박스 1: 돈이 뭐예요?",1,34,88,2021,318,876,8,0,[]],[6942,1227,1,"고양이가 들려주는 철학 동화",9,52,124,2021,65,877,0,0,[]],[6944,1228,1,"다시 만날 때",1,56,146,2020,319,878,0,0,[]],[6945,1229,1,"행복한 줄무늬 선물 (친절한 호랑이 칼레의)",1,40,161,2017,161,879,0,5,[[2,1],[2,2]]],[6947,1230,1,"민트 초코 딸기",1,40,189,2024,38,727,0,5,[[2,1],[2,2]]],[6948,1231,1,"14마리의 자장가",1,32,223,2024,147,775,0,5,[[2,1],[2,2]]],[6951,1232,1,"나는 빵이야",1,48,189,2021,320,880,0,5,[[2,1],[2,2]]],[6960,1233,1,"마법의 파란 우산",1,27,115,2024,263,881,0,0,[]],[6961,1234,1,"푸른 바다의 상괭이",1,34,105,2023,308,882,0,5,[[2,1],[2,2]]],[6968,1235,1,"엄마, 달려요",1,48,121,2020,321,883,0,0,[]],[6977,1236,1,"나무는 숲을 기억해요 (멕시코 ‘바람의 끝에서 상’ 수상)",1,32,155,2026,218,884,0,1,[[1,1]]],[6981,1237,1,"비 오는 날 또 만나자",1,28,131,2001,144,885,0,0,[]],[6985,1238,1,"바나나가 더 일찍 오려면 (정진호 그림책)",2,44,254,2024,38,667,0,1,[[2,1]]],[6988,1239,1,"봄이다 (봄을 부르는 그림책)",1,40,136,2017,180,872,0,0,[]],[6989,1240,1,"아나톨의 작은 냄비",1,32,301,2014,102,886,0,0,[]],[7002,1241,1,"다녀왔습니다",1,40,196,2020,311,887,0,0,[]],[7003,1242,1,"누군가 당신을 사랑해요",1,32,43,2020,314,888,0,0,[]],[7004,1243,1,"세상의 모든 감사",1,40,42,2023,102,889,0,0,[]],[7006,1244,1,"나는 나의 주인 (자존감을 키우는 그림책)",1,32,222,2010,65,84,0,0,[]],[7007,1245,1,"난 싸우지 않아",1,36,62,2024,257,890,0,0,[]],[7008,1246,1,"행복을 주는 요리사",1,36,95,2018,322,891,0,7,[[1,3],[1,4],[2,1],[2,2]]],[7009,1247,1,"이게 바로 나야",1,40,60,2020,323,892,0,5,[[3,1],[3,2]]],[7011,1248,1,"줄다리기",1,52,128,2022,102,838,0,7,[[1,3],[1,4]]],[7012,1249,1,"나한테 인사하지 마!",1,40,232,2020,53,893,0,5,[[3,1],[3,2]]],[7013,1250,1,"엄청나게 커다란 소원 (웅진 세계 그림책 226)",1,32,302,2022,23,218,0,0,[]],[7015,1251,1,"내가 만난 꿈의 지도",1,44,212,2008,5,894,0,7,[[1,3],[1,4]]],[7020,1252,1,"독립운동가의 어머니, 조마리아",5,46,38,2024,324,895,0,0,[]],[7026,1253,1,"크리스마스가 가져다준 평화 (전쟁 중에 있었던 하루 동안의 휴전 이야기)",3,32,42,2008,325,896,9,0,[]],[7031,1254,1,"카틴카의 조금 특별한 꼬리",1,32,204,2018,23,897,0,0,[]],[7039,1255,1,"재주많은 일곱 쌍둥이",1,40,117,2012,40,898,0,5,[[2,1],[2,2]]],[7040,1256,1,"멸치 대왕의 꿈 (초등 4학년 필독도서)",1,36,253,2015,63,603,0,0,[]],[7045,1257,1,"해피버쓰데이",1,72,192,2024,326,39,0,0,[]],[7046,1258,1,"호랑이가 책을 읽어준다면",1,40,191,2018,166,899,0,5,[[2,1],[2,2]]],[7047,1259,1,"바삭바삭 표류기",1,40,228,2024,144,535,0,5,[[2,1],[2,2]]],[7049,1260,1,"초밥이 여행을 갔어요",1,36,309,2024,65,900,0,0,[]],[7052,1261,1,"용기 내! 바나나",1,40,274,2024,239,585,0,0,[]],[7056,1262,1,"복숭아 씨앗 발사!",1,40,352,2021,239,901,0,5,[[2,1],[2,2]]],[7057,1263,1,"올리의 금빛 조개 (빵 만드는 법 배우기)",1,64,189,2022,327,902,0,0,[]],[7059,1264,1,"밥 한 그릇 뚝딱",1,41,382,2009,297,810,0,1,[[2,1]]],[7060,1265,1,"별이 빛나는 크리스마스",1,52,110,2015,102,903,0,0,[]],[7061,1266,1,"토끼 뻥튀기",1,33,191,2008,30,904,0,5,[[3,1],[3,2]]],[7065,1267,1,"그림자 어둠 사용법 (제42회 샘터동화상 당선작)",2,44,143,2021,267,905,0,7,[[1,3],[1,4]]],[7066,1268,1,"황금 왕관을 쓴 랑이",1,36,80,2023,328,906,0,5,[[3,1],[3,2]]],[7067,1269,1,"국경 너머 (친구일까 적일까)",1,44,59,2023,56,907,0,0,[]],[7068,1270,1,"바람",1,53,73,2020,329,908,0,0,[]],[7069,1271,1,"이웃 (김성미 그림책)",1,44,221,2024,83,909,0,0,[]],[7071,1272,1,"기회를 주세요 (울적하고 속상한 날)",1,40,165,2024,118,910,0,0,[]],[7072,1273,1,"혼자 갈 수 있어",1,44,179,2022,153,911,0,5,[[2,1],[2,2]]],[7073,1274,1,"폭풍을 잠재우신 예수님",6,32,237,2016,39,528,0,0,[]],[7074,1275,1,"레몬트리의 정원",1,40,83,2016,102,912,0,0,[]],[7075,1276,1,"노란 별 (평화와 평등을 실천한 덴마크 왕의 이야기, 개정판)",2,32,137,2017,325,913,0,5,[[2,1],[2,2]]],[7076,1277,1,"점은 대단해!",1,32,47,0,183,914,0,0,[]],[7077,1278,1,"대장장이 바바브라보",1,20,151,0,126,278,0,0,[]],[7082,1279,1,"여우 목도리 (유지우 그림책)",1,64,207,2023,161,915,0,1,[[1,1]]],[7086,1280,1,"14마리의 겨울나기",1,32,228,2022,147,775,0,0,[]],[7087,1281,1,"나사로를 살리신 예수님",6,32,238,2019,39,916,0,0,[]],[7088,1282,1,"예수님을 찾아온 동방박사 (세이펜 적용, 다국어 영상)",6,32,261,2022,330,917,0,0,[]],[7090,1283,1,"우리가 잠든 사이에",1,40,191,2020,161,918,0,1,[[1,1]]],[7092,1284,1,"나의 만만한 일일 탐험",1,44,135,2023,331,919,0,5,[[2,1],[2,2]]],[7097,1285,1,"베드로를 용서하신 예수님",6,32,323,2019,39,920,0,0,[]],[7098,1286,1,"감옥에서도 예수님을 전한 바울과 실라",6,32,264,2020,39,921,0,0,[]],[7099,1287,1,"예수님이 다시 살아나셨어요",6,32,344,2019,39,922,0,0,[]],[7104,1288,1,"페기, 불가능은 없어!",1,60,42,2024,332,923,0,0,[]],[7106,1289,1,"코르넬리우스",1,40,91,2022,5,924,0,0,[]],[7107,1290,1,"작지만 대단해! (씨앗의 모든 것)",4,44,73,2024,83,925,0,0,[]],[7117,1291,1,"14마리의 떡 만들기",1,32,188,2024,147,775,0,5,[[2,1],[2,2]]],[7118,1292,1,"나의 작은 집 (작은 집이 있습니다)",1,48,193,2024,30,926,0,1,[[1,1]]],[7119,1293,1,"도서관 고양이 두 번째 이야기",1,48,175,2025,56,605,0,0,[]],[7132,1294,1,"엉뚱한 수리점 (2024년 개정 초등국어 교과 수록도서)",1,50,315,2024,333,207,0,5,[[2,1],[2,2],[3,1],[3,2]]],[7133,1295,1,"특별한 크리스마스 약속",6,31,236,2016,39,528,0,0,[]],[7145,1296,1,"나의 아기 곰에게 (감사하는 마음을 가진다면)",1,56,35,2024,281,927,0,0,[]],[7146,1297,1,"닭에겐 비밀이 있지",1,52,113,2025,32,793,0,5,[[3,1],[3,2]]],[7150,1298,1,"딱 너를 위한 책이야",1,48,139,2024,193,928,0,1,[[1,1]]],[7152,1299,1,"역사가 왜 필요할까?",3,36,46,2024,334,929,0,0,[]],[7155,1300,1,"급식실의 달평 씨",1,48,268,2024,83,512,0,5,[[3,1],[3,2]]],[7156,1301,1,"엄마가 절대로 하지 않을 말, 열아홉 가지",1,26,77,0,335,930,0,0,[]],[7169,1302,1,"1분씩 빨라지는 째깍째깍 마을",1,40,76,2024,56,931,0,5,[[3,1],[3,2]]],[7170,1303,1,"마음 의자",1,38,107,2022,204,543,3,0,[]],[7183,1304,1,"레오의 특별한 꿈 (개정판)",1,36,146,2024,218,932,0,0,[]],[7188,1305,1,"헤어 (세상의 모든 머리카락에 관한 별별 이야기)",2,40,28,2023,159,933,0,0,[]],[7189,1306,1,"도둑 고양이 캡틴, 바다로!",1,40,117,2024,295,934,0,5,[[3,1],[3,2]]],[7193,1307,1,"빈 집에 온 손님",1,32,146,2016,4,935,0,0,[]],[7194,1308,1,"작은 아저씨 이야기",1,40,104,2023,168,936,0,5,[[3,1],[3,2]]],[7216,1309,1,"팍팍팍 땅을 파요",1,40,49,0,238,937,0,0,[]],[7217,1310,1,"소피아와 발레 슈즈 (한국어린이교육문화연구원 으뜸책 선정도서)",1,36,32,2024,336,938,0,5,[[3,1],[3,2]]],[7219,1311,1,"외규장각 이야기 (조선 왕실의 보물 창고)",3,45,61,2024,153,605,0,5,[[3,1],[3,2]]],[7231,1312,1,"별에게 (안녕달 그림책)",1,64,260,2025,94,172,0,1,[[1,1]]],[7232,1313,1,"시계탕",1,56,230,2025,23,234,0,1,[[3,1]]],[7236,1314,1,"꿈을 담은 병",1,40,133,2025,86,939,0,0,[]],[7246,1315,1,"뭐 어때? (적당 씨의 행복한 하루)",1,40,198,0,30,940,0,5,[[1,1],[1,2]]],[7247,1316,1,"초능력",1,64,184,2023,193,432,0,5,[[3,1],[3,2]]],[7248,1317,1,"어쩌다 여왕님",1,44,156,2014,83,941,0,1,[[1,1]]],[7250,1318,1,"누구 발일까? (세계의 신발)",2,43,148,2009,11,410,0,0,[]],[7254,1319,1,"네가 날고 싶을 때를 위해",1,40,84,2020,168,942,0,5,[[1,1],[1,2]]],[7256,1320,1,"인생을 숫자로 말할 수 있나요?",12,56,129,2020,168,943,0,5,[[1,1],[1,2]]],[7260,1321,1,"행복을 찾아 떠난 당나귀",1,27,26,0,238,944,0,0,[]],[7271,1322,1,"어느 멋진 여행",1,40,163,2021,193,945,0,5,[[1,1],[1,2]]],[7279,1323,1,"과학이 왜 필요할까?",4,36,58,2024,334,929,0,0,[]],[7280,1324,1,"당신의 가방 안에는?",1,40,96,2023,102,946,0,7,[[1,1],[1,2],[3,3],[3,4]]],[7285,1325,1,"꿈이 자라나는 말",3,32,141,2024,327,947,0,1,[[1,1]]],[7286,1326,1,"10층 큰 나무 아파트에 겨울이 왔어요 (동물 아파트의 사계절 이야기 3)",1,36,114,2020,337,948,0,7,[[3,3],[3,4]]],[7287,1327,1,"장욱진 (새처럼 날고 싶은 화가)",8,48,19,2003,338,949,0,0,[]],[7288,1328,1,"이제 어떡하지 (고난 극복 협력)",1,48,47,2009,91,950,0,0,[]],[7289,1329,1,"휘파람을 불면 행복해",1,28,26,0,332,951,0,0,[]],[7292,1330,1,"나는 회색 거미야!",1,54,96,2022,339,952,0,7,[[3,3],[3,4]]],[7299,1331,1,"콘브레드와 포피 1: 으르렁산에 가다 (으르렁산에 가다)",1,80,68,2024,168,953,0,0,[]],[7301,1332,1,"오늘 더 다정해져요",1,40,147,2024,83,954,0,7,[[1,1],[1,2],[3,3],[3,4]]],[7304,1333,1,"하나님이 동생을 주셨단다",1,34,140,2002,148,955,0,0,[]],[7321,1334,1,"집으로 가는 길",1,44,42,2024,340,956,0,0,[]],[7323,1335,1,"발명, 세상을 바꾼 기발한 생각들",4,44,55,2024,341,957,0,0,[]],[7324,1336,1,"반복되지만 언제나 좋은 것들",1,60,66,2024,244,958,0,0,[]],[7325,1337,1,"다육이와 꼬마 정원 (별빛 정원 이야기 3)",1,40,87,2022,10,959,0,5,[[2,1],[2,2]]],[7332,1338,1,"누가 그랬을까?",1,48,84,2024,259,960,0,5,[[2,1],[2,2]]],[7334,1339,1,"혼자만의 시간을 좋아하는 너에게 (내성적인 너에게, 거북이의 다독임)",1,120,36,2021,327,961,0,0,[]],[7335,1340,1,"건전지 할머니",1,56,369,2025,94,625,0,5,[[2,1],[2,2]]],[7340,1341,1,"몽글몽글 편의점",1,44,366,2024,83,379,0,1,[[1,1]]],[7341,1342,1,"똑똑한 쿠키",1,40,238,2024,30,865,0,5,[[2,1],[2,2]]],[7346,1343,1,"검은 해변 (건강한 지구를 위해 모두 행동해요)",2,32,112,2023,162,962,37,5,[[1,1],[1,2]]],[7347,1344,1,"괜찮아 아저씨 (2016 제1회 비룡소 캐릭터 그림책상 수상작, 사각사각 그림책 2)",1,36,278,2017,4,963,24,0,[]],[7348,1345,1,"약속 꼭! 꼭 지킬게",1,36,95,2014,342,964,0,0,[]],[7349,1346,1,"떠돌떠돌 떠돌 씨",1,56,100,2024,168,965,0,5,[[2,1],[2,2]]],[7361,1347,1,"이상한 나라의 흰토끼 부인 (2024 한국학교사서협회 추천도서, 2024 학교도서관저널 추천도서, 2012 프랑스 몽트뢰유 아동도서전 최고의 그림책상, 2024 월간 책씨앗 선정도서, 2024 고래가숨쉬는도서관 추천도서, 2025년 아침독서추천도서)",1,40,109,2024,343,966,0,5,[[1,1],[1,2]]],[7362,1348,1,"그레이엄 할아버지께 (2024 크리스탈 카이트 아너상 수상작, 2025 초등 국어교과서 3학년 1학기 수록도서)",1,40,176,2023,317,967,0,5,[[3,1],[3,2]]],[7367,1349,1,"집 나가자 꿀꿀꿀 (웅진 세계 그림책 9)",1,51,187,1999,344,968,0,5,[[3,1],[3,2]]],[7373,1350,1,"코알라, 산불이야!",1,40,83,2024,266,969,0,5,[[3,1],[3,2]]],[7375,1351,1,"발끝 우물쭈물",1,48,83,2021,181,970,0,5,[[3,1],[3,2]]],[7378,1352,1,"율마의 별빛 정원이야기 (별빛 정원 이야기 1)",1,36,103,2019,10,959,0,5,[[3,1],[3,2]]],[7379,1353,1,"제라늄과 오후의 꽃잠 (별빛 정원 이야기 2)",1,36,119,2021,10,959,0,5,[[1,1],[1,2]]],[7381,1354,1,"사람은 무엇으로 사는가",1,40,63,2025,345,971,0,0,[]],[7382,1355,1,"갈색 아침",1,32,84,2013,346,972,0,0,[]],[7388,1356,1,"내가 부엉이를 잘 그리는 이유",1,32,70,2024,347,973,0,0,[]],[7389,1357,1,"최고의 수의사가 되는 방법 (전문가각 들려주는 직업 이야기)",1,44,21,2024,348,974,0,5,[[1,1],[1,2]]],[7391,1358,1,"용기를 내, 비닐장갑! (유설화 그림책)",1,40,480,2021,83,492,0,1,[[1,1]]],[7392,1359,1,"너에게 주는 말 선물 (아주 짧지만 힘이 센 15가지 말)",1,44,124,2021,349,975,0,0,[]],[7393,1360,1,"곰팡이 수지 (곰팡이의 거의 모든 것)",1,28,89,2018,193,976,38,5,[[1,1],[1,2]]],[7394,1361,1,"소리 지르는 꼬마 요리사",1,40,92,2023,303,819,0,5,[[1,1],[1,2]]],[7395,1362,1,"책이 좋은 걸 어떡해",1,32,104,2021,260,977,0,5,[[3,1],[3,2]]],[7396,1363,1,"행복은 내 옆에 있어요",1,36,114,2009,5,978,0,5,[[3,1],[3,2]]],[7397,1364,1,"어린왕자가 사랑한 지구의 사계절",1,56,133,2019,248,979,0,0,[]],[7399,1365,1,"토끼 아저씨와 멋진 선물 (1963년 칼데콧 아너상 수상작)",1,40,182,2017,5,980,0,5,[[3,1],[3,2]]],[7402,1366,1,"태풍이 오는 날",1,40,108,2025,221,981,0,5,[[3,1],[3,2]]],[7405,1367,1,"오직 하나뿐인",1,52,110,2025,30,982,0,5,[[1,1],[1,2]]],[7408,1368,1,"라온의 특별한 여행",1,42,87,2025,350,983,0,5,[[1,1],[1,2]]],[7417,1369,1,"하나님이 가족을 주셨단다",6,35,62,2021,148,984,0,0,[]],[7419,1370,1,"하나님이 사랑을 주셨단다",6,20,127,2009,148,985,0,0,[]],[7420,1371,1,"하나님이 세상을 주셨단다",6,20,124,2011,148,985,0,0,[]],[7421,1372,1,"하나님이 잠을 주셨단다",6,36,61,2015,148,985,0,0,[]],[7442,1373,1,"나쁜 씨앗 도서관에 가다!",1,52,185,2025,30,865,0,5,[[1,1],[1,2]]],[7455,1374,1,"만만이 빤쓰 구멍 난 빤쓰 (바른 우리 말 읽기책)",1,46,49,2013,40,986,0,5,[[1,1],[1,2]]],[7464,1375,1,"기린에게 스키를 가르칠 수 있을까?",1,40,90,2022,63,987,0,5,[[1,1],[1,2]]],[7465,1376,1,"내 안경!",1,28,51,2023,63,988,0,0,[]],[7483,1377,1,"지도로 보물 찾기: 지도 똑똑하게 읽는 법 (지도 똑똑하게 읽는 법)",2,42,72,2024,346,989,8,5,[[1,1],[1,2]]],[7496,1378,1,"울퉁불퉁 핫케이크",1,32,134,2024,351,990,0,5,[[1,1],[1,2]]],[7497,1379,1,"마음먹은 고양이",1,40,192,2024,327,991,0,1,[[1,1]]],[7498,1380,1,"얼렁뚱땅 피자 배달",1,40,232,2025,83,511,0,0,[]],[7499,1381,1,"단짝 구함",1,40,192,2024,273,992,0,5,[[1,1],[1,2]]],[7503,1382,1,"돌 씹어 먹는 아이(그림책)",1,44,195,2014,45,788,0,1,[[3,1]]],[7504,1383,1,"엘리베이터 여행",1,30,80,2005,101,993,0,0,[]],[7507,1384,1,"브로콜리지만 사랑받고 싶어 (초등 1학년 국어교과서 수록 도서)",1,44,638,2021,153,994,0,1,[[1,1]]],[7508,1385,1,"여행은 다람쥐 택시",1,40,142,2024,83,995,0,5,[[1,1],[1,2]]],[7531,1386,1,"몽글몽글 숲속 요리사",1,40,111,2025,23,996,0,0,[]],[7532,1387,1,"나무 이발사",1,52,165,2025,352,997,0,1,[[1,1]]],[7537,1388,1,"마음을 담은 병",1,40,216,2023,86,998,0,1,[[1,1]]],[7538,1389,1,"돌고래는 물고기가 아니야 (그동안 잘 알려지지 않은 정보가 가득한 진짜진짜 재밌는 동물 그림책)",4,32,159,2018,353,999,0,5,[[1,1],[1,2]]],[7540,1390,1,"봄의 왕국",1,48,129,2025,296,1000,0,1,[[1,1]]],[7549,1391,1,"인사 (2020 화이트 레이븐즈 선정도서)",1,44,375,2020,83,909,0,5,[[3,1],[3,2]]],[7550,1392,1,"주름 때문이야",1,52,334,2023,354,1001,0,1,[[1,1]]],[7551,1393,1,"장미 저택 (김지안 그림책)",1,44,262,2024,94,213,0,1,[[1,1]]],[7556,1394,1,"까칠한 포도",1,40,198,2025,30,1002,0,0,[]],[7562,1395,1,"고양이 루의 멋진 크리스마스 (셀린 리 그림책)",1,60,59,2025,94,1003,0,0,[]],[7567,1396,1,"메리식당",1,40,161,2025,221,675,0,0,[]],[7570,1397,1,"나의 초록 스웨터",1,40,196,2019,153,1004,0,5,[[3,1],[3,2]]],[7573,1398,1,"빈센트 반 고흐",5,40,101,2020,83,1005,0,5,[[1,1],[1,2]]],[7581,1399,1,"가시 소년 (초등 국어 1-2 가 교과서 수록도서)",1,40,351,2021,221,1006,0,5,[[3,1],[3,2]]],[7582,1400,1,"물결을 닮았나 봐요 (2024 화이트레이븐 선정도서)",1,40,97,2024,23,1007,0,5,[[3,1],[3,2]]],[7586,1401,1,"3초 토끼",1,48,144,2025,355,1001,0,0,[]],[7587,1402,1,"세상에 둘도 없는 반짝이 신발 (초등 2학년 국어교과서 수록도서)",1,40,218,2018,294,801,0,5,[[2,1],[2,2]]],[7589,1403,1,"단골손님 관찰기",1,44,167,2023,23,1008,0,5,[[3,1],[3,2]]],[7612,1404,1,"두 친구",1,32,52,2026,356,1009,0,0,[]],[7623,1405,1,"못 참겠어",1,32,121,2025,76,1010,0,0,[]],[7627,1406,1,"하나님이 천국을 주셨단다",6,36,161,2008,148,985,0,0,[]],[7637,1407,1,"눈오리 할비 (이소라 그림책)",1,48,71,2026,7,1011,0,5,[[1,1],[1,2]]],[7660,1408,1,"개미의 식탁에 초대합니다",1,40,117,2024,224,1012,0,5,[[1,1],[1,2],[3,1],[3,2]]],[7682,1409,1,"누구나 환영해! 개구리 책방",1,40,50,2026,221,1013,0,5,[[3,1],[3,2]]],[7686,1410,1,"입맛 까다로운 호랑이",1,40,67,2026,221,1014,0,5,[[3,1],[3,2]]],[7687,1411,1,"오늘은 축제야!",1,40,84,2026,221,1015,0,0,[]],[7688,1412,1,"뭐라고 말해야 할까요? (엉뚱하고 재미있는 11가지 상황에 따른 언어 예절, 1959년 칼데콧 아너 상 수상작)",1,56,137,2013,5,745,0,0,[]],[7717,1413,1,"참개구리의 집 찾기 대소동",1,40,46,2026,317,1016,0,5,[[3,1],[3,2]]],[7734,1414,1,"수국 찻집 (김지안 그림책)",1,60,82,2026,94,213,0,5,[[3,1],[3,2]]],[7735,1415,1,"나는 절대 갑옷을 벗지 않아",1,52,79,2026,249,1017,0,5,[[3,1],[3,2]]],[7737,1416,1,"마음 체조 (이유진 그림책)",1,40,114,2024,193,1018,0,5,[[1,1],[1,2]]],[7746,1417,1,"감정은 밤에 무얼 할까?",1,76,17,2025,315,867,0,0,[]],[7751,1418,1,"앵거게임",1,56,126,2020,102,838,0,5,[[1,1],[1,2]]],[7759,1419,1,"착한 달걀",1,40,220,2022,30,1019,0,5,[[1,1],[1,2]]],[7760,1420,1,"친구를 만드는 커다란 귀 (나의 경청 이야기)",1,56,62,2026,257,301,0,5,[[1,1],[1,2]]],[7763,1421,1,"끼인 날 (2022 아침독서신문 선정, 2021 문학나눔 선정, 2021 한국학교사서협회 추천, 2021.06 학교도서관저널 추천)",1,40,260,2021,221,1020,0,5,[[1,1],[1,2]]],[7768,1422,1,"구멍청 (백희나 그림책)",1,60,147,2026,326,39,0,0,[]],[7779,1423,1,"자개장 할머니",1,48,118,2024,273,1021,5,1,[[3,1]]],[7780,1424,1,"바다거북, 생명의 여행",4,40,109,2017,221,1022,7,0,[]],[7817,1425,1,"복숭아와 애벌레",1,72,97,2026,94,172,0,0,[]],[7843,1426,1,"케첩",1,40,81,2026,77,296,0,0,[]],[7852,1427,1,"멋진 콩",1,40,126,2022,30,865,0,5,[[1,1],[1,2]]],[7853,1428,1,"큰일 났다",1,40,106,2020,224,960,0,1,[[1,1]]],[7879,1429,1,"초록의 마법",1,40,28,2026,356,686,0,7,[[3,3],[3,4]]],[7880,1430,1,"수박을 샀다",1,60,24,2026,45,811,0,0,[]],[7881,1431,1,"세상에서 가장 맛있는 바나나",1,48,31,2025,199,1023,0,7,[[3,3]]],[7913,1432,1,"기억의 풍선",1,42,7,2019,357,1024,0,0,[]],[7914,1433,1,"진짜 보물",1,40,1,2024,356,1025,0,7,[[3,3]]],[7915,1434,1,"잠이 오는 이야기",1,40,11,2019,358,1026,0,7,[[3,3]]]]};
+(function(){
+"use strict";
+
+var FIELDS=RAW.fields, SUBJ=RAW.subjects, PUBS=RAW.publishers, AUTS=RAW.authors,
+    LIBS=RAW.libraries, PEOPLE=RAW.people, SRC=RAW.sources, ST=RAW.statuses,
+    YEARS=RAW.years||[], LEVELS=RAW.levels, GEN=RAW.generated;
+
+/* ---------------- 데이터 풀기 ---------------- */
+var BOOKS=[], byId={}, i, j;
+for(i=0;i<RAW.books.length;i++){
+  var a=RAW.books[i], ls=[], m, ow=[];
+  for(j=0;j<a[12].length;j++){
+    m=a[12][j];
+    ls.push({p:m[0],lb:m[1]});
+    if(ow.indexOf(m[0])<0) ow.push(m[0]);
+  }
+  ow.sort();
+  var b={id:a[0],no:a[1],lv:a[2],title:a[3],f:a[4],pages:a[5],cert:a[6],
+         year:a[7],pub:a[8],aut:a[9],sub:a[10],flag:a[11],loans:ls,own:ow};
+  b.tn=norm(b.title);
+  b.an=b.aut? norm(AUTS[b.aut]) : "";
+  b.pn=b.pub? norm(PUBS[b.pub]) : "";
+  BOOKS.push(b);
+  byId[b.id]=b;
+}
+
+/* ---------------- 유틸 ---------------- */
+var $=function(s){ return document.querySelector(s); };
+function fmt(n){ n=Number(n)||0; return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,","); }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function norm(s){ return String(s==null?"":s).toLowerCase().replace(/\s+/g,""); }
+function has(o,k){ return Object.prototype.hasOwnProperty.call(o,k); }
+
+/* ---------------- 저장소 (읽음 오버라이드) ----------------
+   도서관 대출·상호대차 기록(flag&1)이 있으면 기본 읽음.
+   사용자가 직접 누른 값만 {id: 1(on) | 0(off)} 로 저장한다. */
+var KEY="rr_l1_ov_v2", LEGACY="rr_l1_read_v1", OV={}, hasLS=true;
+try{ localStorage.setItem("__rr_t","1"); localStorage.removeItem("__rr_t"); }catch(e){ hasLS=false; }
+
+function loadOv(){
+  var out={};
+  if(!hasLS) return out;
+  try{
+    var s=localStorage.getItem(KEY);
+    if(s){
+      var o=JSON.parse(s), r=(o&&o.ov)||{}, k;
+      for(k in r){ if(has(r,k)){ var v=r[k]; out[k]= (v===0||v==="off"||v===false)?0:1; } }
+      return out;
+    }
+    var s2=localStorage.getItem(LEGACY);
+    if(s2){
+      var o2=JSON.parse(s2), r2=(o2&&o2.read)||{}, k2;
+      for(k2 in r2){ if(has(r2,k2)) out[k2]=1; }
+      saveOv(out);
+    }
+  }catch(e){}
+  return out;
+}
+function saveOv(o){
+  if(!hasLS) return;
+  try{ localStorage.setItem(KEY, JSON.stringify({v:2,ov:o})); }catch(e){ hasLS=false; }
+}
+OV=loadOv();
+
+function isRead(b){
+  var k=String(b.id);
+  if(has(OV,k)) return OV[k]===1;
+  return !!(b.flag&1);
+}
+function setRead(b,on){
+  var k=String(b.id), def=!!(b.flag&1);
+  if(on===def){ delete OV[k]; } else { OV[k]= on?1:0; }
+  saveOv(OV);
+}
+function mineCount(){
+  var n=0,k;
+  for(k in OV){ if(has(OV,k) && OV[k]===1 && byId[k] && !(byId[k].flag&1)) n++; }
+  return n;
+}
+
+/* ---------------- 상태 ---------------- */
+var state={
+  q:"", level:(LEVELS.length>1?0:LEVELS[0].level),
+  read:"", year:"", cert:"",
+  sortKey:"year", sortDir:"desc",
+  shown:100, list:[]
+};
+var PAGE=100, INIT=100;
+
+/* ---------------- 필터 ---------------- */
+function matchQuery(b,q){
+  if(!q) return true;
+  if(b.tn.indexOf(q)>=0) return true;
+  if(b.an && b.an.indexOf(q)>=0) return true;
+  if(b.pn && b.pn.indexOf(q)>=0) return true;
+  return false;
+}
+function ownerMask(b){
+  var m=0;
+  for(var i=0;i<b.own.length;i++){ m|=(1<<b.own[i]); }
+  return m;
+}
+function passRead(b){
+  switch(state.read){
+    case "read": return isRead(b);
+    case "unread": return !isRead(b);
+    case "lib": return !!(b.flag&1);
+    case "current": return !!(b.flag&2);
+    case "mom": return (ownerMask(b)&2)!==0;
+    case "dad": return (ownerMask(b)&4)!==0;
+    case "kid": return (ownerMask(b)&8)!==0;
+    default: return true;
+  }
+}
+function passYear(b){
+  var v=state.year;
+  if(!v) return true;
+  if(v==="unknown") return !b.year;
+  if(v==="ge2020") return b.year>=2020;
+  if(v==="ge2023") return b.year>=2023;
+  return b.year===parseInt(v,10);
+}
+function passCert(b){
+  if(!state.cert) return true;
+  return b.cert>=parseInt(state.cert,10);
+}
+
+/* ---------------- 정렬 ---------------- */
+function cmpTitle(a,b){ return a.title.localeCompare(b.title,"ko"); }
+/* 발행년도: 미상(0)은 오름·내림 모두 맨 아래 */
+function yearRank(b){ return b.year>0 ? 1 : 0; }
+function cmpYear(a,b,dir){
+  var ar=yearRank(a), br=yearRank(b);
+  if(ar!==br) return ar? -1 : 1;
+  if(!ar) return 0;
+  return dir==="desc" ? (b.year-a.year) : (a.year-b.year);
+}
+function cmpRead(a,b,dir){
+  var av=isRead(a)?1:0, bv=isRead(b)?1:0;
+  return dir==="desc" ? (bv-av) : (av-bv);
+}
+function cmpCert(a,b,dir){
+  return dir==="desc" ? (b.cert-a.cert) : (a.cert-b.cert);
+}
+function makeCmp(){
+  var k=state.sortKey, d=state.sortDir;
+  return function(a,b){
+    var r=0;
+    if(k==="title") r=(d==="desc"? -1:1)*cmpTitle(a,b);
+    else if(k==="read") r=cmpRead(a,b,d);
+    else if(k==="cert") r=cmpCert(a,b,d);
+    else r=cmpYear(a,b,d);
+    if(r) return r;
+    /* 동률 → 발행년도 최신 → 인증수 많은 → 번호 */
+    if(k!=="year"){ r=cmpYear(a,b,"desc"); if(r) return r; }
+    if(k!=="cert"){ r=b.cert-a.cert; if(r) return r; }
+    if(k!=="title"){ r=cmpTitle(a,b); if(r) return r; }
+    return a.no-b.no;
+  };
+}
+
+/* ---------------- 계산 ---------------- */
+function compute(){
+  var lv=state.level, q=norm(state.q), out=[], b;
+  var total=0, read=0, cur=0;
+  for(var n=0;n<BOOKS.length;n++){
+    b=BOOKS[n];
+    if(lv && b.lv!==lv) continue;
+    total++;
+    if(isRead(b)) read++;
+    if(b.flag&2) cur++;
+    if(q && !matchQuery(b,q)) continue;
+    if(!passRead(b)) continue;
+    if(!passYear(b)) continue;
+    if(!passCert(b)) continue;
+    out.push(b);
+  }
+  out.sort(makeCmp());
+  return {list:out, total:total, read:read, cur:cur, mine:mineCount()};
+}
+
+/* ---------------- 표 렌더 ---------------- */
+function ownLabel(b){
+  var n=b.own.length;
+  if(!n) return "";
+  var nm=function(p){ return PEOPLE[p]||""; };
+  if(n===1) return nm(b.own[0]);
+  if(n===2) return nm(b.own[0])+"·"+nm(b.own[1]);
+  return nm(b.own[0])+"+"+(n-1);
+}
+function tagHTML(b){
+  var k=String(b.id), ol=ownLabel(b);
+  if(has(OV,k) && OV[k]===0) return '<span class="tg off">해제</span>';
+  if(ol) return '<span class="tg'+(b.flag&2?' cur':'')+'">'+esc(ol)+'</span>';
+  if(has(OV,k) && OV[k]===1) return '<span class="tg mine">직접</span>';
+  return "";
+}
+function rowHTML(b){
+  var on=isRead(b);
+  return '<tr data-id="'+b.id+'"'+(on?' class="rd"':'')+'>'+
+    '<td class="c-title"><button class="rowbtn" data-act="open" aria-label="'+esc(b.title)+' 상세 보기">'+
+      '<span class="tt">'+esc(b.title)+'</span></button></td>'+
+    '<td class="c-read"><button class="rb'+(on?' on':'')+'" data-act="read" aria-pressed="'+(on?'true':'false')+'" '+
+      'aria-label="'+esc(b.title)+' 읽음 '+(on?'해제':'표시')+'">'+
+      '<span class="bx">'+(on?'☑':'☐')+'</span>'+tagHTML(b)+'</button></td>'+
+    '<td class="c-year">'+(b.year? b.year : "-")+'</td>'+
+    '<td class="c-cert">'+fmt(b.cert)+'</td>'+
+  '</tr>';
+}
+function renderRows(){
+  var list=state.list, n=Math.min(state.shown,list.length), h="", k;
+  for(k=0;k<n;k++) h+=rowHTML(list[k]);
+  if(!list.length){
+    h='<tr><td class="emptyrow" colspan="4"><b>조건에 맞는 책이 없어요</b>'+
+      '검색어나 필터를 바꿔 보세요.</td></tr>';
+  }
+  $("#tb").innerHTML=h;
+  var more=$("#more"), all=$("#allbtn");
+  if(state.shown<list.length){
+    more.hidden=false; all.hidden=false;
+    more.textContent="더 보기 · 남은 "+fmt(list.length-state.shown)+"권 ("+PAGE+"권씩)";
+  }else{
+    more.hidden=true; all.hidden=true;
+  }
+}
+function renderHead(){
+  var ths=document.querySelectorAll("#grid thead th"), k, key, on, ar;
+  for(k=0;k<ths.length;k++){
+    var th=ths[k]; key=th.getAttribute("data-k");
+    on=(key===state.sortKey);
+    ar=th.querySelector(".ar");
+    th.className="t-"+key+(on?" on":"");
+    th.setAttribute("aria-sort", on ? (state.sortDir==="desc"?"descending":"ascending") : "none");
+    ar.textContent = on ? (state.sortDir==="desc"?"▼":"▲") : "";
+  }
+}
+function renderStats(res){
+  var pct=res.total? Math.round(res.read/res.total*100) : 0;
+  $("#statDone").textContent=fmt(res.read);
+  $("#statTotal").textContent="/ "+fmt(res.total)+"권";
+  $("#statPct").textContent=pct+"%";
+  $("#statBar").style.width=Math.max(pct,1)+"%";
+  $("#statShown").textContent=fmt(res.list.length);
+  $("#statMine").textContent=fmt(res.mine);
+  $("#statCur").textContent=fmt(res.cur);
+  $("#lvtitle").textContent = state.level ? (state.level+"단계") : "전체 단계";
+}
+function render(reset){
+  if(reset) state.shown=INIT;
+  var res=compute();
+  state.list=res.list;
+  renderRows();
+  renderHead();
+  renderStats(res);
+}
+
+/* ---------------- 툴바 (필요할 때 한 번만 채운다) ---------------- */
+function optList(sel, items){
+  var h="", i;
+  for(i=0;i<items.length;i++){
+    h+='<option value="'+esc(items[i][0])+'"'+(items[i][2]?' disabled':'')+'>'+esc(items[i][1])+'</option>';
+  }
+  sel.innerHTML=h;
+}
+function buildSelects(){
+  var i, lv=[]; 
+  if(LEVELS.length>1) lv.push(["0","전체 단계 ("+fmt(RAW.books.length)+")",false]);
+  for(i=0;i<LEVELS.length;i++) lv.push([String(LEVELS[i].level), LEVELS[i].level+"단계 ("+fmt(LEVELS[i].count)+")", false]);
+  var maxLv=LEVELS.length? LEVELS[LEVELS.length-1].level : 1;
+  if(maxLv<12) lv.push(["-1", (maxLv+1)+"~12단계 (추가 예정)", true]);
+  optList($("#fLevel"), lv);
+  $("#fLevel").value=String(state.level);
+
+  optList($("#fRead"), [
+    ["","읽음 전체"],
+    ["read","읽음만"],
+    ["unread","안 읽음"],
+    ["lib","도서관 기록"],
+    ["mom","엄마가 빌림"],
+    ["dad","아빠가 빌림"],
+    ["kid","아이가 빌림"],
+    ["current","대출중"]
+  ]);
+
+  var ys=[["","연도 전체"],["ge2020","2020년~"],["ge2023","2023년~"]];
+  for(i=0;i<YEARS.length;i++) ys.push([String(YEARS[i]), YEARS[i]+"년"]);
+  ys.push(["unknown","연도 미상"]);
+  optList($("#fYear"), ys);
+
+  optList($("#fCert"), [["","인증 전체"],["100","100명+"],["300","300명+"],
+                        ["500","500명+"],["1000","1,000명+"]]);
+}
+
+/* ---------------- 상세 시트 ---------------- */
+var ov=$("#ov"), dSheet=$("#detailSheet"), sSheet=$("#setSheet"), curBook=null;
+function anyOpen(){ return dSheet.classList.contains("on")||sSheet.classList.contains("on"); }
+function openSheet(el){ ov.classList.add("on"); el.classList.add("on"); }
+function closeSheets(){ ov.classList.remove("on"); dSheet.classList.remove("on"); sSheet.classList.remove("on"); curBook=null; }
+
+var CUR_ST=[];
+function isCurStatus(idx){ return CUR_ST.indexOf(ST[idx]||"")>=0; }
+
+function detailHTML(b){
+  var h="", k, m, on=isRead(b);
+  var meta=[b.aut? AUTS[b.aut]:"", b.pub? PUBS[b.pub]:""].filter(Boolean).join(" · ");
+  h+='<p class="dmeta">'+esc(meta||"저자·출판사 정보 없음")+'</p>';
+  h+='<div class="dchips">';
+  h+='<span class="dc">'+esc(FIELDS[b.f]||"미분류")+'</span>';
+  h+='<span class="dc">'+(b.year? b.year+"년":"연도 미상")+'</span>';
+  if(b.pages) h+='<span class="dc">'+fmt(b.pages)+'쪽</span>';
+  h+='<span class="dc">인증 '+fmt(b.cert)+'명</span>';
+  if(b.sub && SUBJ[b.sub]) h+='<span class="dc">교과 '+esc(SUBJ[b.sub])+'</span>';
+  h+='<span class="dc">'+b.no+'번</span>';
+  h+='</div>';
+  h+='<button class="dread'+(on?" on":"")+'" data-act="dread" aria-pressed="'+(on?"true":"false")+'">'+
+     '<span class="bx">'+(on?"☑":"☐")+'</span><span>'+(on?"읽음":"아직 안 읽음")+'</span>'+
+     '<span class="dtg" id="dTag">'+tagText(b)+'</span></button>';
+  var LL=RAW.loanLabels||[];
+  if(b.loans.length){
+    h+='<p class="dinfo">도서관 기록</p><ul class="loans">';
+    for(k=0;k<b.loans.length;k++){
+      m=b.loans[k];
+      h+='<li><span class="who">'+esc(PEOPLE[m.p]||"")+'</span><span class="body">'+
+         esc(LL[m.lb]||"")+'</span></li>';
+    }
+    h+='</ul>';
+  }else{
+    h+='<p class="none-loan">도서관 대출·상호대차 기록은 없는 책이에요.</p>';
+  }
+  var rr=RRB+b.lv+"&fv=&p=1&book_id="+b.id;
+  h+='<div class="dlink">'+
+     '<a href="'+rr+'" target="_blank" rel="noopener">리딩레이스 상세 페이지 <span class="r">열기 ↗</span></a>'+
+     '</div>';
+  return h;
+}
+function tagText(b){
+  var k=String(b.id);
+  if(has(OV,k) && OV[k]===0) return "도서관 기록 해제";
+  if(b.flag&2) return "현재 대출중";
+  if(b.flag&4) return "상호대차 기록";
+  if(b.flag&1) return "도서관 대출 기록";
+  return "직접 체크";
+}
+function openDetail(b){
+  curBook=b;
+  $("#dTitle").textContent=b.title;
+  $("#dBody").innerHTML=detailHTML(b);
+  openSheet(dSheet);
+}
+var RRB="https://rd.dreamschool.or.kr/reading/bookdetail?sc=&field_id=&level=";
+
+
+/* ---------------- 이벤트: 표 ---------------- */
+function toggleAt(b){
+  var on=!isRead(b);
+  setRead(b,on);
+  if(curBook && curBook.id===b.id){
+    $("#dBody").innerHTML=detailHTML(b);
+  }
+  render(false);
+  toast(on? "✓ 읽음으로 표시했어요" : "읽음 표시를 해제했어요");
+}
+$("#tb").addEventListener("click",function(ev){
+  var t=ev.target;
+  var rb=t.closest? t.closest('[data-act="read"]') : null;
+  if(rb){
+    var tr=rb.parentNode.parentNode;
+    var id=parseInt(tr.getAttribute("data-id"),10);
+    if(byId[id]) toggleAt(byId[id]);
+    return;
+  }
+  var op=t.closest? t.closest('[data-act="open"]') : null;
+  if(op){
+    var tr2=op.parentNode.parentNode;
+    var id2=parseInt(tr2.getAttribute("data-id"),10);
+    if(byId[id2]) openDetail(byId[id2]);
+    return;
+  }
+  var row=t.closest? t.closest("tr[data-id]") : null;
+  if(row){
+    var id3=parseInt(row.getAttribute("data-id"),10);
+    if(byId[id3]) openDetail(byId[id3]);
+  }
+});
+
+/* ---------------- 이벤트: 헤더 정렬 ---------------- */
+function sortBy(key){
+  if(state.sortKey===key){
+    state.sortDir = (state.sortDir==="desc") ? "asc" : "desc";
+  }else{
+    state.sortKey=key;
+    state.sortDir = (key==="title") ? "asc" : "desc";
+  }
+  render(true);
+}
+$("#grid thead").addEventListener("click",function(ev){
+  var el=ev.target.closest? ev.target.closest("[data-k]") : null;
+  if(!el) return;
+  sortBy(el.getAttribute("data-k"));
+});
+
+/* ---------------- 이벤트: 툴바 ---------------- */
+$("#fLevel").addEventListener("change",function(){
+  var v=parseInt(this.value,10);
+  if(v<0){ this.value=String(state.level); return; }
+  state.level=v; render(true);
+});
+$("#fRead").addEventListener("change",function(){ state.read=this.value; render(true); });
+$("#fYear").addEventListener("change",function(){ state.year=this.value; render(true); });
+$("#fCert").addEventListener("change",function(){ state.cert=this.value; render(true); });
+
+var qt=null;
+$("#q").addEventListener("input",function(){
+  var v=this.value;
+  $("#qclear").hidden = v.length===0;
+  clearTimeout(qt);
+  qt=setTimeout(function(){ state.q=v; render(true); },120);
+});
+$("#qclear").addEventListener("click",function(){
+  $("#q").value=""; this.hidden=true; state.q=""; render(true); $("#q").focus();
+});
+
+/* ---------------- 더 보기 ---------------- */
+$("#more").addEventListener("click",function(){
+  state.shown=Math.min(state.shown+PAGE, state.list.length);
+  renderRows();
+  var m=$("#more");
+  if(m.hidden && state.shown<state.list.length) m.hidden=false;
+});
+$("#allbtn").addEventListener("click",function(){
+  state.shown=state.list.length;
+  renderRows();
+  toast(fmt(state.list.length)+"권을 모두 펼쳤어요");
+});
+
+/* ---------------- 시트 열고 닫기 ---------------- */
+$("#btnSettings").addEventListener("click",function(){ openSheet(sSheet); });
+$("#btnSettings2").addEventListener("click",function(){ openSheet(sSheet); });
+$("#sClose").addEventListener("click",closeSheets);
+$("#dClose").addEventListener("click",closeSheets);
+ov.addEventListener("click",closeSheets);
+document.addEventListener("keydown",function(e){ if(e.key==="Escape" && anyOpen()) closeSheets(); });
+$("#dBody").addEventListener("click",function(ev){
+  var el=ev.target.closest? ev.target.closest('[data-act="dread"]') : null;
+  if(!el || !curBook) return;
+  toggleAt(curBook);
+});
+
+/* ---------------- 내보내기 / 가져오기 ---------------- */
+function exportJSON(){
+  var arr=[], k;
+  for(k in OV){ if(has(OV,k) && byId[k]) arr.push({id:parseInt(k,10),read:OV[k]===1}); }
+  arr.sort(function(a,b){ return a.id-b.id; });
+  return JSON.stringify({app:"Book's Record",version:2,
+    exportedAt:new Date().toISOString(),overrides:arr},null,1);
+}
+function applyImport(o){
+  var arr = (o && o.overrides) || (o && o.read) || (Array.isArray(o)? o : []);
+  var n=0;
+  for(var i=0;i<arr.length;i++){
+    var it=arr[i], id=null, val=null;
+    if(typeof it==="number"){ id=it; val=1; }
+    else if(it && it.id!=null){
+      id=it.id;
+      if(it.read===false || it.state==="off" || it.v===0) val=0;
+      else val=1;
+    }
+    if(id==null || !byId[id]) continue;
+    var b=byId[id], def=!!(b.flag&1), k=String(id);
+    if((val===1)===def){ delete OV[k]; } else { OV[k]=val; }
+    n++;
+  }
+  saveOv(OV);
+  render(false);
+  return n;
+}
+function importText(txt){
+  var o;
+  try{ o=JSON.parse(txt); }catch(e){ toast("JSON 형식이 아니에요"); return; }
+  var n=applyImport(o);
+  toast(n? n+"건의 읽음 표시를 가져왔어요" : "새로 가져올 기록이 없어요");
+  $("#ioHint").textContent="가져오기 완료 · 직접 체크 "+mineCount()+"권";
+}
+$("#btnExport").addEventListener("click",function(){
+  var js=exportJSON();
+  $("#ioBox").value=js;
+  $("#ioHint").textContent="아래 내용을 복사하거나 파일로 저장하세요 · 직접 체크 "+mineCount()+"권";
+  var blob=new Blob([js],{type:"application/json;charset=utf-8"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="Books_Record_읽음기록_"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500);
+  toast("내보냈어요");
+});
+$("#btnCopy").addEventListener("click",function(){
+  var box=$("#ioBox");
+  if(!box.value) box.value=exportJSON();
+  box.select(); box.setSelectionRange(0,box.value.length);
+  var done=false;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(box.value).then(function(){ toast("복사했어요"); },
+      function(){ toast("길게 눌러 직접 복사해 주세요"); });
+    done=true;
+  }
+  if(!done){
+    try{ document.execCommand("copy"); toast("복사했어요"); }
+    catch(e){ toast("길게 눌러 직접 복사해 주세요"); }
+  }
+});
+$("#btnDownload").addEventListener("click",function(){
+  var js=$("#ioBox").value||exportJSON();
+  var blob=new Blob([js],{type:"application/json;charset=utf-8"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="Books_Record_읽음기록_"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500);
+  toast("파일로 저장했어요");
+});
+$("#fileImport").addEventListener("change",function(){
+  var f=this.files&&this.files[0]; if(!f) return;
+  var r=new FileReader();
+  r.onload=function(){ importText(String(r.result||"")); };
+  r.onerror=function(){ toast("파일을 읽지 못했어요"); };
+  r.readAsText(f,"utf-8");
+  this.value="";
+});
+$("#btnImportText").addEventListener("click",function(){
+  var v=$("#ioBox").value;
+  if(!v){ toast("가져올 내용을 아래 칸에 붙여넣어 주세요"); $("#ioBox").removeAttribute("readonly"); $("#ioBox").focus(); return; }
+  importText(v);
+});
+$("#btnReset").addEventListener("click",function(){
+  var n=mineCount();
+  if(!confirm("이 기기에 저장된 직접 체크를 모두 지울까요?\n(도서관 대출·상호대차 기록 203권은 그대로 읽음으로 돌아갑니다)")) return;
+  OV={}; saveOv(OV);
+  render(true);
+  toast(n? "직접 체크를 초기화했어요" : "초기화할 직접 체크가 없어요");
+});
+
+/* ---------------- 토스트 / 시작 ---------------- */
+function toast(msg){
+  var t=$("#toast");
+  t.textContent=msg; t.classList.add("on");
+  clearTimeout(toast._t);
+  toast._t=setTimeout(function(){ t.classList.remove("on"); },1700);
+}
+function syncHdH(){
+  var hd=$("#hd");
+  document.documentElement.style.setProperty("--hdh", hd.offsetHeight+"px");
+}
+window.addEventListener("resize",syncHdH);
+window.addEventListener("orientationchange",function(){ setTimeout(syncHdH,120); });
+
+$("#footDate").textContent=GEN;
+$("#infoGen").textContent=GEN+" 수집";
+buildSelects();
+render(true);
+syncHdH();
+setTimeout(syncHdH,60);
+if(!hasLS){
+  $("#ioHint").textContent="이 브라우저에서는 자동 저장이 제한됩니다. 체크 후 꼭 내보내기로 백업해 주세요.";
+}
+
+/* 테스트용 최소 노출 */
+window.__rr={
+  state:state, books:BOOKS, byId:byId,
+  compute:compute, isRead:function(id){ return byId[id]? isRead(byId[id]) : null; },
+  mine:mineCount, sort:sortBy, page:function(){ return PAGE; },
+  rows:function(){ return document.querySelectorAll("#tb tr[data-id]").length; },
+  visible:function(){ return state.list.map(function(b){ return {id:b.id,title:b.title,year:b.year,cert:b.cert,flag:b.flag,no:b.no,read:isRead(b)}; }); }
+};
+})();
+</script>
+</body>
+</html>
