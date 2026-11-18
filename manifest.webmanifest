@@ -1,7 +1,7 @@
 {
  "name": "Book's Record 1단계",
  "short_name": "Book's Record",
- "description": "리딩레이스 1단계 도서 1,434권 — 책이름·읽음·발행년도·인증수",
+ "description": "리딩레이스 1단계 도서 1,434권 — 책이름·읽음·이문·년도·인증",
  "lang": "ko",
  "start_url": "./",
  "scope": "./",
