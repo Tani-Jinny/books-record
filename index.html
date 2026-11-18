@@ -639,7 +639,7 @@ function detailHTML(b){
     h+='<p class="none-loan">도서관 대출·상호대차 기록은 없는 책이에요.</p>';
   }
   var rr=RRB+b.lv+"&fv=&p=1&book_id="+b.id;
-  var lib=LIBP+encodeURIComponent(b.title)+LIBT;
+  var lib=LIBP+encodeURIComponent(libKeyword(b.title))+LIBT;
   h+='<div class="dlink">'+
      '<a href="'+rr+'" target="_blank" rel="noopener">리딩레이스 상세 페이지 <span class="r">열기 ↗</span></a>'+
      '<a href="'+lib+'" target="_blank" rel="noopener">이문어린이도서관 소장 확인 <span class="r">검색 ↗</span></a>'+
@@ -663,6 +663,19 @@ function openDetail(b){
 var RRB="https://rd.dreamschool.or.kr/reading/bookdetail?sc=&field_id=&level=";
 var LIBP="https://www.l4d.or.kr/imc/menu/10627/program/30010/plusSearchResultList.do?searchType=SIMPLE&searchCategory=ALL&searchKey=ALL&searchKeyword=";
 var LIBT="&searchLibraryArr="+"ME";
+
+/* 도서관 검색어 다듬기.
+   제목 끝의 '(백희나 그림책)' · 수상/선정 문구 · '[English Book]' 같은 표기는
+   실제 서지검색에서 결과를 0건으로 만든다(1,434권 중 314권). 검색어만 짧게 줄인다.
+   예) '나무는 숲을 기억해요 (멕시코 ‘바람의 끝에서 상’ 수상)' → '나무는 숲을 기억해요' (이문어린이도서관 1건) */
+function libKeyword(t){
+  var s=String(t==null?"":t);
+  s=s.replace(/^\s*\[[^\]]*\]\s*/,"");
+  s=s.replace(/\s*\([^()]*\)\s*$/,"");
+  s=s.replace(/\s*\[[^\[\]]*\]\s*$/,"");
+  s=s.trim();
+  return s || String(t==null?"":t);
+}
 
 /* ---------------- 이벤트: 표 ---------------- */
 function toggleAt(b){
