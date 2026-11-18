@@ -639,8 +639,10 @@ function detailHTML(b){
     h+='<p class="none-loan">도서관 대출·상호대차 기록은 없는 책이에요.</p>';
   }
   var rr=RRB+b.lv+"&fv=&p=1&book_id="+b.id;
+  var lib=LIBP+encodeURIComponent(b.title)+LIBT;
   h+='<div class="dlink">'+
      '<a href="'+rr+'" target="_blank" rel="noopener">리딩레이스 상세 페이지 <span class="r">열기 ↗</span></a>'+
+     '<a href="'+lib+'" target="_blank" rel="noopener">이문어린이도서관 소장 확인 <span class="r">검색 ↗</span></a>'+
      '</div>';
   return h;
 }
@@ -659,7 +661,8 @@ function openDetail(b){
   openSheet(dSheet);
 }
 var RRB="https://rd.dreamschool.or.kr/reading/bookdetail?sc=&field_id=&level=";
-
+var LIBP="https://www.l4d.or.kr/imc/menu/10627/program/30010/plusSearchResultList.do?searchType=SIMPLE&searchCategory=ALL&searchKey=ALL&searchKeyword=";
+var LIBT="&searchLibraryArr="+"ME";
 
 /* ---------------- 이벤트: 표 ---------------- */
 function toggleAt(b){
