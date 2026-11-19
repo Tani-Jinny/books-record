@@ -539,7 +539,8 @@ function loadTs(){
 }
 function saveTs(){
   if(!hasLS) return;
-  try{ localStorage.setItem(TS_KEY, JSON.stringify({v:1,items:OV_TS})); }catch(e){}
+  /* rr_l1_ov_ts_v1 = { "<book_id>": epoch_ms } */
+  try{ localStorage.setItem(TS_KEY, JSON.stringify(OV_TS)); }catch(e){}
 }
 function loadSync(){
   var out={gid:"",tok:"",lastSync:0};
