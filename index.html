@@ -1102,8 +1102,8 @@ function matchQuery(b,q){
   return false;
 }
 function ownerMask(b){
-  var m=0;
-  for(var i=0;i<b.own.length;i++){ m|=(1<<b.own[i]); }
+  var m=0, own=b.own||[];
+  for(var i=0;i<own.length;i++){ m|=(1<<own[i]); }
   return m;
 }
 function passRead(b){
@@ -1221,16 +1221,17 @@ function compute(){
 
 /* ---------------- 표 렌더 ---------------- */
 function ownLabel(b){
-  var n=b.own.length;
+  var own=b.own||[], n=own.length;
   if(!n) return "";
   var nm=function(p){ return PEOPLE[p]||""; };
-  if(n===1) return nm(b.own[0]);
-  if(n===2) return nm(b.own[0])+"·"+nm(b.own[1]);
-  return nm(b.own[0])+"+"+(n-1);
+  if(n===1) return nm(own[0]);
+  if(n===2) return nm(own[0])+"·"+nm(own[1]);
+  return nm(own[0])+"+"+(n-1);
 }
 function tagHTML(b){
-  var k=String(b.id), ol=ownLabel(b);
+  var k=String(b.id);
   if(b.custom) return '<span class="tg add">추가</span>';
+  var ol=ownLabel(b);
   if(has(OV,k) && OV[k]===0) return '<span class="tg off">해제</span>';
   if(ol) return '<span class="tg'+(b.flag&2?' cur':'')+'">'+esc(ol)+'</span>';
   if(has(OV,k) && OV[k]===1) return '<span class="tg mine">직접</span>';
